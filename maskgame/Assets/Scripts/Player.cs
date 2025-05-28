@@ -5,7 +5,7 @@ using static UnityEngine.Rendering.STP;
 public class Player : MonoBehaviour
 {
     #region Components
-    [SerializeField] PlayerMovement configMove;
+    [SerializeField] PlayerMovementCFG configMove;
     InputAction mouseLook, movementAction, jumpActions;
     Rigidbody rb;
     #endregion
@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
 
     #region Move
     Vector3 move;
-    Vector3 moveInput;
+    Vector2 moveInput;
     #endregion
 
     #region Jump
@@ -39,11 +39,13 @@ public class Player : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+
         jumpActions = InputSystem.actions.FindAction("Jump");
-        jumpActions.Enable();
         mouseLook = InputSystem.actions.FindAction("Look");
         movementAction = InputSystem.actions.FindAction("Move");
+
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     // Update is called once per frame
@@ -64,7 +66,7 @@ public class Player : MonoBehaviour
     {
         if (movementAction.IsPressed())
         {
-            moveInput = movementAction.ReadValue<Vector3>();
+            moveInput = movementAction.ReadValue<Vector2>();
             move = transform.forward * moveInput.y + transform.right * moveInput.x;
             rb.MovePosition(rb.position + move * configMove.Speed * Time.fixedDeltaTime);
         }
@@ -81,10 +83,10 @@ public class Player : MonoBehaviour
     }
     void Jump()
     {
-        originRaycastJump = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * .5f), transform.position.z);
+        originRaycastJump = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * 0.5f), transform.position.z);
         if (Physics.Raycast(originRaycastJump, transform.TransformDirection(Vector3.down), out hitGroundOnRaycast, distanceRaycastJump))
         {
-            Debug.DrawRay(originRaycastJump, transform.TransformDirection(Vector3.down) * distanceRaycastJump, Color.red);
+            //Debug.DrawRay(originRaycastJump, transform.TransformDirection(Vector3.down) * distanceRaycastJump, Color.red);
             onGround = true;
         }
         else

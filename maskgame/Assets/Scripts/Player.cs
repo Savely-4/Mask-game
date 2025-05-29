@@ -1,12 +1,15 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.Rendering.STP;
+using System.Threading.Tasks;
 
 public class Player : MonoBehaviour
 {
     #region Components
     [SerializeField] PlayerMovementCFG configMove;
-    InputAction mouseLook, movementAction, jumpActions , sprintAction;
+    InputAction mouseLook, movementAction, jumpAction , sprintAction,dashAction;
     Rigidbody rb;
     #endregion
     #region Movement
@@ -17,10 +20,18 @@ public class Player : MonoBehaviour
     Vector3 move;
     Vector2 moveInput;
 
+    private Dictionary<string, bool> cooldowns = new();
     float stamina;
     const float staminaMax = 100f;
+    bool playerSprinting;
     #endregion
-
+    #region Dash
+    //рывок
+    public float distanceDash = 2.1f;
+    bool cdDash = false;
+    public float timeToCd = 3f;
+    bool isDash = false;
+    #endregion
     #region Jump
     bool onGround;
     Vector3 originRaycastJump;
@@ -45,7 +56,8 @@ public class Player : MonoBehaviour
     {
         rb = GetComponent<Rigidbody>();
 
-        jumpActions = InputSystem.actions.FindAction("Jump");
+        dashAction = InputSystem.actions.FindAction("Dash");
+        jumpAction = InputSystem.actions.FindAction("Jump");
         mouseLook = InputSystem.actions.FindAction("Look");
         movementAction = InputSystem.actions.FindAction("Move");
         sprintAction = InputSystem.actions.FindAction("Sprint");
@@ -61,6 +73,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Sprint();
+        StartCoroutine(Dash());
     }
     private void LateUpdate()
     {
@@ -73,9 +86,8 @@ public class Player : MonoBehaviour
     }
     void Movement()
     {
-        if (movementAction.IsPressed())
+        if (movementAction.IsPressed() && !isDash)
         {
-
             moveInput = movementAction.ReadValue<Vector2>();
             move = transform.forward * moveInput.y + transform.right * moveInput.x;
 
@@ -83,30 +95,56 @@ public class Player : MonoBehaviour
             rb.MovePosition(rb.position + move * currentSpeed * Time.fixedDeltaTime);
         }
     }
+    IEnumerator Dash()//рывок не работает...
+    {
+        if(dashAction.IsPressed() && !cdDash)
+        {
+            isDash = true;
+            Vector3 directional = transform.InverseTransformPoint(transform.forward * distanceDash);
+            transform.position = Vector3.Lerp(transform.position, directional, 1);//moveposisitons
+            isDash = false;
+            cdDash = true;
+        }
+        else if (cdDash)
+        {
+            yield return new WaitForSeconds(timeToCd);
+            cdDash = false;
+        }
+    }
     void Sprint()
     {
-        if (sprintAction.IsPressed() && stamina > 0)
+        if (IsOnCooldown("Sprint")) return;
+        playerSprinting = sprintAction.IsPressed();
+
+
+        if (playerSprinting && stamina > 0)
         {
-            currentSpeed += 15f * Time.deltaTime;
+            currentSpeed += coefSpeed * Time.deltaTime;
             stamina -= 20f * Time.deltaTime;
 
-        }
-        else if(!sprintAction.IsPressed())
-        {
-            currentSpeed -= coefSpeed * Time.deltaTime;
-            if(stamina < staminaMax)
+            if (stamina <= 0)
             {
-                stamina -= 20f * Time.deltaTime;
+                stamina = 0;
+                StartCooldown("Sprint", 3f);
             }
-            
         }
-        else if(stamina <= 0)
+        else if (!playerSprinting)
         {
-
+            if (stamina < staminaMax)
+            {
+                stamina += 10f * Time.deltaTime;
+                currentSpeed -= (coefSpeed + 3) * Time.deltaTime;
+            }
+            if (stamina <= 0)
+            {
+                StartCooldown("Sprint", 1f);
+            }
         }
 
-        Debug.Log(stamina);
+
+        stamina = Mathf.Clamp(stamina, 0f, staminaMax);
         currentSpeed = Mathf.Clamp(currentSpeed, configMove.Speed, configMove.SprintSpeed);
+        Debug.Log(stamina);
     }
     void LookAround(float mouseSens = 0.1f)
     {
@@ -131,11 +169,26 @@ public class Player : MonoBehaviour
             onGround = false;
         }
 
-        if (jumpActions.IsPressed() && onGround)
+        if (jumpAction.IsPressed() && onGround)
         {
             onGround = false;
             rb.AddForce(0, configMove.JumpDistance, 0, ForceMode.Impulse);
         }
     }
 
+    #region cdUnirsality
+    //и для прыжка тоже кд мб
+    public bool IsOnCooldown(string action)
+    {
+        return cooldowns.ContainsKey(action) && cooldowns[action];
+    }
+    public async void StartCooldown(string action, float duration)
+    {
+        if (IsOnCooldown(action)) return;
+
+        cooldowns[action] = true;
+        await Task.Delay(TimeSpan.FromSeconds(duration));
+        cooldowns[action] = false;
+    }
+    #endregion
 }

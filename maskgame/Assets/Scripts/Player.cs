@@ -38,12 +38,13 @@ public class Player : MonoBehaviour
 
     #endregion
     #region Jump
+
     bool onGround;
     Vector3 originRaycastJump;
     public float distanceRaycastJump = 0.75f;
     RaycastHit hitGroundOnRaycast;
-    int jumpCount;
-    const int maxJumps = 2;
+    bool canDoubleJump;
+    bool canJump;
     #endregion
 
     #endregion
@@ -79,6 +80,8 @@ public class Player : MonoBehaviour
     {
         Sprint();
         Dash();
+        if(jumpAction.WasPressedThisFrame())
+            canJump = true;
     }
     private void LateUpdate()
     {
@@ -160,24 +163,24 @@ public class Player : MonoBehaviour
     }
     void Jump()
     {
+        
         originRaycastJump = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * 0.5f), transform.position.z);
-        if (Physics.Raycast(originRaycastJump, transform.TransformDirection(Vector3.down), out hitGroundOnRaycast, distanceRaycastJump))
-        {
-            //Debug.DrawRay(originRaycastJump, transform.TransformDirection(Vector3.down) * distanceRaycastJump, Color.red);
-            onGround = true;
-        }
-        else
-        {
-            onGround = false;
-        }
+        onGround = Physics.Raycast(originRaycastJump, Vector3.down, out hitGroundOnRaycast, distanceRaycastJump);
+        if (onGround) canDoubleJump = true;
 
-        if (jumpAction.IsPressed() && onGround)
+        if(!canJump) return;
+
+        if(onGround) rb.AddForce(0, configMove.JumpDistance, 0, ForceMode.Impulse);
+
+        else if(canDoubleJump)
         {
-            onGround = false;
-            rb.AddForce(0, configMove.JumpDistance, 0, ForceMode.Impulse);
+           rb.linearVelocity = new Vector3(rb.linearVelocity.x,0f,rb.linearVelocity.z);
+           rb.AddForce(0, configMove.JumpDistance, 0, ForceMode.Impulse);
+           canDoubleJump = false;
         }
+        canJump = false;
     }
-
+   
     #region cdUnirsality
     //и для прыжка тоже кд мб
     bool IsOnCooldown(string action)

@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     [SerializeField] PlayerMovementCFG configMove;
     InputAction mouseLook, movementAction, jumpAction , sprintAction,dashAction;
     Rigidbody rb;
+    HpOnObject hpPlayer;
     #endregion
     #region Movement
 
@@ -60,6 +61,7 @@ public class Player : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        hpPlayer = GetComponent<HpOnObject>();
         rb = GetComponent<Rigidbody>();
 
         dashAction = InputSystem.actions.FindAction("Dash");
@@ -73,6 +75,10 @@ public class Player : MonoBehaviour
 
         currentSpeed = configMove.Speed;
         stamina = staminaMax;
+
+        hpPlayer.hp = 100f;
+        hpPlayer.maxHp = 100f;
+        hpPlayer.regenRate = 2f;
     }
 
     // Update is called once per frame

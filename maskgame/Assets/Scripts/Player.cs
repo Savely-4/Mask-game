@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
+using System.Text.RegularExpressions;
 
 public class Player : MonoBehaviour
 {
@@ -24,13 +25,17 @@ public class Player : MonoBehaviour
     float stamina;
     const float staminaMax = 100f;
     bool playerSprinting;
+    Vector3 directionalDash;
     #endregion
+
     #region Dash
     //рывок
-    public float distanceDash = 2.1f;
+    public float distanceDash = 5f;
+
+    float speedDash;
     bool cdDash = false;
-    public float timeToCd = 3f;
-    bool isDash = false;
+    //public float cdDashtoTime = 3f;
+
     #endregion
     #region Jump
     bool onGround;
@@ -73,7 +78,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         Sprint();
-        StartCoroutine(Dash());
+        Dash();
     }
     private void LateUpdate()
     {
@@ -86,7 +91,7 @@ public class Player : MonoBehaviour
     }
     void Movement()
     {
-        if (movementAction.IsPressed() && !isDash)
+        if (movementAction.IsPressed() && !cdDash)
         {
             moveInput = movementAction.ReadValue<Vector2>();
             move = transform.forward * moveInput.y + transform.right * moveInput.x;
@@ -95,19 +100,19 @@ public class Player : MonoBehaviour
             rb.MovePosition(rb.position + move * currentSpeed * Time.fixedDeltaTime);
         }
     }
-    IEnumerator Dash()//рывок не работает...
+    void Dash()
     {
-        if(dashAction.IsPressed() && !cdDash)
+        if (IsOnCooldown("Dash")) return;
+
+        if (dashAction.IsPressed() && !cdDash)
         {
-            isDash = true;
-            Vector3 directional = transform.InverseTransformPoint(transform.forward * distanceDash);
-            transform.position = Vector3.Lerp(transform.position, directional, 1);//moveposisitons
-            isDash = false;
+            directionalDash = transform.position + transform.forward * distanceDash;
+            rb.MovePosition(directionalDash);
             cdDash = true;
         }
         else if (cdDash)
         {
-            yield return new WaitForSeconds(timeToCd);
+            StartCooldown("Dash", 4f);
             cdDash = false;
         }
     }
@@ -140,9 +145,6 @@ public class Player : MonoBehaviour
                 StartCooldown("Sprint", 1f);
             }
         }
-
-
-        stamina = Mathf.Clamp(stamina, 0f, staminaMax);
         currentSpeed = Mathf.Clamp(currentSpeed, configMove.Speed, configMove.SprintSpeed);
         Debug.Log(stamina);
     }
@@ -178,11 +180,11 @@ public class Player : MonoBehaviour
 
     #region cdUnirsality
     //и для прыжка тоже кд мб
-    public bool IsOnCooldown(string action)
+    bool IsOnCooldown(string action)
     {
         return cooldowns.ContainsKey(action) && cooldowns[action];
     }
-    public async void StartCooldown(string action, float duration)
+    async void StartCooldown(string action, float duration)
     {
         if (IsOnCooldown(action)) return;
 

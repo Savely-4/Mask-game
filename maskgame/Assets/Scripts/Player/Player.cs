@@ -10,14 +10,14 @@ public class Player : MonoBehaviour
 {
     #region Components
     [SerializeField] PlayerMovementCFG configMove;
-    InputAction mouseLook, movementAction, jumpAction , sprintAction,dashAction;
+    InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction;
     Rigidbody rb;
     HpOnObject hpPlayer;
     #endregion
     #region Movement
 
     #region Move
-    public float currentSpeed,coefSpeed = 1.2f;
+    public float currentSpeed, coefSpeed = 1.2f;
 
     Vector3 move;
     Vector2 moveInput;
@@ -57,7 +57,7 @@ public class Player : MonoBehaviour
     Vector2 look;
     #endregion
 
-   
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -86,7 +86,7 @@ public class Player : MonoBehaviour
     {
         Sprint();
         Dash();
-        if(jumpAction.WasPressedThisFrame())
+        if (jumpAction.WasPressedThisFrame())
             canJump = true;
     }
     private void LateUpdate()
@@ -165,28 +165,28 @@ public class Player : MonoBehaviour
 
         cameraHolder.localRotation = Quaternion.Euler(xRotation, 0f, 0f);
         transform.Rotate(Vector3.up * look.x);
-        
+
     }
     void Jump()
     {
-        
+
         originRaycastJump = new Vector3(transform.position.x, transform.position.y - (transform.localScale.y * 0.5f), transform.position.z);
         onGround = Physics.Raycast(originRaycastJump, Vector3.down, out hitGroundOnRaycast, distanceRaycastJump);
         if (onGround) canDoubleJump = true;
 
-        if(!canJump) return;
+        if (!canJump) return;
 
-        if(onGround) rb.AddForce(0, configMove.JumpDistance, 0, ForceMode.Impulse);
+        if (onGround) rb.AddForce(0, configMove.JumpDistance, 0, ForceMode.Impulse);
 
-        else if(canDoubleJump)
+        else if (canDoubleJump)
         {
-           rb.linearVelocity = new Vector3(rb.linearVelocity.x,0f,rb.linearVelocity.z);
-           rb.AddForce(0, configMove.JumpDistance, 0, ForceMode.Impulse);
-           canDoubleJump = false;
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z);
+            rb.AddForce(0, configMove.JumpDistance, 0, ForceMode.Impulse);
+            canDoubleJump = false;
         }
         canJump = false;
     }
-   
+
     #region cdUnirsality
     //и для прыжка тоже кд мб
     bool IsOnCooldown(string action)

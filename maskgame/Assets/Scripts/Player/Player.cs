@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     Vector3 move;
     Vector2 moveInput;
 
-    private Dictionary<string, bool> cooldowns = new();
+    private Dictionary<string, float> cooldowns = new();
     float stamina;
     const float staminaMax = 100f;
     bool playerSprinting;
@@ -33,7 +33,7 @@ public class Player : MonoBehaviour
     //рывок
     public float distanceDash = 5f;
 
-    float speedDash;
+    float speedDash = 100f;
     bool cdDash = false;
     //public float cdDashtoTime = 3f;
 
@@ -116,6 +116,7 @@ public class Player : MonoBehaviour
         if (dashAction.IsPressed() && !cdDash)
         {
             directionalDash = transform.position + transform.forward * distanceDash;
+            directionalDash.y = 0;
             rb.MovePosition(directionalDash);
             cdDash = true;
         }
@@ -127,35 +128,44 @@ public class Player : MonoBehaviour
     }
     void Sprint()
     {
-        if (IsOnCooldown("Sprint")) return;
-        playerSprinting = sprintAction.IsPressed();
+        if (IsOnCooldown("Sprint") || stamina <0f)
+        {
+            playerSprinting = false;
+            return;
+        }
+        if (sprintAction.IsPressed() && stamina > 2f) playerSprinting = true;
+
+            
+        //if (stamina <= 0.7f) return;
 
 
-        if (playerSprinting && stamina > 0)
+        if (playerSprinting)
         {
             currentSpeed += coefSpeed * Time.deltaTime;
             stamina -= 20f * Time.deltaTime;
 
-            if (stamina <= 0)
+            if (stamina <= 0f)
             {
                 stamina = 0;
+                playerSprinting = false;
                 StartCooldown("Sprint", 3f);
             }
         }
-        else if (!playerSprinting)
+        else
         {
             if (stamina < staminaMax)
             {
                 stamina += 10f * Time.deltaTime;
-                currentSpeed -= (coefSpeed + 3) * Time.deltaTime;
+               
             }
-            if (stamina <= 0)
+            currentSpeed -= (coefSpeed + 3) * Time.deltaTime;
+            if (stamina <= 0f && !IsOnCooldown("Sprint"))
             {
                 StartCooldown("Sprint", 1f);
             }
         }
         currentSpeed = Mathf.Clamp(currentSpeed, configMove.Speed, configMove.SprintSpeed);
-        Debug.Log(stamina);
+        //Debug.Log(stamina);
     }
     void LookAround(float mouseSens = 0.1f)
     {
@@ -191,15 +201,12 @@ public class Player : MonoBehaviour
     //и для прыжка тоже кд мб
     bool IsOnCooldown(string action)
     {
-        return cooldowns.ContainsKey(action) && cooldowns[action];
+        return cooldowns.TryGetValue(action, out float timeToEnd) && Time.time < timeToEnd;
     }
-    async void StartCooldown(string action, float duration)
+    void StartCooldown(string action, float duration)
     {
-        if (IsOnCooldown(action)) return;
-
-        cooldowns[action] = true;
-        await Task.Delay(TimeSpan.FromSeconds(duration));
-        cooldowns[action] = false;
+        cooldowns[action] = Time.time + duration;
     }
+        
     #endregion
 }

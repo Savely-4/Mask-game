@@ -32,7 +32,7 @@ public class Player : MonoBehaviour
     Vector3 directionalDash;
     #endregion
     #region Dash
-    //рывок
+    //пїЅпїЅпїЅпїЅпїЅ
     public float distanceDash = 5f;
     float timeToCdDash = 4f;
     public float speedDash = 10f;
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
     #endregion
     #region BattleSystem
     [SerializeField] private Weapon currentWeapon;
-    public Transform hands;//точка где будет меч
+    public Transform hands;//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
     public bool SwordInHands = false;
     #endregion
 
@@ -98,7 +98,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(enteract.IsPressed() && SwordInHands)
+        //if(enteract.IsPressed() && SwordInHands) РќР• Р РђР‘РћРўРђР•Р•Р•Р•Р•Рў
         {
             currentWeapon?.Attack();
         }
@@ -152,7 +152,7 @@ public class Player : MonoBehaviour
             cdDash = false;
         }
     }
-    void Sprint()//выделить стамину и перенести её в отдельный метод
+    void Sprint()//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
     {
         if (nonAllEneract) return;
 
@@ -219,7 +219,7 @@ public class Player : MonoBehaviour
         nonAllEneract = false;
     }
     #region cdUnirsality
-    //и для прыжка тоже кд мб
+    //пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ
     bool IsOnCooldown(string action)
     {
         return cooldowns.ContainsKey(action) && cooldowns[action];

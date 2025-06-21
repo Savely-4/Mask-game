@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
 using System.Collections;
-using Unity.Mathematics;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Player : MonoBehaviour
 {
@@ -68,11 +68,12 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
+        player = this;
         playerAnimator = GetComponent<Animator>();
         hpPlayer = GetComponent<HpOnObject>();
         rb = GetComponent<Rigidbody>();
 
-        enteract = InputSystem.actions.FindAction("Enteract");
+        enteract = InputSystem.actions.FindAction("Interact");
         dashAction = InputSystem.actions.FindAction("Dash");
         jumpAction = InputSystem.actions.FindAction("Jump");
         mouseLook = InputSystem.actions.FindAction("Look");
@@ -81,12 +82,14 @@ public class Player : MonoBehaviour
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
+
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentSpeed = configMove.Speed;
         stamina = staminaMax;
+        cameraHolder = Camera.main.transform;
 
         hpPlayer.hp = 100f;
         hpPlayer.maxHp = 100f;
@@ -98,8 +101,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //if(enteract.IsPressed() && SwordInHands) НЕ РАБОТАЕЕЕЕЕТ
+        if(enteract.IsPressed() && SwordInHands)
         {
+            currentWeapon = FindFirstObjectByType<Weapon>();//затратно!
+            Debug.Log(1);
             currentWeapon?.Attack();
         }
         Sprint();

@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Sword : Weapon
 {
-    Animator animator;
+    Animator animator;//вынести
 
+<<<<<<< Updated upstream
     [SerializeField] private float damage;
     [SerializeField] private Vector3 boxHalf;
     [SerializeField] private LayerMask enemyLayer;
@@ -22,6 +23,28 @@ public class Sword : Weapon
     public override void Attack()
     {
         animator?.Play($"{Random.Range(1,3)}");//рандомная анимация удара меча!
+=======
+    [SerializeField] private float damage = 30;//вынести
+    [SerializeField] private Vector3 boxHalf = new Vector3(1.5f, 1f, 1f);
+    [SerializeField] private LayerMask enemyLayer;//мб вынести
+    [SerializeField] bool isBurnDmg = false;//вынести
+    [SerializeField] private float burnDuration = 4f;//вынести
+
+    Transform player;//вынести
+    Transform attackPoint;//вынести
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+        //player = Player.player.hands;
+       // gameObject.transform.SetParent(player);
+        transform.position = Vector3.zero;
+        attackPoint = transform;
+    }
+    public override void Attack()
+    {
+        //animator.Play($"{Random.Range(1,3)}");//рандомная анимация
+        Debug.Log(1);
+>>>>>>> Stashed changes
         Collider[] enemyInBox = Physics.OverlapBox(attackPoint.position, boxHalf, attackPoint.rotation, enemyLayer);
         foreach(Collider enemy in enemyInBox)
         {

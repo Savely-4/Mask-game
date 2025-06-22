@@ -4,14 +4,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
 using System.Collections;
+<<<<<<< Updated upstream
 using static UnityEngine.EventSystems.EventTrigger;
+=======
+>>>>>>> Stashed changes
 
 public class Player : MonoBehaviour
 {
     #region Components
     [SerializeField] PlayerMovementCFG configMove;
     public static Player player;
-    public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,enteract;
+    public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,enteract,mousePosAction;
     Rigidbody rb;
     HpOnObject hpPlayer;
     Animator playerAnimator;
@@ -58,11 +61,17 @@ public class Player : MonoBehaviour
     #endregion
     #region Animation
     bool nonAllEneract = false;
+
     #endregion
     #region BattleSystem
     [SerializeField] private Weapon currentWeapon;
+<<<<<<< Updated upstream
     public Transform hands;//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
     public bool SwordInHands = false;
+=======
+
+    public Transform hands;//точка где будет меч
+>>>>>>> Stashed changes
     #endregion
 
 
@@ -73,16 +82,26 @@ public class Player : MonoBehaviour
         hpPlayer = GetComponent<HpOnObject>();
         rb = GetComponent<Rigidbody>();
 
+<<<<<<< Updated upstream
         enteract = InputSystem.actions.FindAction("Interact");
+=======
+
+        enteract = InputSystem.actions.FindAction("Enteract");
+>>>>>>> Stashed changes
         dashAction = InputSystem.actions.FindAction("Dash");
         jumpAction = InputSystem.actions.FindAction("Jump");
         mouseLook = InputSystem.actions.FindAction("Look");
         movementAction = InputSystem.actions.FindAction("Move");
+        mousePosAction = InputSystem.actions.FindAction("MousePositions");
         sprintAction = InputSystem.actions.FindAction("Sprint");
 
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
 
+<<<<<<< Updated upstream
+=======
+        currentWeapon = 
+>>>>>>> Stashed changes
     }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -101,12 +120,16 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+<<<<<<< Updated upstream
         if(enteract.IsPressed() && SwordInHands)
         {
             currentWeapon = FindFirstObjectByType<Weapon>();//Р·Р°С‚СЂР°С‚РЅРѕ!
             Debug.Log(1);
             currentWeapon?.Attack();
         }
+=======
+        if(Mouse.current.leftButton.IsPressed()) currentWeapon?.Attack();
+>>>>>>> Stashed changes
         Sprint();
         Dash();
         if (jumpAction.WasPressedThisFrame() && !nonAllEneract)
@@ -223,6 +246,17 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(secondsToWait);
         nonAllEneract = false;
     }
+    void TakeItem()
+    {
+        if(enteract.IsPressed())
+        {
+            Vector2 mousePosition = mousePosAction.ReadValue<Vector2>();
+            if(Physics.Raycast(mousePosition,Camera.main.transform.forward,out RaycastHit hitItem ,20) && hitItem.collider.tag == "Item")
+            {
+                Destroy(hitItem.collider.gameObject);
+            }
+        }
+    }
     #region cdUnirsality
     //пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ
     bool IsOnCooldown(string action)
@@ -239,5 +273,5 @@ public class Player : MonoBehaviour
     }
         
     #endregion
-
+    
 }

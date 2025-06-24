@@ -4,47 +4,28 @@ using UnityEngine;
 
 public class Sword : Weapon
 {
-    Animator animator;//вынести
-
-<<<<<<< Updated upstream
-    [SerializeField] private float damage;
-    [SerializeField] private Vector3 boxHalf;
+    Animator animator;
+    [SerializeField] private float damage = 30;
+    [SerializeField] private Vector3 boxHalf = new Vector3(1.5f, 1f, 1f);
     [SerializeField] private LayerMask enemyLayer;
     [SerializeField] bool isBurnDmg = false;
     [SerializeField] private float burnDuration = 4f;
+    Transform player;
+    Transform attackPoint;
 
     private void Start()
     {
         animator = GetComponent<Animator>();
         Equip(Player.player.hands);
         Player.player.SwordInHands = true;
-        transform.position = new Vector3(0, 1.3f, 1.2f);
-    }
-    public override void Attack()
-    {
-        animator?.Play($"{Random.Range(1,3)}");//рандомная анимация удара меча!
-=======
-    [SerializeField] private float damage = 30;//вынести
-    [SerializeField] private Vector3 boxHalf = new Vector3(1.5f, 1f, 1f);
-    [SerializeField] private LayerMask enemyLayer;//мб вынести
-    [SerializeField] bool isBurnDmg = false;//вынести
-    [SerializeField] private float burnDuration = 4f;//вынести
-
-    Transform player;//вынести
-    Transform attackPoint;//вынести
-    private void Start()
-    {
-        animator = GetComponent<Animator>();
-        //player = Player.player.hands;
-       // gameObject.transform.SetParent(player);
         transform.position = Vector3.zero;
         attackPoint = transform;
+        transform.position = new Vector3(0, 1.3f, 1.2f);
     }
+
     public override void Attack()
     {
-        //animator.Play($"{Random.Range(1,3)}");//рандомная анимация
-        Debug.Log(1);
->>>>>>> Stashed changes
+        animator?.Play($"{Random.Range(1, 3)}");
         Collider[] enemyInBox = Physics.OverlapBox(attackPoint.position, boxHalf, attackPoint.rotation, enemyLayer);
         foreach(Collider enemy in enemyInBox)
         {
@@ -52,6 +33,7 @@ public class Sword : Weapon
             Debug.Log(enemy.GetComponent<HpOnObject>().hp);
         }
     }
+
 #if UNITY_EDITOR
     private void OnDrawGizmosSelected()
     {

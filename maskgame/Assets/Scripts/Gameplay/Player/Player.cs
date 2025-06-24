@@ -4,17 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
 using System.Collections;
-<<<<<<< Updated upstream
-using static UnityEngine.EventSystems.EventTrigger;
-=======
->>>>>>> Stashed changes
 
 public class Player : MonoBehaviour
 {
     #region Components
     [SerializeField] PlayerMovementCFG configMove;
     public static Player player;
-    public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,enteract,mousePosAction;
+    public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,interact,mousePosAction;
     Rigidbody rb;
     HpOnObject hpPlayer;
     Animator playerAnimator;
@@ -35,12 +31,10 @@ public class Player : MonoBehaviour
     Vector3 directionalDash;
     #endregion
     #region Dash
-    //пїЅпїЅпїЅпїЅпїЅ
     public float distanceDash = 5f;
     float timeToCdDash = 4f;
     public float speedDash = 10f;
     bool cdDash = false;
-    //public float cdDashtoTime = 3f;
 
     #endregion
     #region Jump
@@ -65,13 +59,8 @@ public class Player : MonoBehaviour
     #endregion
     #region BattleSystem
     [SerializeField] private Weapon currentWeapon;
-<<<<<<< Updated upstream
-    public Transform hands;//пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ
+    public Transform hands;
     public bool SwordInHands = false;
-=======
-
-    public Transform hands;//точка где будет меч
->>>>>>> Stashed changes
     #endregion
 
 
@@ -81,55 +70,37 @@ public class Player : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         hpPlayer = GetComponent<HpOnObject>();
         rb = GetComponent<Rigidbody>();
-
-<<<<<<< Updated upstream
-        enteract = InputSystem.actions.FindAction("Interact");
-=======
-
-        enteract = InputSystem.actions.FindAction("Enteract");
->>>>>>> Stashed changes
+        
+        interact = InputSystem.actions.FindAction("Interact");
         dashAction = InputSystem.actions.FindAction("Dash");
         jumpAction = InputSystem.actions.FindAction("Jump");
         mouseLook = InputSystem.actions.FindAction("Look");
         movementAction = InputSystem.actions.FindAction("Move");
         mousePosAction = InputSystem.actions.FindAction("MousePositions");
         sprintAction = InputSystem.actions.FindAction("Sprint");
-
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
-<<<<<<< Updated upstream
-=======
-        currentWeapon = 
->>>>>>> Stashed changes
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentSpeed = configMove.Speed;
         stamina = staminaMax;
         cameraHolder = Camera.main.transform;
-
         hpPlayer.hp = 100f;
         hpPlayer.maxHp = 100f;
         hpPlayer.regenRate = 2f;
-        StartCoroutine(NonEnteract(0));
-        StartCoroutine(NonEnteract(1));
     }
 
-    // Update is called once per frame
     void Update()
     {
-<<<<<<< Updated upstream
-        if(enteract.IsPressed() && SwordInHands)
+        if(interact.IsPressed() && SwordInHands)
         {
-            currentWeapon = FindFirstObjectByType<Weapon>();//Р·Р°С‚СЂР°С‚РЅРѕ!
-            Debug.Log(1);
+            currentWeapon = FindFirstObjectByType<Weapon>();
             currentWeapon?.Attack();
         }
-=======
         if(Mouse.current.leftButton.IsPressed()) currentWeapon?.Attack();
->>>>>>> Stashed changes
+
         Sprint();
         Dash();
         if (jumpAction.WasPressedThisFrame() && !nonAllEneract)
@@ -180,7 +151,7 @@ public class Player : MonoBehaviour
             cdDash = false;
         }
     }
-    void Sprint()//пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ
+    void Sprint()
     {
         if (nonAllEneract) return;
 
@@ -240,15 +211,16 @@ public class Player : MonoBehaviour
         }
         canJump = false;
     }
-    IEnumerator NonEnteract(int layer,float secondsToWait = 10)
+    IEnumerator NonEnteract(int layer, float secondsToWait = 10)
     {
         nonAllEneract = true;
         yield return new WaitForSeconds(secondsToWait);
         nonAllEneract = false;
     }
+
     void TakeItem()
     {
-        if(enteract.IsPressed())
+        if(interact.IsPressed())
         {
             Vector2 mousePosition = mousePosAction.ReadValue<Vector2>();
             if(Physics.Raycast(mousePosition,Camera.main.transform.forward,out RaycastHit hitItem ,20) && hitItem.collider.tag == "Item")
@@ -257,8 +229,8 @@ public class Player : MonoBehaviour
             }
         }
     }
+
     #region cdUnirsality
-    //пїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅ
     bool IsOnCooldown(string action)
     {
         return cooldowns.ContainsKey(action) && cooldowns[action];

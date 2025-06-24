@@ -673,7 +673,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   configMove: {fileID: 11400000, guid: bb36133d51f4ec24abc4dfdfedcf7529, type: 2}
   mouseLook:
-    m_Name: 
+    m_Name: Mouse Look
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: c8cba953-a9c0-47c5-9901-e23c0a71db26
@@ -682,7 +682,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   movementAction:
-    m_Name: 
+    m_Name: Movement
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 748a26d8-b6af-4d7e-a657-4da47abc803f
@@ -691,7 +691,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   jumpAction:
-    m_Name: 
+    m_Name: Jump
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: e9d6b16a-898c-4764-a640-45c974bef841
@@ -700,7 +700,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   sprintAction:
-    m_Name: 
+    m_Name: Sprint
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 17a87827-57ce-4675-a625-eb7867d1b44a
@@ -709,7 +709,7 @@ MonoBehaviour:
     m_SingletonActionBindings: []
     m_Flags: 0
   dashAction:
-    m_Name: 
+    m_Name: Dash
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 5665d9a9-f5a4-4ddb-b264-8392192aa891
@@ -717,17 +717,17 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
-  enteract:
-    m_Name: 
+  interact:
+    m_Name: Interact
     m_Type: 0
     m_ExpectedControlType: 
-    m_Id: f150fc98-7db3-4cf8-9cdf-d5e0486aff69
+    m_Id: e597a048-9f51-4ae3-be4b-d7a222a39502
     m_Processors: 
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
   mousePosAction:
-    m_Name: 
+    m_Name: Mouse Pos
     m_Type: 0
     m_ExpectedControlType: 
     m_Id: 8639753d-88c4-46cb-972a-77ec08f096d1
@@ -743,6 +743,7 @@ MonoBehaviour:
   cameraHolder: {fileID: 330585546}
   currentWeapon: {fileID: 0}
   hands: {fileID: 0}
+  SwordInHands: 0
 --- !u!54 &1367866854
 Rigidbody:
   m_ObjectHideFlags: 0

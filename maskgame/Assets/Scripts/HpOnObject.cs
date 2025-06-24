@@ -8,16 +8,15 @@ public class HpOnObject : MonoBehaviour
     public float hp;
     public float maxHp;
     public float regenRate;
-
     protected bool allowRegen;
-
     float time;
+
     public void HpRegeneration(float regenNum)
     {
-        
         hp += (maxHp / 100) * regenRate * Time.deltaTime;
         hp = Mathf.Clamp(hp, 0, maxHp);
     }
+
     public void ChangeHp(float dmg, float durations,bool isBurnDmg = false)
     {
         if (hp - dmg < 0) Destroy(gameObject);

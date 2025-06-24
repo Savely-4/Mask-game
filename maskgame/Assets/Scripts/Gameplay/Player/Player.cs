@@ -4,14 +4,13 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
 using System.Collections;
-using Unity.Mathematics;
 
 public class Player : MonoBehaviour
 {
     #region Components
     [SerializeField] PlayerMovementCFG configMove;
     public static Player player;
-    public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,enteract;
+    public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,interact,mousePosAction;
     Rigidbody rb;
     HpOnObject hpPlayer;
     Animator playerAnimator;
@@ -32,12 +31,10 @@ public class Player : MonoBehaviour
     Vector3 directionalDash;
     #endregion
     #region Dash
-    //�����
     public float distanceDash = 5f;
     float timeToCdDash = 4f;
     public float speedDash = 10f;
     bool cdDash = false;
-    //public float cdDashtoTime = 3f;
 
     #endregion
     #region Jump
@@ -58,50 +55,52 @@ public class Player : MonoBehaviour
     #endregion
     #region Animation
     bool nonAllEneract = false;
+
     #endregion
     #region BattleSystem
     [SerializeField] private Weapon currentWeapon;
-    public Transform hands;//����� ��� ����� ���
+    public Transform hands;
     public bool SwordInHands = false;
     #endregion
 
 
     private void Awake()
     {
+        player = this;
         playerAnimator = GetComponent<Animator>();
         hpPlayer = GetComponent<HpOnObject>();
         rb = GetComponent<Rigidbody>();
-
-        enteract = InputSystem.actions.FindAction("Enteract");
+        
+        interact = InputSystem.actions.FindAction("Interact");
         dashAction = InputSystem.actions.FindAction("Dash");
         jumpAction = InputSystem.actions.FindAction("Jump");
         mouseLook = InputSystem.actions.FindAction("Look");
         movementAction = InputSystem.actions.FindAction("Move");
+        mousePosAction = InputSystem.actions.FindAction("MousePositions");
         sprintAction = InputSystem.actions.FindAction("Sprint");
-
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         currentSpeed = configMove.Speed;
         stamina = staminaMax;
-
+        cameraHolder = Camera.main.transform;
         hpPlayer.hp = 100f;
         hpPlayer.maxHp = 100f;
         hpPlayer.regenRate = 2f;
-        StartCoroutine(NonEnteract(0));
-        StartCoroutine(NonEnteract(1));
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //if(enteract.IsPressed() && SwordInHands) НЕ РАБОТАЕЕЕЕЕТ
+        if(interact.IsPressed() && SwordInHands)
         {
+            currentWeapon = FindFirstObjectByType<Weapon>();
             currentWeapon?.Attack();
         }
+        if(Mouse.current.leftButton.IsPressed()) currentWeapon?.Attack();
+
         Sprint();
         Dash();
         if (jumpAction.WasPressedThisFrame() && !nonAllEneract)
@@ -152,7 +151,7 @@ public class Player : MonoBehaviour
             cdDash = false;
         }
     }
-    void Sprint()//�������� ������� � ��������� � � ��������� �����
+    void Sprint()
     {
         if (nonAllEneract) return;
 
@@ -212,14 +211,26 @@ public class Player : MonoBehaviour
         }
         canJump = false;
     }
-    IEnumerator NonEnteract(int layer,float secondsToWait = 10)
+    IEnumerator NonEnteract(int layer, float secondsToWait = 10)
     {
         nonAllEneract = true;
         yield return new WaitForSeconds(secondsToWait);
         nonAllEneract = false;
     }
+
+    void TakeItem()
+    {
+        if(interact.IsPressed())
+        {
+            Vector2 mousePosition = mousePosAction.ReadValue<Vector2>();
+            if(Physics.Raycast(mousePosition,Camera.main.transform.forward,out RaycastHit hitItem ,20) && hitItem.collider.tag == "Item")
+            {
+                Destroy(hitItem.collider.gameObject);
+            }
+        }
+    }
+
     #region cdUnirsality
-    //� ��� ������ ���� �� ��
     bool IsOnCooldown(string action)
     {
         return cooldowns.ContainsKey(action) && cooldowns[action];
@@ -234,5 +245,5 @@ public class Player : MonoBehaviour
     }
         
     #endregion
-
+    
 }

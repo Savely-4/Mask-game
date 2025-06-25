@@ -9,4 +9,5 @@ public interface IBuff
     {
         void Process();
     }
+    void Process();
 }

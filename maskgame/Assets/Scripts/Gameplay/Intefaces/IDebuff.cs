@@ -1,4 +1,4 @@
-public interface IBuff
+public interface IDebuff
 {
     abstract void Process();
 }

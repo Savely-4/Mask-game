@@ -1507,7 +1507,7 @@ PrefabInstance:
       addedObject: {fileID: 466885062}
     - targetCorrespondingSourceObject: {fileID: -8687707396478291035, guid: 5affcfc61d690cf4682fc0a26bb540cb, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1816728326}
+      addedObject: {fileID: 1816728331}
   m_SourcePrefab: {fileID: 100100000, guid: 5affcfc61d690cf4682fc0a26bb540cb, type: 3}
 --- !u!1 &77974849 stripped
 GameObject:
@@ -4137,6 +4137,11 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -1960669225518942497, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
+--- !u!1 &873955307 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -8687707396478291035, guid: 5affcfc61d690cf4682fc0a26bb540cb, type: 3}
+  m_PrefabInstance: {fileID: 66307780}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &887429214 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -6414186734731381376, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
@@ -7085,38 +7090,37 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: 3962369434719251747, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
---- !u!1 &1816728324 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -8687707396478291035, guid: 5affcfc61d690cf4682fc0a26bb540cb, type: 3}
-  m_PrefabInstance: {fileID: 66307780}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &1816728326
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1816728324}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 0ce275d2dc2e1d343a990fcee577a1fd, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!20 &1816728328 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: -905581551582678452, guid: 5affcfc61d690cf4682fc0a26bb540cb, type: 3}
   m_PrefabInstance: {fileID: 66307780}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1816728331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873955307}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ef1ae49f879d86847bbb7ff176b5bc52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cameraSmoothnees: 1.25
+  cameraSensitivity: 2
+  maxSensitivity: 1
+  rotationAmplitude: 5
+  recoverySmooth: 2
+  walkZSmooth: 0.1
+  bobbingSmooth: 1
+  runAmplitude: 0.1
+  walkAmplitude: 0.1
+  walkBobbingSpeed: 5
+  stayAmplitude: 0.1
+  stayBobbingSpeed: 2
+  CameraVector: {x: 0, y: 0, z: 0}
+  Pos: {x: 0, y: 0, z: 0}
 --- !u!1 &1819775067 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -4026997056030534203, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}

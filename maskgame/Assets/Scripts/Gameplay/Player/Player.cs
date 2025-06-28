@@ -124,7 +124,7 @@ public class Player : MonoBehaviour
             }
             
             moveDirection = transform.forward * moveInput.y + transform.right * moveInput.x;
-            
+            //
         }
         else
         {

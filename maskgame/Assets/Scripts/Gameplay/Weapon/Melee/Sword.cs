@@ -16,8 +16,8 @@ public class Sword : Weapon
     private void Start()
     {
         animator = GetComponent<Animator>();
-        Equip(Player.player.hands);
-        Player.player.SwordInHands = true;
+        //Equip(Player.player.hands);
+        //Player.player.SwordInHands = true;
         transform.position = Vector3.zero;
         attackPoint = transform;
         transform.position = new Vector3(0, 1.3f, 1.2f);

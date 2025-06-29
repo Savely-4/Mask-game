@@ -2939,6 +2939,7 @@ MeshCollider:
   m_Name: 
   m_EditorClassIdentifier: 
   configMove: {fileID: 11400000, guid: bb36133d51f4ec24abc4dfdfedcf7529, type: 2}
+  _playerInputKeyboardConfig: {fileID: 11400000, guid: 8aa9e3ab5a364774d90ae18ead6f0a0c, type: 2}
   mouseLook:
     m_Name: Mouse Look
     m_Type: 0
@@ -3008,6 +3009,7 @@ MeshCollider:
   speedDash: 10
   distanceRaycastJump: 0.75
   cameraHolder: {fileID: 1816728325}
+  currentWeapon: {fileID: 0}
   hands: {fileID: 0}
   SwordInHands: 0
 --- !u!95 &466885058
@@ -4287,6 +4289,7 @@ MeshCollider:
   m_Name: 
   m_EditorClassIdentifier: 
   configMove: {fileID: 11400000, guid: bb36133d51f4ec24abc4dfdfedcf7529, type: 2}
+  _playerInputKeyboardConfig: {fileID: 11400000, guid: 8aa9e3ab5a364774d90ae18ead6f0a0c, type: 2}
   mouseLook:
     m_Name: Mouse Look
     m_Type: 0
@@ -4356,6 +4359,7 @@ MeshCollider:
   speedDash: 10
   distanceRaycastJump: 0.75
   cameraHolder: {fileID: 330585546}
+  currentWeapon: {fileID: 0}
   hands: {fileID: 0}
   SwordInHands: 0
 --- !u!54 &1367866854

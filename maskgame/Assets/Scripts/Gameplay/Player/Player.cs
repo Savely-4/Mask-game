@@ -7,8 +7,6 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
-    #region Components
-    [SerializeField] PlayerMovementCFG configMove;
     public static Player player;
     public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,interact,mousePosAction;
     Rigidbody rb;
@@ -16,7 +14,8 @@ public class Player : MonoBehaviour
     Animator playerAnimator;
 
     private Weapon _currentWeapon;
-    
+    private PlayerInputKeyboard _playerInputKeyboard; //danil
+
     #endregion
     #region Movement
 
@@ -27,44 +26,12 @@ public class Player : MonoBehaviour
     [SerializeField] private float _lerpRunSpeed;
     [SerializeField] private float _jumpDistance;
 
-
-    private Dictionary<string, bool> cooldowns = new();
-    float stamina;
-    const float staminaMax = 100f;
-    float staminaRegenDelayTimer = 0f;
-    bool playerCantSprint;
-    Vector3 directionalDash;
-    #endregion
-    #region Dash
-    public float distanceDash = 5f;
-    float timeToCdDash = 4f;
-    public float speedDash = 10f;
-    bool cdDash = false;
-
-    #endregion
-    #region Jump
-
-    bool onGround;
-    Vector3 originRaycastJump;
-    public float distanceRaycastJump = 0.75f;
-    RaycastHit hitGroundOnRaycast;
-    bool canDoubleJump;
-    bool canJump;
-    #endregion
-
-    #endregion
-    #region CameraLook
-    public Transform cameraHolder;
-    private float xRotation = 0f;
-    Vector2 look;
-    #endregion
-    #region Animation
-    bool nonAllEneract = false;
-
-    #endregion
-    #region BattleSystem
-
-    public Transform hands;
+    public float CoefSpeed = 4f;
+    public float DistanceDash = 5f;
+    public float SpeedDash = 10f;
+    public float DistanceRaycastJump = 0.75f;
+    public Transform CameraHolder;
+    public Transform Hands;
     public bool SwordInHands = false;
     
     private CharacterController _characterController;
@@ -99,7 +66,12 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        _characterController = this.GetComponent<CharacterController>();    
+        player = this;
+        playerAnimator = GetComponent<Animator>();
+        hpPlayer = GetComponent<HpOnObject>();
+        rb = GetComponent<Rigidbody>();
+        _playerInputKeyboard = new(_playerInputKeyboardConfig); //danil
+        
         interact = InputSystem.actions.FindAction("Interact");
         dashAction = InputSystem.actions.FindAction("Dash");
         jumpAction = InputSystem.actions.FindAction("Jump");
@@ -295,5 +267,6 @@ public class Player : MonoBehaviour
     }
         
     #endregion
-    
+    #endregion
 }
+

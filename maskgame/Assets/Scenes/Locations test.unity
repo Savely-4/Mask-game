@@ -1399,6 +1399,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configMove: {fileID: 11400000, guid: bb36133d51f4ec24abc4dfdfedcf7529, type: 2}
+  _playerInputKeyboardConfig: {fileID: 0}
   mouseLook:
     m_Name: Mouse Look
     m_Type: 0
@@ -1673,7 +1674,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1367866849
 Transform:
   m_ObjectHideFlags: 0
@@ -1779,6 +1780,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   configMove: {fileID: 11400000, guid: bb36133d51f4ec24abc4dfdfedcf7529, type: 2}
+  _playerInputKeyboardConfig: {fileID: 11400000, guid: 8aa9e3ab5a364774d90ae18ead6f0a0c, type: 2}
   mouseLook:
     m_Name: Mouse Look
     m_Type: 0

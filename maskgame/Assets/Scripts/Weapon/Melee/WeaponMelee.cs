@@ -9,10 +9,15 @@ public enum MeleeWeaponAttackType
 }
 public abstract class WeaponMelee : Weapon
 {
-    [SerializeField] private float _animationElapsedTimePoint;
-
     [field: SerializeField] public int NumberCollisions { get; set; } = 3;
     [field: SerializeField] public MeleeWeaponAttackType MeleeWeaponAttackType { get; private set; }
+
+    private float _attackTimePointAnim;
+
+    protected void Start()
+    {
+        _attackTimePointAnim = GetAnimationLength(AttackAnimationName);
+    }
     protected sealed override void Attack()
     {
         switch (MeleeWeaponAttackType) 
@@ -35,7 +40,7 @@ public abstract class WeaponMelee : Weapon
     }
     private IEnumerator DelayedAttack()
     {
-        yield return new WaitForSeconds(_animationElapsedTimePoint);
+        yield return new WaitForSeconds(_attackTimePointAnim * 0.5f);
 
         PerformRaycastAttack();
     }
@@ -44,9 +49,9 @@ public abstract class WeaponMelee : Weapon
     {
         float sphereSize = 1f;
         
-        Vector3 center = transform.position + transform.forward * (transform.localScale.z / 2f);
+        //Vector3 center = transform.position + transform.forward * (transform.localScale.z / 2f);
         
-        Collider[] hitTargets = Physics.OverlapSphere(center, sphereSize)
+        Collider[] hitTargets = Physics.OverlapSphere(AttackPoint.position, sphereSize)
             .Take(NumberCollisions)
             .ToArray();
             
@@ -61,7 +66,7 @@ public abstract class WeaponMelee : Weapon
         
     }
     
-    /*private float GetAnimationLength(string stateName)
+    private float GetAnimationLength(string stateName)
     {
         RuntimeAnimatorController ac = Animator.runtimeAnimatorController;
         foreach (var clip in ac.animationClips)
@@ -71,5 +76,5 @@ public abstract class WeaponMelee : Weapon
         }
 
         return 0.3f; // fallback
-    }/*/
+    }
 }

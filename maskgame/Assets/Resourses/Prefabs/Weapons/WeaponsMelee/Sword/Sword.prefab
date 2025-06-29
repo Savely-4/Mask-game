@@ -31,6 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4386890114015418850}
+  - {fileID: 6362480290080659082}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &7524288722170071949
@@ -45,9 +46,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 829bf8409abbfce4fb87c7f48daaec6f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <AttackPoint>k__BackingField: {fileID: 0}
-  <Animator>k__BackingField: {fileID: 0}
-  <AttackAnimationName>k__BackingField: 
+  <AttackPoint>k__BackingField: {fileID: 6362480290080659082}
+  <AttackAnimationName>k__BackingField: Sword
   <Damage>k__BackingField: 5
   <AttackRate>k__BackingField: 1
   _animationElapsedTimePoint: 0
@@ -163,3 +163,34 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &6745157960180796954
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6362480290080659082}
+  m_Layer: 0
+  m_Name: AttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6362480290080659082
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6745157960180796954}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.119, y: 0.409, z: 0.198}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 7831640733440183068}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

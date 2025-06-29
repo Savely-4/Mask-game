@@ -14,6 +14,9 @@ public class Player : MonoBehaviour
     Rigidbody rb;
     HpOnObject hpPlayer;
     Animator playerAnimator;
+
+    private Weapon _currentWeapon;
+    
     #endregion
     #region Movement
 
@@ -79,6 +82,8 @@ public class Player : MonoBehaviour
         mousePosAction = InputSystem.actions.FindAction("MousePositions");
         sprintAction = InputSystem.actions.FindAction("Sprint");
         
+        _currentWeapon.Animator = playerAnimator; // danil
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }
@@ -94,6 +99,9 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Mouse0)) //danil
+            _currentWeapon.TryAttack();
+    
         Sprint();
         Dash();
         if (jumpAction.WasPressedThisFrame() && !nonAllEneract)

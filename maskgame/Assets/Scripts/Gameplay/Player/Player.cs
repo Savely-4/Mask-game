@@ -9,11 +9,16 @@ public class Player : MonoBehaviour
 {
     #region Components
     [SerializeField] PlayerMovementCFG configMove;
+
+    [SerializeField] private PlayerInputKeyboardConfig _playerInputKeyboardConfig; //danil
     public static Player player;
     public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,interact,mousePosAction;
     Rigidbody rb;
     HpOnObject hpPlayer;
     Animator playerAnimator;
+
+    private PlayerInputKeyboard _playerInputKeyboard; //danil
+    
     #endregion
     #region Movement
 
@@ -70,6 +75,7 @@ public class Player : MonoBehaviour
         playerAnimator = GetComponent<Animator>();
         hpPlayer = GetComponent<HpOnObject>();
         rb = GetComponent<Rigidbody>();
+        _playerInputKeyboard = new(_playerInputKeyboardConfig); //danil
         
         interact = InputSystem.actions.FindAction("Interact");
         dashAction = InputSystem.actions.FindAction("Dash");
@@ -78,6 +84,7 @@ public class Player : MonoBehaviour
         movementAction = InputSystem.actions.FindAction("Move");
         mousePosAction = InputSystem.actions.FindAction("MousePositions");
         sprintAction = InputSystem.actions.FindAction("Sprint");
+
         
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;

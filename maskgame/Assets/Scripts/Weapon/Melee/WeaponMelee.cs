@@ -54,11 +54,8 @@ public abstract class WeaponMelee : Weapon
         Collider[] hitTargets = Physics.OverlapSphere(AttackPoint.position, sphereSize)
             .Take(NumberCollisions)
             .ToArray();
-            
-        foreach (Collider target in hitTargets)
-        {
-            OnHitTarget(target);
-        }
+
+        OnHitTargets(hitTargets);
     }
     
     protected virtual void CollisionAttack() 

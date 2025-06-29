@@ -19,12 +19,13 @@ public abstract class Weapon : MonoBehaviour
             Attack();
             
             _lastAttackTime = Time.time;
+            Debug.Log("Attack!");
         }
     }
     
-    protected virtual void OnHitTarget(Collider target) 
+    protected virtual void OnHitTargets(Collider[] targets) 
     {
-        Debug.Log("Вы попали в цель");
+        Debug.Log("Вы попали в целей");
     }
     protected abstract void Attack();
  

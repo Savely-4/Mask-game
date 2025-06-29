@@ -1468,7 +1468,6 @@ MonoBehaviour:
   speedDash: 10
   distanceRaycastJump: 0.75
   cameraHolder: {fileID: 1816728325}
-  currentWeapon: {fileID: 0}
   hands: {fileID: 0}
   SwordInHands: 0
 --- !u!95 &466885058
@@ -1848,7 +1847,6 @@ MonoBehaviour:
   speedDash: 10
   distanceRaycastJump: 0.75
   cameraHolder: {fileID: 330585546}
-  currentWeapon: {fileID: 0}
   hands: {fileID: 0}
   SwordInHands: 0
 --- !u!54 &1367866854

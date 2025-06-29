@@ -7,9 +7,20 @@ using System.Collections;
 
 public class Player : MonoBehaviour
 {
-    //[SerializeField] public float Speed { get; private set; } = 5f;
-    //[SerializeField] public float SprintSpeed { get; private set; } = 10f;
-    //[SerializeField] public float JumpDistance { get; private set; } = 1.7f;
+    #region Components
+    [SerializeField] PlayerMovementCFG configMove;
+
+    [SerializeField] private PlayerInputKeyboardConfig _playerInputKeyboardConfig; //danil
+    public static Player player;
+    public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,interact,mousePosAction;
+    Rigidbody rb;
+    HpOnObject hpPlayer;
+    Animator playerAnimator;
+
+    private PlayerInputKeyboard _playerInputKeyboard; //danil
+    
+    #endregion
+    #region Movement
 
     [SerializeField] private Camera _camera;
     [SerializeField] private float _runSpeed;
@@ -60,7 +71,12 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        _characterController = this.GetComponent<CharacterController>();    
+        player = this;
+        playerAnimator = GetComponent<Animator>();
+        hpPlayer = GetComponent<HpOnObject>();
+        rb = GetComponent<Rigidbody>();
+        _playerInputKeyboard = new(_playerInputKeyboardConfig); //danil
+        
         interact = InputSystem.actions.FindAction("Interact");
         dashAction = InputSystem.actions.FindAction("Dash");
         jumpAction = InputSystem.actions.FindAction("Jump");
@@ -68,6 +84,7 @@ public class Player : MonoBehaviour
         movementAction = InputSystem.actions.FindAction("Move");
         mousePosAction = InputSystem.actions.FindAction("MousePositions");
         sprintAction = InputSystem.actions.FindAction("Sprint");
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
     }

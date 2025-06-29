@@ -8,6 +8,7 @@ using System.Collections;
 public class Player : MonoBehaviour
 {
     public static Player player;
+    [SerializeField] private PlayerInputKeyboardConfig _playerInputKeyboardConfig; //danil
     public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,interact,mousePosAction;
     Rigidbody rb;
     HpOnObject hpPlayer;
@@ -16,7 +17,6 @@ public class Player : MonoBehaviour
     private Weapon _currentWeapon;
     private PlayerInputKeyboard _playerInputKeyboard; //danil
 
-    #endregion
     #region Movement
 
     [SerializeField] private Camera _camera;
@@ -96,9 +96,9 @@ public class Player : MonoBehaviour
         if(Input.GetKeyDown(KeyCode.Mouse0)) //danil
             _currentWeapon.TryAttack();
     
-        Sprint();
-        Dash();
-        if (jumpAction.WasPressedThisFrame() && !nonAllEneract)
+        //Sprint();
+        //Dash();
+        if (jumpAction.WasPressedThisFrame())
             canJump = true;
     }
 

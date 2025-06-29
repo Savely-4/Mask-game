@@ -8,7 +8,7 @@ using System.Collections;
 public class Player : MonoBehaviour
 {
     #region Components
-    [SerializeField] PlayerMovementCFG configMove;
+    //[SerializeField] PlayerMovementCFG configMove;
 
     [SerializeField] private PlayerInputKeyboardConfig _playerInputKeyboardConfig; //danil
     public static Player player;
@@ -29,8 +29,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float _lerpRunSpeed;
     [SerializeField] private float _jumpDistance;
 
-
-    public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction,interact,mousePosAction;
     public float CoefSpeed = 4f;
     public float DistanceDash = 5f;
     public float SpeedDash = 10f;
@@ -279,5 +277,6 @@ public class Player : MonoBehaviour
     }
         
     #endregion
-    
+    #endregion
 }
+

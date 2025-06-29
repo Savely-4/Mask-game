@@ -58,7 +58,7 @@ public class Player : MonoBehaviour
 
     #endregion
     #region BattleSystem
-    [SerializeField] private Weapon currentWeapon;
+
     public Transform hands;
     public bool SwordInHands = false;
     #endregion
@@ -94,13 +94,6 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if(interact.IsPressed() && SwordInHands)
-        {
-            currentWeapon = FindFirstObjectByType<Weapon>();
-            currentWeapon?.Attack();
-        }
-        if(Mouse.current.leftButton.IsPressed()) currentWeapon?.Attack();
-
         Sprint();
         Dash();
         if (jumpAction.WasPressedThisFrame() && !nonAllEneract)

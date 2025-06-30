@@ -119,6 +119,63 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1001 &11041729
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 582861897108245775, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_Name
+      value: Sword
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 7.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 1.31
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.4490597
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
 --- !u!1 &36989614 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2467997011434544582, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
@@ -2365,12 +2422,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40e1bd1af02380844abb2c2bbd22d02c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _camera: {fileID: 1816728328}
-  _runSpeed: 25
-  _walkSpeed: 4
-  _lerpWalkSpeed: 0.2
-  _lerpRunSpeed: 0
-  _jumpDistance: 0
+  _playerInputKeyboardConfig: {fileID: 0}
   mouseLook:
     m_Name: Mouse Look
     m_Type: 0
@@ -2434,6 +2486,12 @@ MonoBehaviour:
     m_Interactions: 
     m_SingletonActionBindings: []
     m_Flags: 0
+  _camera: {fileID: 1816728328}
+  _runSpeed: 25
+  _walkSpeed: 4
+  _lerpWalkSpeed: 0.2
+  _lerpRunSpeed: 0
+  _jumpDistance: 0
   CoefSpeed: 4
   DistanceDash: 5
   SpeedDash: 10
@@ -2934,107 +2992,10 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40e1bd1af02380844abb2c2bbd22d02c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  configMove: {fileID: 11400000, guid: bb36133d51f4ec24abc4dfdfedcf7529, type: 2}
-  _playerInputKeyboardConfig: {fileID: 11400000, guid: 8aa9e3ab5a364774d90ae18ead6f0a0c, type: 2}
-  mouseLook:
-    m_Name: Mouse Look
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: c7c32cc5-66c6-42c8-8e2b-9de93de2026d
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  movementAction:
-    m_Name: Movement
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: d3b44f97-f72d-4092-a0ba-3fabd22378de
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  jumpAction:
-    m_Name: Jump
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 7303c291-3166-4853-a074-ac3d5c126c50
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  sprintAction:
-    m_Name: Sprint
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 70333ef7-5489-4cf9-9eb7-055fb984595d
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  dashAction:
-    m_Name: Dash
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 2ac7a841-164c-4800-a08b-b4f86d5811e4
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  interact:
-    m_Name: Interact
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: c51a6b58-0680-4368-9d9e-87793aa29095
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  mousePosAction:
-    m_Name: Mouse Pos
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: a339ea86-e4f5-4f7b-aa41-edaa43ace610
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  currentSpeed: 0
-  coefSpeed: 4
-  distanceDash: 5
-  speedDash: 10
-  distanceRaycastJump: 0.75
-  cameraHolder: {fileID: 1816728325}
-  currentWeapon: {fileID: 0}
-  hands: {fileID: 0}
-  SwordInHands: 0
---- !u!95 &466885058
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 440642029}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: -1736622283181914040, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
+  m_Mesh: {fileID: 0}
 --- !u!1 &453689851 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4157747794201093857, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
@@ -4284,106 +4245,10 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40e1bd1af02380844abb2c2bbd22d02c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  configMove: {fileID: 11400000, guid: bb36133d51f4ec24abc4dfdfedcf7529, type: 2}
-  _playerInputKeyboardConfig: {fileID: 11400000, guid: 8aa9e3ab5a364774d90ae18ead6f0a0c, type: 2}
-  mouseLook:
-    m_Name: Mouse Look
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 77c9d531-5e90-46be-9b3f-3669e8e0ef23
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  movementAction:
-    m_Name: Movement
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 44708ee6-c814-44bd-ba91-bf9d8245914b
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  jumpAction:
-    m_Name: Jump
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: e39b3c40-1f78-4304-ae33-265efd8e5dd6
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  sprintAction:
-    m_Name: Sprint
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 41f1e9a1-7cfb-47d6-a967-125c42ec236b
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  dashAction:
-    m_Name: Dash
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: c4e5e007-db95-40af-9a37-432285fe8620
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  interact:
-    m_Name: Interact
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: b74fc450-15ae-4a42-af31-a28d97d6d6b5
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  mousePosAction:
-    m_Name: Mouse Pos
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 60b12966-6db6-4849-9320-089f9bfd0840
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  currentSpeed: 0
-  coefSpeed: 1.2
-  distanceDash: 2.1
-  speedDash: 10
-  distanceRaycastJump: 0.75
-  cameraHolder: {fileID: 330585546}
-  currentWeapon: {fileID: 0}
-  hands: {fileID: 0}
-  SwordInHands: 0
---- !u!54 &1367866854
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 906607206}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
   serializedVersion: 5
-  m_Convex: 1
+  m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: -8203819389299995764, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
+  m_Mesh: {fileID: 0}
 --- !u!1 &906636836 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -7515429101286732190, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
@@ -6845,9 +6710,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8712494363554150731, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1700037064}
-    - targetCorrespondingSourceObject: {fileID: 5936869901032595888, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 906607210}
     - targetCorrespondingSourceObject: {fileID: -349826168753784933, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1684615666}
@@ -6995,9 +6857,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8274341957714954571, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
       insertIndex: -1
       addedObject: {fileID: 632991427}
-    - targetCorrespondingSourceObject: {fileID: -7903005001077901035, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 440642033}
     - targetCorrespondingSourceObject: {fileID: 7404437678436572670, guid: b3cab38105d9e1d4e9e7944e5f2f7a08, type: 3}
       insertIndex: -1
       addedObject: {fileID: 789387068}
@@ -8183,3 +8042,4 @@ SceneRoots:
   - {fileID: 327333985}
   - {fileID: 1784041376}
   - {fileID: 2009853366}
+  - {fileID: 11041729}

@@ -11,7 +11,7 @@ public class Sword : WeaponMelee, IAlternateAttackable
         Debug.Log("Альтернативная атака");
     }
 
-    protected override void OnHitTargets(Collider[] targets)
+    protected override void OnHitTargets(Collision[] targets)
     {
         base.OnHitTargets(targets);
 
@@ -19,7 +19,7 @@ public class Sword : WeaponMelee, IAlternateAttackable
 
         foreach (var target in targets)
         {
-            if (target.TryGetComponent<MeshRenderer>(out var renderer))
+            if (target.collider.TryGetComponent<MeshRenderer>(out var renderer))
             {
                 var material = renderer.material;
                 affectedMaterials.Add((material, material.color));

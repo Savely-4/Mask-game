@@ -80,7 +80,7 @@ public class Player : MonoBehaviour
         mousePosAction = InputSystem.actions.FindAction("MousePositions");
         sprintAction = InputSystem.actions.FindAction("Sprint");
         
-        _currentWeapon.Animator = playerAnimator; // danil
+        //_currentWeapon.Animator = playerAnimator; // danil
         
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -93,8 +93,8 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Mouse0)) //danil
-            _currentWeapon.TryAttack();
+        /*/if(Input.GetKeyDown(KeyCode.Mouse0)) //danil
+            _currentWeapon.TryAttack();/*/
     
         //Sprint();
         //Dash();

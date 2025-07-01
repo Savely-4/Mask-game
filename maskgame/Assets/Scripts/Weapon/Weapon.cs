@@ -46,7 +46,7 @@ public abstract class Weapon : MonoBehaviour
     
     private bool HasTimePassed() 
     {
-        return _lastAttackTime <= Time.time + 1f / _lastAttackTime;
+        return _lastAttackTime <= Time.time + 1f / AttackRate;
     }
     
 }

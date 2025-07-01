@@ -1,80 +1,62 @@
 using System.Collections;
-using System.Linq;
+using System.Collections.Generic;
 using UnityEngine;
 
-public enum MeleeWeaponAttackType 
-{
-    Raycast,
-    Collision
-}
 public abstract class WeaponMelee : Weapon
 {
     [field: SerializeField] public int NumberCollisions { get; set; } = 3;
-    [field: SerializeField] public MeleeWeaponAttackType MeleeWeaponAttackType { get; private set; }
+    [field: SerializeField] public float DelayAttack { get; set; } = 0.35f; // time, after that start attack
+    [field: SerializeField] public float ActiveTimeAttack { get; set; } = 0.5f; // time attack duration
 
-    private float _attackTimePointAnim;
+    private bool _activeAttack;
+    private Coroutine _delayAttackRoutine;
+    private int _currentNumberCollisions;
+    private readonly HashSet<Collider> _alreadyHit = new(); //so as not to touch already touched targets
 
-    protected void Start()
+    private void Awake()
     {
-        _attackTimePointAnim = GetAnimationLength(AttackAnimationName);
+        _activeAttack = false;
     }
-    protected sealed override void Attack()
+
+    protected override void PerformAttack()
     {
-        switch (MeleeWeaponAttackType) 
+        _currentNumberCollisions = 0;
+        _alreadyHit.Clear();
+
+        if (_delayAttackRoutine != null)
         {
-            case MeleeWeaponAttackType.Raycast:
-                    RaycastAttack();
-                break;
-                
-            case MeleeWeaponAttackType.Collision:
-                break;
-        }
-    }
-    
-    protected void RaycastAttack() 
-    {
-        Animator.SetTrigger(AttackAnimationName);
-        
-        StartCoroutine(DelayedAttack());
- 
-    }
-    private IEnumerator DelayedAttack()
-    {
-        yield return new WaitForSeconds(_attackTimePointAnim * 0.5f);
-
-        PerformRaycastAttack();
-    }
-
-    protected virtual void PerformRaycastAttack()
-    {
-        float sphereSize = 1f;
-        
-        //Vector3 center = transform.position + transform.forward * (transform.localScale.z / 2f);
-        
-        Collider[] hitTargets = Physics.OverlapSphere(AttackPoint.position, sphereSize)
-            .Take(NumberCollisions)
-            .ToArray();
-            
-        foreach (Collider target in hitTargets)
-        {
-            OnHitTarget(target);
-        }
-    }
-    
-    protected virtual void CollisionAttack() 
-    {
-        
-    }
-    
-    private float GetAnimationLength(string stateName)
-    {
-        RuntimeAnimatorController ac = Animator.runtimeAnimatorController;
-        foreach (var clip in ac.animationClips)
-        {
-            if (clip.name == stateName)
-            return clip.length;
+            StopCoroutine(_delayAttackRoutine);
+            _activeAttack = false;
         }
 
-        return 0.3f; // fallback
+        _delayAttackRoutine = StartCoroutine(DelayAttackRoutine());
+    }
+
+    private IEnumerator DelayAttackRoutine()
+    {
+        yield return new WaitForSeconds(DelayAttack);
+
+        _activeAttack = true;
+        yield return new WaitForSeconds(ActiveTimeAttack);
+        _activeAttack = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (!_activeAttack) return;
+    
+        if ((HittableLayers.value & (1 << collision.gameObject.layer)) == 0)
+            return;
+
+        if (_alreadyHit.Contains(collision.collider))
+            return;
+
+        _alreadyHit.Add(collision.collider);
+
+        if (_currentNumberCollisions >= NumberCollisions)
+            return;
+
+        _currentNumberCollisions++;
+        OnHitTargets(collision);
     }
 }

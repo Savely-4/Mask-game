@@ -1,32 +1,43 @@
+using System;
 using UnityEngine;
 
 public abstract class Weapon : MonoBehaviour
 {
-    [field: SerializeField] protected Transform AttackPoint { get; private set; }
-    [field: SerializeField] protected string AttackAnimationName { get; private set; }
-    
     [field: SerializeField] public float Damage { get; set; }
     [field: SerializeField] public float AttackRate { get; set; }
     
+    [SerializeField] protected LayerMask HittableLayers;
+    
+    public Transform AttackPoint { get; private set; }
+
     private float _lastAttackTime = Mathf.NegativeInfinity;
     
-    public Animator Animator { get; set; }
+    public event Action OnAttack;
+    public event Action<Collision[]> OnHits;
     
-    public void TryAttack() 
+    public void TryAttack(Transform attackPoint) 
     {
         if (CanAttack()) 
         {
-            Attack();
+            AttackPoint = attackPoint;
+            PerformAttack();
             
             _lastAttackTime = Time.time;
+            OnAttack?.Invoke();
+            Debug.Log("Attack!");
         }
     }
     
-    protected virtual void OnHitTarget(Collider target) 
+    protected virtual void OnHitTargets(params Collision[] targets) 
     {
-        Debug.Log("Вы попали в цель");
+        Debug.Log("Вы попали в целей");
+        OnHits?.Invoke(targets);
     }
-    protected abstract void Attack();
+    
+    /// <summary>
+    /// Attack logic method (implementation)
+    /// </summary>
+    protected abstract void PerformAttack();
  
     protected virtual bool CanAttack() 
     {
@@ -35,7 +46,7 @@ public abstract class Weapon : MonoBehaviour
     
     private bool HasTimePassed() 
     {
-        return _lastAttackTime <= Time.time + 1f / _lastAttackTime;
+        return _lastAttackTime <= Time.time + 1f / AttackRate;
     }
     
 }

@@ -51,11 +51,6 @@ public class PlayerMovement : MonoBehaviour
             verticalVelocityValue = _characterController.velocity.y;
     }
 
-    void LateUpdate()
-    {
-    }
-
-
     public void SetMovementInput(Vector2 value)
     {
         movementInput = value;
@@ -66,8 +61,6 @@ public class PlayerMovement : MonoBehaviour
     {
         verticalVelocityValue = Mathf.Sqrt(jumpHeight * -2 * gravityValue * GravityMultiplier);
     }
-
-
 
     private Vector3 GetVelocity()
     {

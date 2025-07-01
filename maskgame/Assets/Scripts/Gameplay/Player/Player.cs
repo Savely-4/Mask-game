@@ -13,7 +13,6 @@ public class Player : MonoBehaviour
     public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction, interact, mousePosAction;
 
     private Vector2 moveInput;
-    private Dictionary<string, bool> cooldowns = new();
     private float stamina;
     private const float staminaMax = 100f;
     private bool cdDash = false;
@@ -29,8 +28,6 @@ public class Player : MonoBehaviour
         movementAction = InputSystem.actions.FindAction("Move");
         mousePosAction = InputSystem.actions.FindAction("MousePositions");
         sprintAction = InputSystem.actions.FindAction("Sprint");
-        
-        _currentWeapon.Animator = playerAnimator; // danil
         
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -142,20 +139,4 @@ public class Player : MonoBehaviour
         movement.Jump();
         canDoubleJump = false;
     }
-
-    #region cdUnirsality
-    bool IsOnCooldown(string action)
-    {
-        return cooldowns.ContainsKey(action) && cooldowns[action];
-    }
-    async void StartCooldown(string action, float duration)
-    {
-        if (IsOnCooldown(action)) return;
-
-        cooldowns[action] = true;
-        await Task.Delay(TimeSpan.FromSeconds(duration));
-        cooldowns[action] = false;
-    }
-
-    #endregion
 }

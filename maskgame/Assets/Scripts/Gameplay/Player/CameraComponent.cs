@@ -31,6 +31,7 @@ public class CameraComponent : MonoBehaviour
     private float _currentAmplitude;
     private float _walkBobbing;
     private float _stayBobbing;
+    private float _currentBobbing;
     private float _oldRotationZEulerBobbing;
     private float _oldRotationZEuler;
     private float _newRotationZEuler;
@@ -42,43 +43,51 @@ public class CameraComponent : MonoBehaviour
     private float _mousePositionX;
     private float _mousePositionY;
     private float _eulerZ;
-
+    
     private bool _IsMoving;
     
-
-    private void OnEnable()
-    {
-        _currentAmplitude = walkAmplitude;
-        _currentBobbingSpeed = walkBobbingSpeed;
-    }
     private void Start()
     {
         CameraInput = InputSystem.actions.FindAction("Look");
-        _currentAmplitude = walkAmplitude;
-        _currentBobbingSpeed = walkBobbingSpeed;
+        _currentAmplitude = stayAmplitude;
+        _currentBobbingSpeed = stayBobbingSpeed;
         _oldRotationZEulerBobbing = 0;
         _oldRotationZEuler = this.transform.eulerAngles.z;
     }
+    
     private void Update()
     {
-        LookAround();
+        Rotate();
+        Bobbing();
+        
     }
-    public void LookAround()
+    
+    private void Rotate()
     {
         CameraVector = CameraInput.ReadValue<Vector2>() * cameraSensitivity;
-
+        
         _localMaxSensitivity = (((maxSensitivity * Time.deltaTime) * 2f) * 100f);
         _mousePositionX = Mathf.Clamp(CameraVector.x, -_localMaxSensitivity, _localMaxSensitivity);
         _mousePositionY = Mathf.Clamp(CameraVector.y, -_localMaxSensitivity, _localMaxSensitivity);
-
         _yRotation -= _mousePositionX;
         _xRotation -= _mousePositionY;
         _xRotation = Mathf.Clamp(CameraVector.x, -80f, 80f);
-
         _xRot = Mathf.Lerp(_xRot, _xRotation, cameraSmoothnees * Time.deltaTime);
         _yRot = Mathf.Lerp(_yRot, _yRotation, cameraSmoothnees * Time.deltaTime);
+        _eulerZ = transform.eulerAngles.z;
+        
+        if (_eulerZ > 180) _eulerZ -= 360;
+        
+        _newRotatinZEulerBobbing = Mathf.Lerp(_newRotatinZEulerBobbing, _oldRotationZEulerBobbing, walkZSmooth * Time.deltaTime);
+        _newRotationZ = Mathf.SmoothDamp(_eulerZ, _newRotatinZEulerBobbing, ref _velocityZ, recoverySmooth * Time.deltaTime);
+        
+        transform.rotation = Quaternion.Euler(_xRot,-_yRot,_newRotationZ);
+    }
 
-        _IsMoving = CameraVector.sqrMagnitude > 0.01;
+    private void Bobbing()
+    {
+        _currentBobbing = Mathf.Lerp(_currentBobbing, (_stayBobbing + _walkBobbing), Time.deltaTime);
+        
         if(_IsMoving)
         {
             _timer += Time.deltaTime * _currentBobbingSpeed;
@@ -93,17 +102,6 @@ public class CameraComponent : MonoBehaviour
             _stayBobbing = Mathf.Lerp(_stayBobbing, _stayBobbing, Time.deltaTime * bobbingSmooth);
             _oldRotationZEulerBobbing = _oldRotationZEuler;
         }
-
-        _eulerZ = transform.eulerAngles.z;
-        if (_eulerZ > 180) _eulerZ -= 360;
-        _newRotatinZEulerBobbing = Mathf.Lerp(_newRotatinZEulerBobbing,_oldRotationZEulerBobbing, walkZSmooth * Time.deltaTime);
-        _newRotationZ = Mathf.SmoothDamp(_eulerZ, _newRotatinZEulerBobbing, ref _velocityZ, recoverySmooth * Time.deltaTime);
-
-        transform.rotation = Quaternion.Euler(_xRot,-_yRot,_newRotationZ);
-
-        Pos = transform.localPosition;
-        Pos.y = _walkBobbing + _stayBobbing;
-        transform.localPosition = Pos;
     }
 }
 

@@ -5,13 +5,9 @@ public abstract class Weapon : MonoBehaviour
 {
     [field: SerializeField] public float Damage { get; set; }
     [field: SerializeField] public float AttackRate { get; set; }
-    
     [SerializeField] protected LayerMask HittableLayers;
-    
     public Transform AttackPoint { get; private set; }
-
     private float _lastAttackTime = Mathf.NegativeInfinity;
-    
     public event Action OnAttack;
     public event Action<Collision[]> OnHits;
     

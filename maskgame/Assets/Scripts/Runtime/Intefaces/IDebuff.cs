@@ -1,4 +1,7 @@
-public interface IDebuff
+namespace Runtime.Intefaces
 {
-    abstract void Process();
+    public interface IDebuff
+    {
+        abstract void Process();
+    }
 }

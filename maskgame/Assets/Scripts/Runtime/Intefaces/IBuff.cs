@@ -1,4 +1,7 @@
-public interface IBuff
+namespace Runtime.Intefaces
 {
-    abstract void Process();
+    public interface IBuff
+    {
+        abstract void Process();
+    }
 }

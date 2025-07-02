@@ -1,6 +1,7 @@
-using UnityEngine;
-
-public interface IBuffOnce : IBuff
+namespace Runtime.Intefaces
 {
-    void Process();
+    public interface IBuffOnce : IBuff
+    {
+        void Process();
+    }
 }

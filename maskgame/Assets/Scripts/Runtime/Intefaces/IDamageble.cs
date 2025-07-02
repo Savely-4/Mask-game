@@ -1,6 +1,9 @@
-public interface IDamageble
+namespace Runtime.Intefaces
 {
-     void ChangeHp(int dmg);
+     public interface IDamageble
+     {
+          void ChangeHp(int dmg);
 
-     void Die();
+          void Die();
+     }
 }

@@ -2,61 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class WeaponMelee : Weapon
+namespace WeaponSystem.Melee
 {
-    [field: SerializeField] public int NumberCollisions { get; set; } = 3;
-    [field: SerializeField] public float DelayAttack { get; set; } = 0.35f; // time, after that start attack
-    [field: SerializeField] public float ActiveTimeAttack { get; set; } = 0.5f; // time attack duration
-
-    private bool _activeAttack;
-    private Coroutine _delayAttackRoutine;
-    private int _currentNumberCollisions;
-    private readonly HashSet<Collider> _alreadyHit = new(); //so as not to touch already touched targets
-
-    private void Awake()
+    public abstract class WeaponMelee : WeaponSystem.Weapon
     {
-        _activeAttack = false;
-    }
+        [field: SerializeField] public int NumberCollisions { get; set; } = 3;
+        [field: SerializeField] public float DelayAttack { get; set; } = 0.35f; // time, after that start attack
+        [field: SerializeField] public float ActiveTimeAttack { get; set; } = 0.5f; // time attack duration
 
-    protected override void PerformAttack()
-    {
-        _currentNumberCollisions = 0;
-        _alreadyHit.Clear();
+        private bool _activeAttack;
+        private Coroutine _delayAttackRoutine;
+        private int _currentNumberCollisions;
+        private readonly HashSet<Collider> _alreadyHit = new(); //so as not to touch already touched targets
 
-        if (_delayAttackRoutine != null)
+        private void Awake()
         {
-            StopCoroutine(_delayAttackRoutine);
             _activeAttack = false;
         }
 
-        _delayAttackRoutine = StartCoroutine(DelayAttackRoutine());
-    }
+        protected override void PerformAttack()
+        {
+            _currentNumberCollisions = 0;
+            _alreadyHit.Clear();
 
-    private IEnumerator DelayAttackRoutine()
-    {
-        yield return new WaitForSeconds(DelayAttack);
+            if (_delayAttackRoutine != null)
+            {
+                StopCoroutine(_delayAttackRoutine);
+                _activeAttack = false;
+            }
 
-        _activeAttack = true;
-        yield return new WaitForSeconds(ActiveTimeAttack);
-        _activeAttack = false;
-    }
+            _delayAttackRoutine = StartCoroutine(DelayAttackRoutine());
+        }
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (!_activeAttack) return;
+        private IEnumerator DelayAttackRoutine()
+        {
+            yield return new WaitForSeconds(DelayAttack);
+
+            _activeAttack = true;
+            yield return new WaitForSeconds(ActiveTimeAttack);
+            _activeAttack = false;
+        }
+
+        private void OnCollisionEnter(Collision collision)
+        {
+            if (!_activeAttack) return;
     
-        if ((HittableLayers.value & (1 << collision.gameObject.layer)) == 0)
-            return;
+            if ((HittableLayers.value & (1 << collision.gameObject.layer)) == 0)
+                return;
 
-        if (_alreadyHit.Contains(collision.collider))
-            return;
+            if (_alreadyHit.Contains(collision.collider))
+                return;
 
-        _alreadyHit.Add(collision.collider);
+            _alreadyHit.Add(collision.collider);
 
-        if (_currentNumberCollisions >= NumberCollisions)
-            return;
+            if (_currentNumberCollisions >= NumberCollisions)
+                return;
 
-        _currentNumberCollisions++;
-        OnHitTargets(collision);
+            _currentNumberCollisions++;
+            OnHitTargets(collision);
+        }
     }
 }

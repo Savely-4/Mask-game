@@ -1,6 +1,9 @@
 using System.Collections;
 
-public interface IRegenerating 
+namespace Runtime.Intefaces
 {
-    IEnumerator Regenerate();
+    public interface IRegenerating 
+    {
+        IEnumerator Regenerate();
+    }
 }

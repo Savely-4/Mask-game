@@ -1,6 +1,7 @@
-using UnityEngine;
-
-public interface IDebuffOnce : IDebuff
+namespace Runtime.Intefaces
 {
-    void Process();
+    public interface IDebuffOnce : IDebuff
+    {
+        void Process();
+    }
 }

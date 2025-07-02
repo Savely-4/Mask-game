@@ -6,20 +6,19 @@ public abstract class Weapon : MonoBehaviour
     [field: SerializeField] public float Damage { get; set; }
     [field: SerializeField] public float AttackRate { get; set; }
     
-    [SerializeField] protected LayerMask HittableLayers;
+    [field: SerializeField] public Transform AttackPoint { get; private set; }
     
-    public Transform AttackPoint { get; private set; }
+    [SerializeField] protected LayerMask HittableLayers;
 
     private float _lastAttackTime = Mathf.NegativeInfinity;
     
     public event Action OnAttack;
     public event Action<Collision[]> OnHits;
     
-    public void TryAttack(Transform attackPoint) 
+    public void TryAttack() 
     {
         if (CanAttack()) 
         {
-            AttackPoint = attackPoint;
             PerformAttack();
             
             _lastAttackTime = Time.time;

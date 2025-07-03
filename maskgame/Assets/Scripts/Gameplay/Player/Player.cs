@@ -8,53 +8,48 @@ using System.Collections;
 public class Player : MonoBehaviour
 {
     [SerializeField] private PlayerMovement movement;
-    [SerializeField] private Camera _camera;
 
-    public InputAction mouseLook, movementAction, jumpAction, sprintAction, dashAction, interact, mousePosAction;
+    public InputAction movementAction, jumpAction, sprintAction;
 
     private Vector2 moveInput;
     private Dictionary<string, bool> cooldowns = new();
+
+    [SerializeField] private float staminaMax = 10f;
     private float stamina;
-    private const float staminaMax = 100f;
-    private bool cdDash = false;
-    private bool canDoubleJump;
-    private float xRotation = 0f;
-    
+
+    [SerializeField] private int maxJumps = 2;
+    private int jumpsLeft;
+
+
     private void Awake()
     {
-        interact = InputSystem.actions.FindAction("Interact");
-        dashAction = InputSystem.actions.FindAction("Dash");
         jumpAction = InputSystem.actions.FindAction("Jump");
-        mouseLook = InputSystem.actions.FindAction("Look");
         movementAction = InputSystem.actions.FindAction("Move");
-        mousePosAction = InputSystem.actions.FindAction("MousePositions");
         sprintAction = InputSystem.actions.FindAction("Sprint");
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Start()
     {
         stamina = staminaMax;
+        jumpsLeft = maxJumps;
     }
 
     void Update()
     {
-        Movement();
-
-        if (jumpAction.WasPressedThisFrame())
-            Jump();
-
+        PerformMovementControl();
+        PerformJumpsControl();
+        PerformSprintControl();
     }
 
 
     //TODO: Fix reversed input values
-    void Movement()
+    void PerformMovementControl()
     {
-        if (movementAction.IsPressed() && !cdDash)
+        moveInput = movementAction.ReadValue<Vector2>();
+        moveInput = new Vector2(moveInput.y, moveInput.x);
+
+        if (movementAction.IsPressed())
         {
-            moveInput = movementAction.ReadValue<Vector2>();
-            moveInput = new Vector2(moveInput.y, moveInput.x);
             movement.SetMovementInput(moveInput);
         }
         else
@@ -90,55 +85,41 @@ public class Player : MonoBehaviour
     //    }
     //}
 
-    //void Sprint()
-    //{
-    //    if (notAllInteract) return;
-
-    //    if(stamina <= 0 && !IsOnCooldown("Sprint") && !playerCantSprint)
-    //    {
-    //        stamina = 0;
-    //        playerCantSprint = true;
-    //        StartCooldown("Spint", 5f);
-    //    }
-    //    if (playerCantSprint && stamina >= staminaMax * 0.3f) playerCantSprint = false;
-
-    //    if(sprintAction.IsPressed() && movementAction.IsPressed() && !IsOnCooldown("Sprint") && !playerCantSprint && stamina > 0)
-    //    {
-    //        stamina -= 20f * Time.deltaTime;
-
-    //        if (stamina < 0) stamina = 0;
-
-    //        if (CurrentSpeed < configMove.SprintSpeed) CurrentSpeed += CoefSpeed * Time.deltaTime;
-    //        staminaRegenDelayTimer = 1.5f;
-    //    }
-    //    else
-    //    {
-    //        if(staminaRegenDelayTimer > 0f) staminaRegenDelayTimer -= Time.deltaTime;
-    //        else if (stamina < staminaMax) stamina += 10f * Time.deltaTime;
-
-    //        if(CurrentSpeed > configMove.Speed) CurrentSpeed -= CoefSpeed * Time.deltaTime;
-
-    //    }
-    //    CurrentSpeed = Mathf.Clamp(CurrentSpeed, configMove.Speed, configMove.SprintSpeed);
-    //    Mathf.Clamp(stamina, 0f, staminaMax);
-    //}
-
-    void Jump()
+    void PerformSprintControl()
     {
-        if (movement.IsGrounded)
+        stamina = Mathf.Clamp(stamina, 0f, staminaMax);
+
+        //Otherwise, if not standing still and sprint pressed - sprint
+        if (sprintAction.IsPressed() && moveInput.sqrMagnitude != 0)
         {
-            movement.Jump();
-            canDoubleJump = true;
+            stamina -= Time.deltaTime;
+
+            movement.ToggleSprint(stamina > 0);
 
             return;
         }
 
-        if (!canDoubleJump)
-            return;
-
-        movement.Jump();
-        canDoubleJump = false;
+        stamina += Time.deltaTime;
+        movement.ToggleSprint(false);
     }
+
+    void PerformJumpsControl()
+    {
+        if (movement.IsGrounded)
+        {
+            jumpsLeft = maxJumps;
+        }
+
+        if (jumpAction.WasPressedThisFrame() && jumpsLeft > 0)
+        {
+            movement.Jump();
+            jumpsLeft--;
+        }
+
+        if (jumpAction.WasReleasedThisFrame())
+            movement.StopJump();
+    }
+
 
     #region cdUnirsality
     bool IsOnCooldown(string action)

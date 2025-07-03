@@ -2,43 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Sword : WeaponMelee, IAlternateAttackable
+namespace WeaponSystem.Melee.Types
 {
-    private Coroutine _resetColorRoutine;
-
-    public void AlternateAttack()
+    public class Sword : WeaponMelee, IAlternateAttackable
     {
-        Debug.Log("Альтернативная атака");
-    }
+        private Coroutine _resetColorRoutine;
 
-    protected override void OnHitTargets(Collision[] targets)
-    {
-        base.OnHitTargets(targets);
-
-        List<(Material material, Color originalColor)> affectedMaterials = new();
-
-        foreach (var target in targets)
+        public void AlternateAttack()
         {
-            if (target.collider.TryGetComponent<MeshRenderer>(out var renderer))
+            Debug.Log("Альтернативная атака");
+        }
+
+        protected override void OnHitTargets(Collision[] targets)
+        {
+            base.OnHitTargets(targets);
+
+            List<(Material material, Color originalColor)> affectedMaterials = new();
+
+            foreach (var target in targets)
             {
-                var material = renderer.material;
-                affectedMaterials.Add((material, material.color));
-                material.color = Color.red;
+                if (target.collider.TryGetComponent<MeshRenderer>(out var renderer))
+                {
+                    var material = renderer.material;
+                    affectedMaterials.Add((material, material.color));
+                    material.color = Color.red;
+                }
             }
+
+            if (_resetColorRoutine == null)
+                _resetColorRoutine = StartCoroutine(ResetColorRoutine(affectedMaterials));
         }
-
-        if (_resetColorRoutine == null)
-            _resetColorRoutine = StartCoroutine(ResetColorRoutine(affectedMaterials));
-    }
-    private IEnumerator ResetColorRoutine(List<(Material material, Color originalColor)> affectedMaterials)
-    {
-        yield return new WaitForSeconds(0.3f);
-
-        foreach (var (material, originalColor) in affectedMaterials)
+        private IEnumerator ResetColorRoutine(List<(Material material, Color originalColor)> affectedMaterials)
         {
-            material.color = originalColor;
-        }
+            yield return new WaitForSeconds(0.3f);
 
-        _resetColorRoutine = null;
+            foreach (var (material, originalColor) in affectedMaterials)
+            {
+                material.color = originalColor;
+            }
+
+            _resetColorRoutine = null;
+        }
     }
 }

@@ -1,4 +1,7 @@
-public interface IAlternateAttackable
+namespace WeaponSystem.Melee
 {
-    public void AlternateAttack();
+    public interface IAlternateAttackable
+    {
+        public void AlternateAttack();
+    }
 }

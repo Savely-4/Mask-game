@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using WeaponSystem;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "WeaponAnimatorConfig", menuName = "Scriptable Objects/Animators/WeaponAnimatorConfig")]

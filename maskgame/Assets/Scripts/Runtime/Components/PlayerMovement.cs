@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Runtime.Components
@@ -52,12 +53,16 @@ namespace Runtime.Components
 
             verticalVelocityValue = ApplyGravity(verticalVelocityValue, Time.fixedDeltaTime);
 
-            var velocity = GetVelocity();
-
-            _characterController.Move(velocity * Time.fixedDeltaTime);
-
             if (IsGrounded)
                 verticalVelocityValue = _characterController.velocity.y;
+        }
+
+        private void Update()
+        {
+            
+            var velocity = GetVelocity();
+
+            _characterController.Move(velocity * Time.deltaTime);
         }
 
         public void ResetJumps()
@@ -133,7 +138,7 @@ namespace Runtime.Components
         {
             var inputWorld = (_movementInput.x * transform.forward + _movementInput.y * transform.right).normalized;
 
-            return speed * inputWorld;
+            return inputWorld * speed;
         }
         
         private float GetHorizontalSpeed()

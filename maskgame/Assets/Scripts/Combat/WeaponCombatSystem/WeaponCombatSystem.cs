@@ -1,6 +1,7 @@
 using System;
 using WeaponSystem;
 using WeaponSystem.Melee;
+
 public class WeaponCombatSystem
 {
     private Weapon _currentWeapon;

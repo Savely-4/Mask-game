@@ -3,6 +3,7 @@ using Runtime.Configs;
 using Runtime.Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using WeaponSystem;
 using CameraService = Runtime.Components.CameraService;
 
 namespace Runtime.Entities
@@ -18,11 +19,12 @@ namespace Runtime.Entities
         [Header("Stamina")]
         [SerializeField] private StaminaConfig _staminaConfig;
 
+        [SerializeField] private Weapon _weapon;
     
         private CameraService _cameraService;
         private StaminaService _staminaService;
         private PlayerInputKeyboardService _input;
-    
+        
         private Vector2 _moveInput;
         private bool cdDash = false;
         private float xRotation = 0f;
@@ -34,6 +36,7 @@ namespace Runtime.Entities
             InitComponents();
             _cameraService.SetOldRotationEulerZ(_camera.transform);
         }
+        
         
     #region Init
         private void InitComponents()
@@ -51,6 +54,8 @@ namespace Runtime.Entities
             PerformJumpsControl();
             PerformSprintControl();
         }
+        
+        
 
         private void UpdateCamera()
         {

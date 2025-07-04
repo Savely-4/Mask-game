@@ -13,12 +13,12 @@ namespace WeaponSystem
         public event Action OnAttack;
         public event Action<Collision[]> OnHits;
     
-    public void TryAttack() 
-    {
-        if (CanAttack()) 
+        public void TryAttack() 
         {
-            PerformAttack();
-            
+            if (CanAttack()) 
+            {
+                PerformAttack();
+                
                 _lastAttackTime = Time.time;
                 OnAttack?.Invoke();
                 Debug.Log("Attack!");
@@ -30,7 +30,7 @@ namespace WeaponSystem
             Debug.Log("Вы попали в целей");
             OnHits?.Invoke(targets);
         }
-    
+        
         /// <summary>
         /// Attack logic method (implementation)
         /// </summary>

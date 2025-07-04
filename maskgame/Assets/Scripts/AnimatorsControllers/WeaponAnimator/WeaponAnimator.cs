@@ -55,7 +55,7 @@ public class WeaponAnimator : IDisposable
         }
     }
     
-    private void MainAttackAnimationPlay() 
+    private void MainAttackAnimationPlay()
     {
         if (_weaponAnimatorConfig.WeaponAnimations.TryGetValue(_weaponCombatSystem.CurrentWeapon, out var weaponAnimationsConfig))
         {
@@ -65,6 +65,4 @@ public class WeaponAnimator : IDisposable
             _animator.SetTrigger(attackAnimationsName[randIndex]);
         }
     }
-
-    
 }

@@ -57,14 +57,14 @@ namespace Runtime.Services
         public Vector2 GetMovementInput()
         {
             if (IsMovementPressed())
-                return new Vector2(Input.GetAxis(_config.HorizontalAxis), Input.GetAxis(_config.VerticalAxis)).normalized;
+                return new Vector2(Input.GetAxis(_config.HorizontalAxis), (Input.GetAxis(_config.VerticalAxis))).normalized;
             else
                 return Vector2.zero;
         }
 
         public bool IsMovementPressed()
         {
-            return Input.GetAxis(_config.HorizontalAxis) != 0 || Input.GetAxis(_config.VerticalAxis) != 0;
+            return (Input.GetAxis(_config.HorizontalAxis) * 1) != 0 || (Input.GetAxis(_config.VerticalAxis) * 1) != 0;
         }
     }
 }

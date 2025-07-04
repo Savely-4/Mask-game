@@ -37,7 +37,6 @@ namespace WeaponSystem.Melee
         private IEnumerator DelayAttackRoutine()
         {
             yield return new WaitForSeconds(DelayAttack);
-
             _activeAttack = true;
             yield return new WaitForSeconds(ActiveTimeAttack);
             _activeAttack = false;
@@ -49,7 +48,7 @@ namespace WeaponSystem.Melee
     
             if ((HittableLayers.value & (1 << collision.gameObject.layer)) == 0)
                 return;
-
+            
             if (_alreadyHit.Contains(collision.collider))
                 return;
 

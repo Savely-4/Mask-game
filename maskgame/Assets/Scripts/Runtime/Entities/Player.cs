@@ -33,7 +33,7 @@ namespace Runtime.Entities
         {
             InitBindings();
             InitComponents();
-            _cameraComponent.SetOldRotationEulerZ(_camera.transform);
+            cameraService.SetOldRotationEulerZ(_camera.transform);
         }
     
         #region Init methods
@@ -64,9 +64,9 @@ namespace Runtime.Entities
 
         private void UpdateCamera()
         {
-            _cameraComponent.Bobbing(_moveInput);
-            var rotation = _cameraComponent.Rotate(_camera.transform, _currentSlantAngle);
-            _cameraComponent.UpdateCameraPosition(_camera.transform, this.transform.position + (Vector3.up * _cameraConfig.CameraOffsetY));
+            cameraService.Bobbing(_moveInput);
+            var rotation = cameraService.Rotate(_camera.transform, _currentSlantAngle);
+            cameraService.UpdateCameraPosition(_camera.transform, this.transform.position + (Vector3.up * _cameraConfig.CameraOffsetY));
             UpdatePlayerRotation(rotation);
         }
 

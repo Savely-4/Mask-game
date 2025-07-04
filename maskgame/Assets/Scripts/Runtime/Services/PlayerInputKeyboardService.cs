@@ -7,12 +7,10 @@ namespace Runtime.Services
     public class PlayerInputKeyboardService
     {
         private readonly PlayerInputKeyboardConfig _config;
-        private InputAction _movementAction;
     
         public PlayerInputKeyboardService(PlayerInputKeyboardConfig config)
         {
             _config = config;
-            _movementAction = InputSystem.actions.FindAction("Move");
         }
     
         public bool PrimaryAttackButtonPressed(bool retentionSupport) 
@@ -31,6 +29,11 @@ namespace Runtime.Services
             
             else 
                 return Input.GetKey(_config.AlternateAttackKey);
+        }
+
+        public Vector2 GetCameraInput()
+        {
+            return new Vector2(Input.GetAxis(_config.MouseXAxis), Input.GetAxis(_config.MouseYAxis));
         }
         
         public bool SprintButtonPressed(bool retentionSupport)
@@ -54,14 +57,14 @@ namespace Runtime.Services
         public Vector2 GetMovementInput()
         {
             if (IsMovementPressed())
-                return _movementAction.ReadValue<Vector2>();
+                return new Vector2(Input.GetAxis(_config.HorizontalAxis), Input.GetAxis(_config.VerticalAxis)).normalized;
             else
                 return Vector2.zero;
         }
 
         public bool IsMovementPressed()
         {
-            return _movementAction.IsPressed();
+            return Input.GetAxis(_config.HorizontalAxis) != 0 || Input.GetAxis(_config.VerticalAxis) != 0;
         }
     }
 }

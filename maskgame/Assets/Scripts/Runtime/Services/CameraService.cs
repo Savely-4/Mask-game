@@ -6,12 +6,9 @@ namespace Runtime.Components
 {
     public class CameraService
     {
-        InputAction CameraInput;
         private CameraConfig _cameraConfig;
-    
         public Vector3 CameraVector;
         public Vector3 Pos;
-
         private float _xRotation;
         private float _yRotation;
         private float _xRot;
@@ -34,7 +31,6 @@ namespace Runtime.Components
         private float _mousePositionX;
         private float _mousePositionY;
         private float _eulerZ;
-    
         private bool _IsMoving;
         private float _newRotationZEulerSlant;
         private float angleSlantZ;
@@ -43,7 +39,6 @@ namespace Runtime.Components
         public CameraService(CameraConfig config)
         {
             _cameraConfig = config;    
-            CameraInput = InputSystem.actions.FindAction("Look");
             _currentAmplitude = _cameraConfig.StayAmplitude;
             _currentBobbingSpeed = _cameraConfig.StayBobbingSpeed;
             _oldRotationZEulerBobbing = 0;
@@ -59,9 +54,9 @@ namespace Runtime.Components
             cameraTransform.transform.position = originPos + (Vector3.up * _currentBobbing);
         }
     
-        public Quaternion Rotate(Transform cameraTransform, float currentSlantAngle)
+        public Quaternion Rotate(Transform cameraTransform, float currentSlantAngle, Vector2 cameraInput)
         {
-            CameraVector = CameraInput.ReadValue<Vector2>() * _cameraConfig.CameraSensitivity;
+            CameraVector = cameraInput.normalized * _cameraConfig.CameraSensitivity;
         
             _localMaxSensitivity = (((_cameraConfig.MaxSensitivity * Time.deltaTime) * 2f) * 100f);
             _mousePositionX = Mathf.Clamp(CameraVector.x, -_localMaxSensitivity, _localMaxSensitivity);
@@ -88,7 +83,6 @@ namespace Runtime.Components
             _currentBobbing = Mathf.Lerp(_currentBobbing, (_stayBobbing + _walkBobbing), Time.deltaTime);
         
             _IsMoving = currentPlayerMagnitude.magnitude > 0.0f;
-            Debug.Log(currentPlayerMagnitude);
         
             if(_IsMoving)
             {

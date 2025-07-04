@@ -296,9 +296,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 4
+  sprintSpeed: 8
   acceleration: 50
   jumpHeight: 2
   gravityValue: -9.81
+  jumpStopThreshold: 0.2
+  maxJumps: 2
+  <SpeedMultiplier>k__BackingField: 1
   <GravityMultiplier>k__BackingField: 1
 --- !u!143 &672697869
 CharacterController:
@@ -355,77 +359,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _movementComponent: {fileID: 672697868}
   _camera: {fileID: 8317790484971122337}
-  _inputKeyboardConfig: {fileID: 0}
+  _inputKeyboardConfig: {fileID: 11400000, guid: 8aa9e3ab5a364774d90ae18ead6f0a0c, type: 2}
   _cameraConfig:
     CameraOffsetY: 1.38
     CameraSmoothnees: 1.25
     CameraSensitivity: 2
     MaxSensitivity: 1
-    RotationAmplitude: 5
     RecoverySmooth: 10
-    WalkZSmooth: 0.1
     BobbingSmooth: 1
     SlantZAmplitude: 3
     MaxZAmplitude: 3
-    RunAmplitude: 0.1
     WalkAmplitude: 0.1
     WalkBobbingSpeed: 5
     StayAmplitude: 0.1
     StayBobbingSpeed: 2
-  mouseLook:
-    m_Name: Mouse Look
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 2501a93d-4762-41c3-b5f5-8b3c7e1ff292
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  jumpAction:
-    m_Name: Jump
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: daa7272e-5eee-4870-a3ff-c73366e29845
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  sprintAction:
-    m_Name: Sprint
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: aafd937a-a6b7-4520-8a5b-52b329385ca0
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  dashAction:
-    m_Name: Dash
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 204b868e-ae0c-4f81-9347-4cbf72836c51
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  interact:
-    m_Name: Interact
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: 12c03d49-b3ed-4c9f-8ccb-5518348aeeda
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
-  mousePosAction:
-    m_Name: Mouse Pos
-    m_Type: 0
-    m_ExpectedControlType: 
-    m_Id: c7f42f7a-a121-4654-b3e9-2f9352257ce9
-    m_Processors: 
-    m_Interactions: 
-    m_SingletonActionBindings: []
-    m_Flags: 0
+  _staminaConfig: {fileID: 11400000, guid: ba0077d7203630c47b93326aa12ae202, type: 2}
 --- !u!95 &672697873
 Animator:
   serializedVersion: 7

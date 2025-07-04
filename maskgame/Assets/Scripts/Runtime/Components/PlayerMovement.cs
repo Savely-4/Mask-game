@@ -8,7 +8,7 @@ namespace Runtime.Components
     {
 
         private CharacterController _characterController;
-        private Vector2 movementInput;
+        private Vector2 _movementInput;
         private float verticalVelocityValue = 0;
         private int jumpsLeft;
 
@@ -82,7 +82,7 @@ namespace Runtime.Components
         
         public void SetMovementInput(Vector2 value)
         {
-            movementInput = value;
+            _movementInput = value;
             timeSinceInputChanged = 0;
         }
         
@@ -131,7 +131,7 @@ namespace Runtime.Components
         /// </summary>
         private Vector3 GetInputVelocity(float speed)
         {
-            var inputWorld = (movementInput.x * transform.forward + movementInput.y * transform.right).normalized;
+            var inputWorld = (_movementInput.x * transform.forward + _movementInput.y * transform.right).normalized;
 
             return speed * inputWorld;
         }

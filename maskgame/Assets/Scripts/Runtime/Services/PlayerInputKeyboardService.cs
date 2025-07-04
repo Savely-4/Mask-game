@@ -32,6 +32,24 @@ namespace Runtime.Services
             else 
                 return Input.GetKey(_config.AlternateAttackKey);
         }
+        
+        public bool SprintButtonPressed(bool retentionSupport)
+        {
+            if(retentionSupport)
+                return Input.GetKeyDown(_config.SprintKey);
+            else
+                return Input.GetKey(_config.SprintKey);
+        }
+
+        public bool JumpButtonPressedThisFrame()
+        {
+            return Input.GetKeyDown(_config.JumpKey);
+        }
+
+        public bool JumpButtonReleasedThisFrame()
+        {
+            return Input.GetKeyUp(_config.JumpKey);
+        }
 
         public Vector2 GetMovementInput()
         {

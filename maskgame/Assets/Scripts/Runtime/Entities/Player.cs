@@ -14,17 +14,21 @@ namespace Runtime.Entities
     
         [Header("Camera")]
         [SerializeField] private CameraConfig _cameraConfig;
+        [Header("Stamina")]
+        [SerializeField] private StaminaConfig _staminaConfig;
 
     
-        private CameraService cameraService;
+        private CameraComponent _cameraComponent;
+        private StaminaService _staminaService;
         private PlayerInputKeyboardService _playerInputKeyboardService;
     
-        public InputAction mouseLook, jumpAction, sprintAction, dashAction, interact, mousePosAction;
+        public InputAction mouseLook, sprintAction, dashAction, interact, mousePosAction;
         private Vector2 _moveInput;
         private bool cdDash = false;
         private float xRotation = 0f;
         private bool canDoubleJump;
         private float _currentSlantAngle = 0f;
+        
         private void Awake()
         {
             InitBindings();
@@ -37,7 +41,6 @@ namespace Runtime.Entities
         {
             interact = InputSystem.actions.FindAction("Interact");
             dashAction = InputSystem.actions.FindAction("Dash");
-            jumpAction = InputSystem.actions.FindAction("Jump");
             mouseLook = InputSystem.actions.FindAction("Look");
             mousePosAction = InputSystem.actions.FindAction("MousePositions");
             sprintAction = InputSystem.actions.FindAction("Sprint");
@@ -46,18 +49,17 @@ namespace Runtime.Entities
         private void InitComponents()
         {
             _playerInputKeyboardService = new PlayerInputKeyboardService(_inputKeyboardConfig);
-            cameraService = new CameraService(_cameraConfig);
+            _cameraComponent = new CameraComponent(_cameraConfig);
+            _staminaService = new StaminaService(_staminaConfig);
         }
         #endregion
 
         void Update()
         {
             UpdateCamera();
-            Movement();
-
-            if (jumpAction.WasPressedThisFrame())
-                Jump();
-        
+            PerformMovementControl();
+            PerformJumpsControl();
+            PerformSprintControl();
         }
 
         private void UpdateCamera()
@@ -70,33 +72,37 @@ namespace Runtime.Entities
 
         private void UpdatePlayerRotation(Quaternion rotation)
         {
-            // Debug.Log(rotation);
             this.transform.rotation = Quaternion.Euler(this.transform.rotation.x, rotation.eulerAngles.y, this.transform.rotation.z);
         }
 
         //TODO: Fix reversed input values
-        void Movement()
+        void PerformMovementControl()
         {
             var moveInput = _playerInputKeyboardService.GetMovementInput();
             _moveInput = new Vector2(moveInput.y, moveInput.x);
             _movementComponent.SetMovementInput(_moveInput);
         }
-
-        void Jump()
+        
+        void PerformSprintControl()
         {
-            if (_movementComponent.IsGrounded)
+            //Otherwise, if not standing still and sprint pressed - sprint
+            if (_playerInputKeyboardService.SprintButtonPressed(false) && _moveInput.sqrMagnitude != 0)
             {
-                _movementComponent.Jump();
-                canDoubleJump = true;
-
+                _movementComponent.ToggleSprint();
                 return;
             }
+            _movementComponent.UnToggleSprint();
+        }
 
-            if (!canDoubleJump)
-                return;
+        void PerformJumpsControl()
+        {
+            _movementComponent.ResetJumps();
 
-            _movementComponent.Jump();
-            canDoubleJump = false;
+            if (_playerInputKeyboardService.JumpButtonPressedThisFrame())
+                _movementComponent.PerformJump();
+
+            if (_playerInputKeyboardService.JumpButtonReleasedThisFrame())
+                _movementComponent.StopPerformJump();
         }
     }
 }

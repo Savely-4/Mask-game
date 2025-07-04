@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 namespace Runtime.Components
 {
-    public class CameraComponent
+    public class CameraService
     {
         InputAction CameraInput;
         private CameraConfig _cameraConfig;
@@ -40,7 +40,7 @@ namespace Runtime.Components
         private float angleSlantZ;
         private float _currentSlantAngle;
 
-        public CameraComponent(CameraConfig config)
+        public CameraService(CameraConfig config)
         {
             _cameraConfig = config;    
             CameraInput = InputSystem.actions.FindAction("Look");

@@ -16,7 +16,7 @@ namespace Runtime.Entities
         [SerializeField] private CameraConfig _cameraConfig;
 
     
-        private CameraComponent _cameraComponent;
+        private CameraService cameraService;
         private PlayerInputKeyboardService _playerInputKeyboardService;
     
         public InputAction mouseLook, jumpAction, sprintAction, dashAction, interact, mousePosAction;
@@ -29,7 +29,7 @@ namespace Runtime.Entities
         {
             InitBindings();
             InitComponents();
-            _cameraComponent.SetOldRotationEulerZ(_camera.transform);
+            cameraService.SetOldRotationEulerZ(_camera.transform);
         }
     
         #region Init methods
@@ -46,7 +46,7 @@ namespace Runtime.Entities
         private void InitComponents()
         {
             _playerInputKeyboardService = new PlayerInputKeyboardService(_inputKeyboardConfig);
-            _cameraComponent = new CameraComponent(_cameraConfig);
+            cameraService = new CameraService(_cameraConfig);
         }
         #endregion
 
@@ -62,9 +62,9 @@ namespace Runtime.Entities
 
         private void UpdateCamera()
         {
-            _cameraComponent.Bobbing(_moveInput);
-            var rotation = _cameraComponent.Rotate(_camera.transform, _currentSlantAngle);
-            _cameraComponent.UpdateCameraPosition(_camera.transform, this.transform.position + (Vector3.up * _cameraConfig.CameraOffsetY));
+            cameraService.Bobbing(_moveInput);
+            var rotation = cameraService.Rotate(_camera.transform, _currentSlantAngle);
+            cameraService.UpdateCameraPosition(_camera.transform, this.transform.position + (Vector3.up * _cameraConfig.CameraOffsetY));
             UpdatePlayerRotation(rotation);
         }
 

@@ -1,6 +1,6 @@
 using Runtime.Configs;
 
-namespace Runtime.Components
+namespace Runtime.Services
 {
     public class StaminaService
     {

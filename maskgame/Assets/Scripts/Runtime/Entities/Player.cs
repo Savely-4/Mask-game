@@ -3,6 +3,7 @@ using Runtime.Configs;
 using Runtime.Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using CameraService = Runtime.Components.CameraService;
 
 namespace Runtime.Entities
 {
@@ -18,11 +19,10 @@ namespace Runtime.Entities
         [SerializeField] private StaminaConfig _staminaConfig;
 
     
-        private CameraComponent _cameraComponent;
+        private CameraService _cameraService;
         private StaminaService _staminaService;
         private PlayerInputKeyboardService _playerInputKeyboardService;
     
-        public InputAction mouseLook, sprintAction, dashAction, interact, mousePosAction;
         private Vector2 _moveInput;
         private bool cdDash = false;
         private float xRotation = 0f;
@@ -31,29 +31,19 @@ namespace Runtime.Entities
         
         private void Awake()
         {
-            InitBindings();
             InitComponents();
-            cameraService.SetOldRotationEulerZ(_camera.transform);
+            _cameraService.SetOldRotationEulerZ(_camera.transform);
         }
-    
-        #region Init methods
-        private void InitBindings()
-        {
-            interact = InputSystem.actions.FindAction("Interact");
-            dashAction = InputSystem.actions.FindAction("Dash");
-            mouseLook = InputSystem.actions.FindAction("Look");
-            mousePosAction = InputSystem.actions.FindAction("MousePositions");
-            sprintAction = InputSystem.actions.FindAction("Sprint");
-        }
-    
+        
+    #region Init
         private void InitComponents()
         {
             _playerInputKeyboardService = new PlayerInputKeyboardService(_inputKeyboardConfig);
-            _cameraComponent = new CameraComponent(_cameraConfig);
+            _cameraService = new CameraService(_cameraConfig);
             _staminaService = new StaminaService(_staminaConfig);
         }
-        #endregion
-
+    #endregion
+    
         void Update()
         {
             UpdateCamera();
@@ -64,9 +54,9 @@ namespace Runtime.Entities
 
         private void UpdateCamera()
         {
-            cameraService.Bobbing(_moveInput);
-            var rotation = cameraService.Rotate(_camera.transform, _currentSlantAngle);
-            cameraService.UpdateCameraPosition(_camera.transform, this.transform.position + (Vector3.up * _cameraConfig.CameraOffsetY));
+            _cameraService.Bobbing(_moveInput);
+            var rotation = _cameraService.Rotate(_camera.transform, _currentSlantAngle);
+            _cameraService.UpdateCameraPosition(_camera.transform, this.transform.position + (Vector3.up * _cameraConfig.CameraOffsetY));
             UpdatePlayerRotation(rotation);
         }
 
@@ -85,7 +75,6 @@ namespace Runtime.Entities
         
         void PerformSprintControl()
         {
-            //Otherwise, if not standing still and sprint pressed - sprint
             if (_playerInputKeyboardService.SprintButtonPressed(false) && _moveInput.sqrMagnitude != 0)
             {
                 _movementComponent.ToggleSprint();

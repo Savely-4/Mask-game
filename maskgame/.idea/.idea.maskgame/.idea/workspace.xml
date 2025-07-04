@@ -4,7 +4,28 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="136b12f1-1d53-4a5d-9797-836f57104106" name="Changes" comment="" />
+    <list default="true" id="136b12f1-1d53-4a5d-9797-836f57104106" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/.idea.maskgame/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.maskgame/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Components/CameraComponent.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Components/CameraComponent.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Components/PlayerMovement.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Components/PlayerMovement.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Configs/PlayerInputKeyboardConfig.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Configs/PlayerInputKeyboardConfig.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Entities/Player.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Entities/Player.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IBuff.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IBuff.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IBuffLong.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IBuffLong.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IBuffOnce.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IBuffOnce.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IDamageble.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IDamageble.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IDebuff.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IDebuff.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IDebuffLong.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IDebuffLong.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IDebuffOnce.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IDebuffOnce.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IRegenerating.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Intefaces/IRegenerating.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Runtime/Services/PlayerInputKeyboardService.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Runtime/Services/PlayerInputKeyboardService.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Weapon/Melee/IAlternateAttackable.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Weapon/Melee/IAlternateAttackable.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Weapon/Melee/Sword/Sword.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Weapon/Melee/Sword/Sword.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Weapon/Melee/WeaponMelee.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Weapon/Melee/WeaponMelee.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Weapon/Weapon.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Weapon/Weapon.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Weapon/WeaponEffectsView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Weapon/WeaponEffectsView.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/Weapon/WeaponSoundsView.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/Weapon/WeaponSoundsView.cs" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -13,40 +34,40 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2z93jf0UgxG9rDwP19wfZDwZ0nx" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Release",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "advanced.settings",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Release&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;advanced.settings&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="Start Unity" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.4f1\Editor\Unity.exe" />
-      <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\Users\gameo\OneDrive\Рабочий стол\MaskGame\maskgame&quot; -debugCodeOptimization" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\gameo\OneDrive\Рабочий стол\MaskGame\maskgame" />
+      <option name="PROGRAM_PARAMETERS" value="-projectPath &quot;C:\Users\gameo\OneDrive\������� ����\MaskGame\maskgame&quot; -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\gameo\OneDrive\������� ����\MaskGame\maskgame" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
     </configuration>
     <configuration name="Unit Tests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\6000.1.4f1\Editor\Unity.exe" />
-      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\Users\gameo\OneDrive\Рабочий стол\MaskGame\maskgame&quot; -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\gameo\OneDrive\Рабочий стол\MaskGame\maskgame" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\Users\gameo\OneDrive\������� ����\MaskGame\maskgame&quot; -testResults Logs/results.xml -logFile Logs/Editor.log -testPlatform EditMode -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\gameo\OneDrive\������� ����\MaskGame\maskgame" />
       <option name="PASS_PARENT_ENVS" value="1" />
       <option name="USE_EXTERNAL_CONSOLE" value="0" />
       <method v="2" />
@@ -81,6 +102,9 @@
       <option name="presentableId" value="Default" />
       <updated>1751129599255</updated>
       <workItem from="1751129601090" duration="338000" />
+      <workItem from="1751403802681" duration="1666000" />
+      <workItem from="1751482326752" duration="1871000" />
+      <workItem from="1751484517995" duration="182000" />
     </task>
     <servers />
   </component>

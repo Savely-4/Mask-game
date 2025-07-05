@@ -42,7 +42,7 @@ namespace Runtime.Components
             verticalVelocityValue = ApplyGravity(verticalVelocityValue, Time.fixedDeltaTime);
 
             var velocity = GetVelocity();
-            _characterController.Move(velocity * Time.deltaTime);
+            _characterController.Move(velocity * Time.fixedDeltaTime);
 
             if (IsGrounded)
             {

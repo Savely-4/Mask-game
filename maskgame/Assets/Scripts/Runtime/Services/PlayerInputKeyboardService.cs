@@ -66,5 +66,19 @@ namespace Runtime.Services
         {
             return (Input.GetAxis(_config.HorizontalAxis) * 1) != 0 || (Input.GetAxis(_config.VerticalAxis) * 1) != 0;
         }
+        
+        #region Methods_by_Danil
+        
+        public bool PickupButtonPressed() 
+        {
+            return Input.GetKeyDown(_config.PickupKey);
+        }
+        
+        public bool DropButtonPressed() 
+        {
+            return Input.GetKeyDown(_config.DropKey);
+        }
+        
+        #endregion
     }
 }

@@ -1,41 +1,47 @@
-using System;
-using UnityEngine;
 
 namespace Runtime.InventorySystem 
 {
     public class InventorySlot
     {
-        private ItemData _item;
-        public ItemData Item  
-        {
-            get => _item;
-            
-            private set 
-            {
-                _item = value;
-                OnSlotChanged?.Invoke(this);
-            }
-        }
-        private int _count;
+        public IPickableItem Item { get; private set; }
 
-        public event Action<InventorySlot> OnSlotChanged;
-        public void AddItem(ItemData newItem)
-        {
+        public int CountItems { get; private set; }
+
+        public bool IsEmpty => Item == null;
+
+        public bool TryAddItem(IPickableItem newItem)
+        {   
             if (Item == null)
-            {
                 Item = newItem;
-                _count = 1;
-            }
-            else if (Item == newItem && Item.IsStackable)
+                
+            CountItems++;
+            
+            return true;
+        }
+        
+        public bool TryRemoveItem() 
+        {
+            if (Item != null)
             {
-                _count++;
-            }
+                if (CountItems <= 0) 
+                {
+                    Item = null;
+                }
+                else 
+                {
+                    CountItems--;
+                }
+                
+                return true;
+            } 
+            
+            return false;
         }
 
         public void ClearSlot()
         {
             Item = null;
-            _count = 0;
+            CountItems = 0;
         }
     }
 }

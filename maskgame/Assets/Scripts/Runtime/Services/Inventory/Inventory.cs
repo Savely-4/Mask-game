@@ -56,6 +56,24 @@ namespace Runtime.InventorySystem
             return false;
         }
         
+        public bool TryRemoveItemSlot(IPickableItem newItem) 
+        {
+            for (int i = 0; i < _slots.Count; i++) 
+            {
+                if (_slots[i].Item == newItem) 
+                {
+                    if (_slots[i].TryRemoveItem()) 
+                    {
+                        OnRemovedItemInSlot?.Invoke(_slots[i]);
+                        return true;
+                    }
+                    
+                }
+            }
+
+            return false;
+        }
+        
         public bool TryRemoveItemSlotAt(int index) 
         {
             if (_slots[index].TryRemoveItem()) 

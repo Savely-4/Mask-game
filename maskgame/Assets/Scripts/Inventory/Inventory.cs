@@ -1,6 +1,16 @@
 using UnityEngine;
+using Runtime.Configs;
 
-public class Inventory
+namespace Runtime.InventorySystem 
 {
-    
+    public class Inventory
+    {
+        private readonly InventoryConfig _config;
+        
+        public Inventory(InventoryConfig config)
+        {
+            _config = config;
+        }
+    }
 }
+

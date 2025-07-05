@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0bfc168800d2b3b49b7b88e7d6f74d16, type: 3}
-  m_Name: PlayerInteractorConfig
+  m_Name: PlayerItemInteractorConfig
   m_EditorClassIdentifier: 
   <PickupRate>k__BackingField: 0.2
   <DropRate>k__BackingField: 0.2

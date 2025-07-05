@@ -25,7 +25,7 @@ namespace Runtime.InteractSystem
         public virtual void PickupUpdate(Vector3 pickupPoint, bool isPickup) 
         {
             if (isPickup && PickupTimePassed())
-            {   
+            {  
                 if (Physics.Raycast(pickupPoint,  pickupPoint.normalized, out RaycastHit hit, _config.PickupDistance)) 
                 {                
                     if (hit.collider.TryGetComponent<IPickableItem>(out var pickableItem)) 

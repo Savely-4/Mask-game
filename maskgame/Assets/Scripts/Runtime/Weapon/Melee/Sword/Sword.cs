@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Runtime.InventorySystem;
 using UnityEngine;
 
 namespace WeaponSystem.Melee.Types
 {
-    public class Sword : WeaponMelee, IAlternateAttackable
+    public class Sword : WeaponMelee, IAlternateAttackable, IPickableItem
     {
         private Coroutine _resetColorRoutine;
 

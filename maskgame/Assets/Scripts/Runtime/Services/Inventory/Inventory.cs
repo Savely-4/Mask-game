@@ -13,7 +13,7 @@ namespace Runtime.InventorySystem
         public int CurrentSpace { get; private set; }
 
         public event Action OnInventoryChanged;
-        public event Action<IPickableItem, InventorySlot> OnAddedItemInSlot;
+        public event Action<ItemData, InventorySlot> OnAddedItemInSlot;
         public event Action<InventorySlot> OnRemovedItemInSlot;
         
         public Inventory(InventoryConfig config)
@@ -23,15 +23,15 @@ namespace Runtime.InventorySystem
 
             CreateSpace();
         }
-        public bool TryAddItemInSlot(IPickableItem newItem)
+        public bool TryAddItemInSlot(ItemData newItemData)
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
                 if (_slots[i].IsEmpty) 
                 {
-                    if (_slots[i].TryAddItem(newItem)) 
+                    if (_slots[i].TryAddItem(newItemData)) 
                     {
-                        OnAddedItemInSlot?.Invoke(newItem, _slots[i]);
+                        OnAddedItemInSlot?.Invoke(newItemData, _slots[i]);
                         return true;
                     }
                     
@@ -41,13 +41,13 @@ namespace Runtime.InventorySystem
             return false;
         }
         
-        public bool TryAddItemInSlotAt(IPickableItem newItem, int index) 
+        public bool TryAddItemInSlotAt(ItemData newItemData, int index) 
         {
             if (_slots[index].IsEmpty) 
             {
-                if (_slots[index].TryAddItem(newItem)) 
+                if (_slots[index].TryAddItem(newItemData)) 
                 {
-                    OnAddedItemInSlot?.Invoke(newItem, _slots[index]);
+                    OnAddedItemInSlot?.Invoke(newItemData, _slots[index]);
                     return true;
                 }
                     
@@ -56,11 +56,11 @@ namespace Runtime.InventorySystem
             return false;
         }
         
-        public bool TryRemoveItemSlot(IPickableItem newItem) 
+        public bool TryRemoveItemSlot(ItemData newItemData) 
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
-                if (_slots[i].Item == newItem) 
+                if (_slots[i].ItemData == newItemData) 
                 {
                     if (_slots[i].TryRemoveItem()) 
                     {

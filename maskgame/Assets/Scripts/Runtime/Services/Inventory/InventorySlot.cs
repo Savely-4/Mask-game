@@ -3,16 +3,16 @@ namespace Runtime.InventorySystem
 {
     public class InventorySlot
     {
-        public IPickableItem Item { get; private set; }
+        public ItemData ItemData { get; private set; }
 
         public int CountItems { get; private set; }
 
-        public bool IsEmpty => Item == null;
+        public bool IsEmpty => ItemData == null;
 
-        public bool TryAddItem(IPickableItem newItem)
+        public bool TryAddItem(ItemData newItemData)
         {   
-            if (Item == null)
-                Item = newItem;
+            if (ItemData == null)
+                ItemData = newItemData;
                 
             CountItems++;
             
@@ -21,11 +21,11 @@ namespace Runtime.InventorySystem
         
         public bool TryRemoveItem() 
         {
-            if (Item != null)
+            if (ItemData != null)
             {
                 if (CountItems <= 0) 
                 {
-                    Item = null;
+                    ItemData = null;
                 }
                 else 
                 {
@@ -40,7 +40,7 @@ namespace Runtime.InventorySystem
 
         public void ClearSlot()
         {
-            Item = null;
+            ItemData = null;
             CountItems = 0;
         }
     }

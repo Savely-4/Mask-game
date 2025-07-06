@@ -5,7 +5,7 @@ public class PlayerItemHolder
 {
     private readonly Transform _holderPoint;
 
-    private ItemData _currentItemData;
+    private IPickableItem _currentObjInHand;
     
     public PlayerItemHolder(Transform holderPoint)
     {
@@ -13,13 +13,20 @@ public class PlayerItemHolder
     }
 
 
-    public void Equip(ItemData itemData)
+    public void Equip(IPickableItem pickableItem)
     {
+        var mono = pickableItem as MonoBehaviour;
         
+        if (mono != null) 
+        {
+            _currentObjInHand = pickableItem;
+            mono.transform.SetParent(_holderPoint);
+            mono.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+        }
     }
     
     public void UnEquip() 
     {
-        
+       
     }
 }

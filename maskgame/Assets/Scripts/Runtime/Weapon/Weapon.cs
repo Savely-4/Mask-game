@@ -6,7 +6,6 @@ namespace WeaponSystem
 {
     public abstract class Weapon : MonoBehaviour
     {
-        [SerializeField] private ItemData _itemData;
         [field: SerializeField] public float Damage { get; set; }
         [field: SerializeField] public float AttackRate { get; set; }
         [SerializeField] protected LayerMask HittableLayers;

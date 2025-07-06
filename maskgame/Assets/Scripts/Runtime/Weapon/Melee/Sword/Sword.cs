@@ -9,6 +9,8 @@ namespace WeaponSystem.Melee.Types
     {
         private Coroutine _resetColorRoutine;
 
+        [field: SerializeField] public ItemData ItemData { get; private set; }
+
         public void AlternateAttack()
         {
             Debug.Log("Альтернативная атака");

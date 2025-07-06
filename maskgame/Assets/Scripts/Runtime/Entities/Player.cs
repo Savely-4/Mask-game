@@ -1,5 +1,7 @@
 using Runtime.Components;
 using Runtime.Configs;
+using Runtime.InteractSystem;//danil
+using Runtime.InventorySystem;//danil
 using Runtime.Services;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,6 +12,18 @@ namespace Runtime.Entities
 {
     public class Player : MonoBehaviour
     {
+        #region fields_Test_Danil
+        [SerializeField] private PlayerItemInteractorConfig _playerItemInteractorConfig;
+        
+        [SerializeField] private InventoryConfig _playerInventoryConfig;
+        
+        private WeaponCombatSystem _weaponCombatSystem;
+        private PlayerInteractor _playerInteractor;
+        private Inventory _inventory;
+        private PlayerItemHolder _playerItemHolder;
+        
+        
+        #endregion
         [SerializeField] private PlayerMovement _movementComponent;
         [SerializeField] private Camera _camera;
         [SerializeField] private PlayerInputKeyboardConfig _inputKeyboardConfig;
@@ -44,6 +58,13 @@ namespace Runtime.Entities
             _input = new PlayerInputKeyboardService(_inputKeyboardConfig);
             _cameraService = new CameraService(_cameraConfig);
             _staminaService = new StaminaService(_staminaConfig);
+            _playerInteractor = new PlayerInteractor(_playerItemInteractorConfig); //danil
+            _inventory = new Inventory(_playerInventoryConfig); // danil
+            _weaponCombatSystem = new WeaponCombatSystem(); //danil
+            _playerItemHolder = new(transform);
+
+            _playerInteractor.ItemInteractor.OnPickupItem += OnPickupItem;
+            _playerInteractor.ItemInteractor.OnDropItem += OnDropItem;
         }
     #endregion
     
@@ -53,10 +74,34 @@ namespace Runtime.Entities
             PerformMovementControl();
             PerformJumpsControl();
             PerformSprintControl();
+            PerformInteractorControl();
+        }
+        
+    #region Methods_by_Danil
+        private void PerformInteractorControl() 
+        {
+            _playerInteractor.ItemInteractor.PickupUpdate(transform.position, _input.PickupButtonPressed());
+            _playerInteractor.ItemInteractor.DropUpdate(transform.position, _input.DropButtonPressed());
         }
         
         
-
+        private void OnPickupItem(IPickableItem pickableItem) 
+        {
+            if (_inventory.TryAddItemInSlot(pickableItem.ItemData)) 
+            {
+                _playerItemHolder.Equip(pickableItem);
+            }
+            
+            //_weaponCombatSystem.SetNewWeapon(pickableItem as Weapon);
+        }
+        
+        private void OnDropItem(IPickableItem pickableItem) 
+        {
+            //_inventory.TryRemoveItemSlot(pickableItem);
+            //_weaponCombatSystem.SetNewWeapon(null);
+        }
+        
+    #endregion
         private void UpdateCamera()
         {
             _cameraService.Bobbing(_moveInput);

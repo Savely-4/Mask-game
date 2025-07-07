@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Runtime.Configs;
 using System;
+using Runtime.Services.InteractSystem;
 
 namespace Runtime.InventorySystem 
 {
@@ -11,6 +12,7 @@ namespace Runtime.InventorySystem
         private List<InventorySlot> _slots = new();
 
         private InventorySlot _currentSelectedSlot;
+        private int _currentSelectedSlotIndex;
 
         public int CurrentSpace { get; private set; }
         
@@ -27,7 +29,6 @@ namespace Runtime.InventorySystem
         }
 
         public event Action OnInventoryChanged;
-        
         public event Action<ItemData> OnAddedItemInSlot;
         public event Action<ItemData> OnTryRemoveItemInSlot;
         public event Action OnRemovedItemInSlot;
@@ -38,53 +39,41 @@ namespace Runtime.InventorySystem
         {
             _config = config;
             CurrentSpace = _config.Space;
-
+            
             CreateSpace();
 
-            CurrentSelectedSlot = _slots[0];
+            SwitchSlot(0);
         }
-        public bool TryAddItemInSlot(ItemData newItemData)
+        
+        public void AddItemInSlot(IPickableItem newItem)
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
-                if (TryAddItemInSlotAt(newItemData, i)) 
-                {
-                    return true;
-                }
+                AddItemInSlotAt(newItem, i);
             }
-            
-            return false;
         }
         
-        public bool TryAddItemInSlotAt(ItemData newItemData, int index) 
+        public void AddItemInSlotAt(IPickableItem newItem, int index) 
         {
-            if (_slots[index].IsEmpty || newItemData.StackCount > _slots[index].CountItems) 
+            if (_slots[index].IsEmpty || newItem.ItemData.StackCount > _slots[index].CountItems) 
             {
-                if (_slots[index].TryAddItem(newItemData)) 
+                if (_slots[index].TryAddItem(newItem, newItem.ItemData)) 
                 {
-                    OnAddedItemInSlot?.Invoke(newItemData);
+                    OnAddedItemInSlot?.Invoke(newItem.ItemData);
                     OnInventoryChanged?.Invoke();
-                    return true;
                 }
             }
-
-            return false;
         }
         
-        public bool TryRemoveItemInSlot(ItemData newItemData) 
+        public void RemoveItemInSlot() 
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
-                if (_slots[i].ItemData == newItemData) 
-                {
-                    return TryRemoveItemInSlotAt(i);
-                }
+                RemoveItemInSlotAt(_currentSelectedSlotIndex);
             }
-
-            return false;
         }
         
-        public bool TryRemoveItemInSlotAt(int index) 
+        public void RemoveItemInSlotAt(int index) 
         {
             OnTryRemoveItemInSlot?.Invoke(_slots[index].ItemData);
             
@@ -92,10 +81,7 @@ namespace Runtime.InventorySystem
             {
                 OnRemovedItemInSlot?.Invoke();
                 OnInventoryChanged?.Invoke();
-                return true;
             }
-
-            return false;
         }
         
         public void SwitchSlot(int index) 
@@ -103,6 +89,7 @@ namespace Runtime.InventorySystem
             if (_slots.Count >= index) 
             {
                 CurrentSelectedSlot = _slots[index];
+                _currentSelectedSlotIndex = index;
             }
         }
         

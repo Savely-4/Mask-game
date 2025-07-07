@@ -2,7 +2,7 @@ using System;
 using Runtime.InventorySystem;
 using UnityEngine;
 
-namespace WeaponSystem
+namespace Runtime.Entities.WeaponSystem
 {
     public abstract class Weapon : MonoBehaviour
     {

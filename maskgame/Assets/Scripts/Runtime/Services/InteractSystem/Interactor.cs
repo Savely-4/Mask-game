@@ -1,9 +1,6 @@
 
-namespace Runtime.InteractSystem 
+namespace Runtime.Services.InteractSystem
 {
-    public abstract class Interactor
-    {
-        
-    }
+    public abstract class Interactor { }
 }
 

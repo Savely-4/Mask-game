@@ -10,6 +10,6 @@ namespace Runtime.InventorySystem
         public string ItemName;
         public ItemType ItemType;
         public int StackCount;
-        public GameObject Prefab;
+        public GameObject Object;
     }
 }

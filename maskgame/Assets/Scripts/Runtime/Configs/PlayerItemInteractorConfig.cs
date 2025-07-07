@@ -1,3 +1,4 @@
+using Runtime.Services.InteractSystem;
 using UnityEngine;
 
 namespace Runtime.Configs

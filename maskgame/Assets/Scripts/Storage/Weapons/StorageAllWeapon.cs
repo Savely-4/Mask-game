@@ -1,5 +1,5 @@
+using Runtime.Entities.Weapon.Melee.Sword;
 using WeaponSystem;
-using WeaponSystem.Melee.Types;
 
 public static class StorageAllWeapon 
 {

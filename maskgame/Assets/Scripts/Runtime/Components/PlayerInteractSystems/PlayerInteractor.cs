@@ -1,16 +1,16 @@
 using Runtime.Configs;
 
-namespace Runtime.InteractSystem 
+namespace Runtime.Services.InteractSystem
 {
     public class PlayerInteractor : Interactor
     {
         private readonly PlayerItemInteractorConfig _playerItemInteractorConfig;
         
         public ItemInteractor ItemInteractor { get; private set; }
+        
         public PlayerInteractor(PlayerItemInteractorConfig playerItemInteractorConfig)
         {
             _playerItemInteractorConfig = playerItemInteractorConfig;
-
 
             InitializeInteractors();
         }
@@ -18,12 +18,7 @@ namespace Runtime.InteractSystem
         
         private void InitializeInteractors() 
         {
-            ItemInteractor = new PlayerItemInteractor(_playerItemInteractorConfig)
-            {
-
-            };
-            
-            
+            ItemInteractor = new PlayerItemInteractor(_playerItemInteractorConfig) { };
         }
     }
 }

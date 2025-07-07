@@ -12,7 +12,6 @@ public class PlayerItemHolder
         _holderPoint = holderPoint;
     }
 
-
     public void Equip(IPickableItem pickableItem)
     {
         var mono = pickableItem as MonoBehaviour;

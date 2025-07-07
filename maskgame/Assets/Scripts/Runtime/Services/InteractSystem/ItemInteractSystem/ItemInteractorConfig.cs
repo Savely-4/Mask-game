@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Runtime.Configs
+namespace Runtime.Services.InteractSystem
 {
     public abstract class ItemInteractorConfig : ScriptableObject
     {

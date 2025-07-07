@@ -1,8 +1,5 @@
 namespace Runtime.InventorySystem 
 {
-    public interface IItem
-    {
-        
-    }
+    public interface IItem { }
 }
 

@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using Runtime.InventorySystem;
 using UnityEngine;
+using WeaponSystem.Melee;
 
-namespace WeaponSystem.Melee.Types
+namespace Runtime.Entities.WeaponSystem.Melee.Sword
 {
     public class Sword : WeaponMelee, IAlternateAttackable, IPickableItem
     {

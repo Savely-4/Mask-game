@@ -1,15 +1,10 @@
 using Runtime.Configs;
 
-namespace Runtime.InteractSystem 
+namespace Runtime.Services.InteractSystem
 {
     public class PlayerItemInteractor : ItemInteractor
     {
-        public PlayerItemInteractor(PlayerItemInteractorConfig playerItemInteractorConfig) : base(playerItemInteractorConfig)
-        {
-            
-        }
-        
-        
+        public PlayerItemInteractor(PlayerItemInteractorConfig playerItemInteractorConfig) : base(playerItemInteractorConfig) { }
     }
 }
 

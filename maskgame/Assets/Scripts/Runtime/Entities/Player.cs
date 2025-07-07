@@ -27,32 +27,32 @@ namespace Runtime.Entities
         [SerializeField] private PlayerMovement _movementComponent;
         [SerializeField] private Camera _camera;
         [SerializeField] private PlayerInputKeyboardConfig _inputKeyboardConfig;
-    
+
         [Header("Camera")]
         [SerializeField] private CameraConfig _cameraConfig;
         [Header("Stamina")]
         [SerializeField] private StaminaConfig _staminaConfig;
 
         [SerializeField] private Weapon _weapon;
-    
+
         private CameraService _cameraService;
         private StaminaService _staminaService;
         private PlayerInputKeyboardService _input;
-        
+
         private Vector2 _moveInput;
         private bool cdDash = false;
         private float xRotation = 0f;
         private bool canDoubleJump;
         private float _currentSlantAngle = 0f;
-        
+
         private void Awake()
         {
             InitComponents();
             _cameraService.SetOldRotationEulerZ(_camera.transform);
         }
-        
-        
-    #region Init
+
+
+        #region Init
         private void InitComponents()
         {
             _input = new PlayerInputKeyboardService(_inputKeyboardConfig);
@@ -66,8 +66,8 @@ namespace Runtime.Entities
             _playerInteractor.ItemInteractor.OnPickupItem += OnPickupItem;
             _playerInteractor.ItemInteractor.OnDropItem += OnDropItem;
         }
-    #endregion
-    
+        #endregion
+
         void Update()
         {
             UpdateCamera();
@@ -122,21 +122,19 @@ namespace Runtime.Entities
             _moveInput = new Vector2(moveInput.y, moveInput.x);
             _movementComponent.SetMovementInput(_moveInput);
         }
-        
+
         void PerformSprintControl()
         {
             if (_input.SprintButtonPressed(false) && _moveInput.sqrMagnitude != 0)
             {
-                _movementComponent.ToggleSprint();
+                _movementComponent.ToggleSprint(true);
                 return;
             }
-            _movementComponent.UnToggleSprint();
+            _movementComponent.ToggleSprint(false);
         }
 
         void PerformJumpsControl()
         {
-            _movementComponent.ResetJumps();
-
             if (_input.JumpButtonPressedThisFrame())
                 _movementComponent.PerformJump();
 

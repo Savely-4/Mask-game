@@ -10,11 +10,29 @@ namespace Runtime.InventorySystem
         private readonly InventoryConfig _config;
         private List<InventorySlot> _slots = new();
 
+        private InventorySlot _currentSelectedSlot;
+
         public int CurrentSpace { get; private set; }
+        
+        public InventorySlot CurrentSelectedSlot  
+        {
+            get => _currentSelectedSlot;
+            
+            private set 
+            {
+                _currentSelectedSlot = value;
+
+                OnChangeCurrentSelectedSlot?.Invoke(_currentSelectedSlot);
+            }
+        }
 
         public event Action OnInventoryChanged;
-        public event Action<ItemData, InventorySlot> OnAddedItemInSlot;
-        public event Action<InventorySlot> OnRemovedItemInSlot;
+        
+        public event Action<ItemData> OnAddedItemInSlot;
+        public event Action<ItemData> OnTryRemoveItemInSlot;
+        public event Action OnRemovedItemInSlot;
+
+        public event Action<InventorySlot> OnChangeCurrentSelectedSlot;
         
         public Inventory(InventoryConfig config)
         {
@@ -22,70 +40,73 @@ namespace Runtime.InventorySystem
             CurrentSpace = _config.Space;
 
             CreateSpace();
+
+            CurrentSelectedSlot = _slots[0];
         }
         public bool TryAddItemInSlot(ItemData newItemData)
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
-                if (_slots[i].IsEmpty) 
+                if (TryAddItemInSlotAt(newItemData, i)) 
                 {
-                    if (_slots[i].TryAddItem(newItemData)) 
-                    {
-                        OnAddedItemInSlot?.Invoke(newItemData, _slots[i]);
-                        return true;
-                    }
-                    
+                    return true;
                 }
             }
-
+            
             return false;
         }
         
         public bool TryAddItemInSlotAt(ItemData newItemData, int index) 
         {
-            if (_slots[index].IsEmpty) 
+            if (_slots[index].IsEmpty || newItemData.StackCount > _slots[index].CountItems) 
             {
                 if (_slots[index].TryAddItem(newItemData)) 
                 {
-                    OnAddedItemInSlot?.Invoke(newItemData, _slots[index]);
+                    OnAddedItemInSlot?.Invoke(newItemData);
+                    OnInventoryChanged?.Invoke();
                     return true;
                 }
-                    
             }
 
             return false;
         }
         
-        public bool TryRemoveItemSlot(ItemData newItemData) 
+        public bool TryRemoveItemInSlot(ItemData newItemData) 
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
                 if (_slots[i].ItemData == newItemData) 
                 {
-                    if (_slots[i].TryRemoveItem()) 
-                    {
-                        OnRemovedItemInSlot?.Invoke(_slots[i]);
-                        return true;
-                    }
-                    
+                    return TryRemoveItemInSlotAt(i);
                 }
             }
 
             return false;
         }
         
-        public bool TryRemoveItemSlotAt(int index) 
+        public bool TryRemoveItemInSlotAt(int index) 
         {
+            OnTryRemoveItemInSlot?.Invoke(_slots[index].ItemData);
+            
             if (_slots[index].TryRemoveItem()) 
             {
-                OnRemovedItemInSlot?.Invoke(_slots[index]);
+                OnRemovedItemInSlot?.Invoke();
+                OnInventoryChanged?.Invoke();
                 return true;
             }
 
             return false;
         }
         
-        public void SetSpace(int newSpace) 
+        public void SwitchSlot(int index) 
+        {
+            if (_slots.Count >= index) 
+            {
+                CurrentSelectedSlot = _slots[index];
+            }
+        }
+        
+        public void SetNewSpace(int newSpace) 
         {
             if (CurrentSpace < newSpace) 
             {
@@ -96,6 +117,7 @@ namespace Runtime.InventorySystem
                 
                 Debug.Log($"Размер ивентаря увеличен на {newSpace} слотов");
                 CurrentSpace = newSpace;
+                OnInventoryChanged?.Invoke();
             }
         
             else if (CurrentSpace > newSpace) 
@@ -107,6 +129,7 @@ namespace Runtime.InventorySystem
                 
                 Debug.Log($"Размер ивентаря уменьшен на {newSpace} слотов");
                 CurrentSpace = newSpace;
+                OnInventoryChanged?.Invoke();
             }
         }
         
@@ -114,6 +137,8 @@ namespace Runtime.InventorySystem
         {
             for (int i = 0; i < CurrentSpace; i++)
                     _slots.Add(new InventorySlot());
+            
+            OnInventoryChanged?.Invoke();
         }
     }
 }

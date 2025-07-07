@@ -8,9 +8,8 @@ namespace Runtime.InventorySystem
     public class ItemData : ScriptableObject
     {
         public string ItemName;
-        public Sprite Icon;
         public ItemType ItemType;
-        public bool IsStackable;
+        public int StackCount;
         public GameObject Prefab;
     }
 }

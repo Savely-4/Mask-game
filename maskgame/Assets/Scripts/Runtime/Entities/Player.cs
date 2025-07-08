@@ -57,14 +57,26 @@ namespace Runtime.Entities
             _playerItemHolder = new PlayerItemHolder(transform);
 
             _playerInteractor.ItemInteractor.OnPickupItem += _inventory.AddItemInSlot;
-            _playerInteractor.ItemInteractor.OnTryDropItem += _inventory.RemoveItemInSlot;
+            _playerInteractor.ItemInteractor.OnTryDropItem += () =>
+            {
+                _inventory.RemoveItemInSlot(true);
+            };
             
+            //Убери комментарии когда прочитаешь
+            // Тут я передаю оружие из текущего слота если оно таковым является, если это просто предмет который может поместится в руке, но не оружие, то эквипаю в айтем холдер
             _inventory.OnChangeCurrentSelectedSlot += inventorySlot =>
             {
                 var weapon = inventorySlot.Items[0] as Weapon;
                 _weaponCombatSystem.CurrentWeapon = weapon;
+                _playerItemHolder.Equip(inventorySlot.Items[0]);
             };
             
+            // Ремуваем из оружия (даже если там нету оружия, то ничего не пройзойдет) и выбрасываем из руки текущее оружие
+            _inventory.OnDroppedItemInSlot += () =>
+            {
+                _weaponCombatSystem.CurrentWeapon = null;
+                _playerItemHolder.UnEquip();
+            };
         }
         #endregion
 

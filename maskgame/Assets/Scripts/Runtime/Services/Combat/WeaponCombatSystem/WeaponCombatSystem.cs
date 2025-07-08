@@ -1,4 +1,4 @@
-using WeaponSystem.Melee;
+using Runtime.Interfaces.WeaponSystem.Melee;
 
 namespace Runtime.Entities.WeaponSystem
 {

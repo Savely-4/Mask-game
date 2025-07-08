@@ -1,6 +1,7 @@
 using System;
+using Runtime.Entities.WeaponSystem;
 using UnityEngine;
-using WeaponSystem;
+
 public class WeaponAnimator : IDisposable
 {
     private readonly Animator _animator;

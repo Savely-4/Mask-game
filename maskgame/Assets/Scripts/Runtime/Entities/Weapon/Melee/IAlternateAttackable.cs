@@ -1,4 +1,4 @@
-namespace WeaponSystem.Melee
+namespace Runtime.Interfaces.WeaponSystem.Melee
 {
     public interface IAlternateAttackable
     {

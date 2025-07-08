@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Runtime.Entities.WeaponSystem;
 using UnityEngine;
 
-namespace WeaponSystem.Melee
+namespace Runtime.Entities.WeaponSystem.Melee
 {
-    public abstract class WeaponMelee : WeaponSystem.Weapon
+    public abstract class WeaponMelee : Weapon
     {
         [field: SerializeField] public int NumberCollisions { get; set; } = 3;
         [field: SerializeField] public float DelayAttack { get; set; } = 0.35f; // time, after that start attack

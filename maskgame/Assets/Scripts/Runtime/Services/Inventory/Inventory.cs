@@ -31,6 +31,7 @@ namespace Runtime.InventorySystem
         public event Action OnInventoryChanged;
         public event Action<ItemData> OnAddedItemInSlot;
         public event Action<ItemData> OnTryRemoveItemInSlot;
+        public event Action OnDroppedItemInSlot;
         public event Action OnRemovedItemInSlot;
 
         public event Action<InventorySlot> OnChangeCurrentSelectedSlot;
@@ -64,21 +65,27 @@ namespace Runtime.InventorySystem
                 }
             }
         }
-        
-        public void RemoveItemInSlot() 
+
+        public void RemoveItemInSlot(bool isDropping = false, int index = 0) 
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
-                RemoveItemInSlotAt(_currentSelectedSlotIndex);
+                if (isDropping)
+                    RemoveItemInSlotAt(_currentSelectedSlotIndex, true);
+                else
+                    RemoveItemInSlotAt(index, false);
             }
         }
         
-        public void RemoveItemInSlotAt(int index) 
+        public void RemoveItemInSlotAt(int index, bool isDropping) 
         {
             OnTryRemoveItemInSlot?.Invoke(_slots[index].ItemData);
             
             if (_slots[index].TryRemoveItem()) 
             {
+                if(isDropping)
+                    OnDroppedItemInSlot?.Invoke();
+                
                 OnRemovedItemInSlot?.Invoke();
                 OnInventoryChanged?.Invoke();
             }

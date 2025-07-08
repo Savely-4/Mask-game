@@ -26,6 +26,6 @@ public class PlayerItemHolder
     
     public void UnEquip() 
     {
-       
+       // Логика бросания оружия
     }
 }

@@ -5144,6 +5144,19 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &1465971653 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 712254517468915701, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
+  m_PrefabInstance: {fileID: 2076549079054282086}
+  m_PrefabAsset: {fileID: 0}
+--- !u!81 &1465971660
+AudioListener:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1465971653}
+  m_Enabled: 1
 --- !u!1001 &1471863226
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5475,7 +5488,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 712254517468915701, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1465971660}
   m_SourcePrefab: {fileID: 100100000, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
 --- !u!4 &3430642439191634505
 Transform:

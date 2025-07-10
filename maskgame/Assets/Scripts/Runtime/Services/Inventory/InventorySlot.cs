@@ -35,8 +35,10 @@ namespace Runtime.InventorySystem
                 }
                 else 
                 {
-                    CountItems--;
-                    Items.RemoveAt(CountItems - 1);
+                    Items.RemoveAt(--CountItems);
+
+                    if(Items.Count == 0)
+                        ItemData = null;
                 }
                 return true;
             } 

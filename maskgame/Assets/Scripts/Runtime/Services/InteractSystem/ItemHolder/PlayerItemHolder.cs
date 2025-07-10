@@ -4,33 +4,38 @@ public class PlayerItemHolder
 {
     private readonly Transform _holderPoint;
 
-    private Rigidbody _body;
+    private Transform _transformParent;
+    private Transform _transform;
     
     public PlayerItemHolder(Transform holderPoint)
     {
         _holderPoint = holderPoint;
     }
 
-    public void PickupView(Rigidbody body)
+    public void PickupView(Transform transform)
     {
-        _body = body;
+        _transform = transform;
 
-        if (_body != null) 
+        if (_transform.TryGetComponent(out Rigidbody rb))
         {
-            _body.isKinematic = true;
+            rb.isKinematic = true;
         }
-        
-        _body.transform.SetParent(_holderPoint);
-        _body.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+
+        _transformParent = _transform.parent;
+        _transform.SetParent(_holderPoint);
+        _transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
     
     public void DropView() 
     {
-        if (_body != null) 
+        if(_transform.TryGetComponent(out Rigidbody rb))
         {
-            _body.isKinematic = false;
-            
-            _body.AddForce(_holderPoint.forward * 5f, ForceMode.Impulse);
+            rb.isKinematic = false;
+            rb.AddForce(_holderPoint.forward * 5f, ForceMode.Impulse);
         }
+
+        _transform.transform.SetParent(_transformParent);
+        _transform = null;
+        _transformParent = null;
     }
 }

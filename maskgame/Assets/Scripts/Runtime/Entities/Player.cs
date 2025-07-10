@@ -59,7 +59,7 @@ namespace Runtime.Entities
             
             _playerInteractor = new PlayerInteractor(_playerItemInteractorConfig);
             _inventory = new Inventory(_playerInventoryConfig);
-            _weaponCombatPresenter = new WeaponCombatPresenter(_weaponCombatPresenterConfig, animator);
+            _weaponCombatPresenter = new WeaponCombatPresenter(_weaponCombatPresenterConfig, animator, _input);
             _playerItemHolder = new PlayerItemHolder(transform);
 
             _playerInteractor.ItemInteractor.OnPickupItem += _inventory.AddItemInSlot;
@@ -84,6 +84,7 @@ namespace Runtime.Entities
             PerformJumpsControl();
             PerformSprintControl();
             PerformInteractorControl();
+            _weaponCombatPresenter.HandleWeaponActions();
         }
         
         private void OnAddedItemInSlot(IPickableItem pickableItem, int slotIndex) 
@@ -97,24 +98,32 @@ namespace Runtime.Entities
                 _playerItemHolder.PickupView(rigidbodyItem);
             }/*/
         }
+
         private bool TryDropItem() 
         {
             if (_inventory.TryRemoveItemInCurrentSlot()) 
             {
+                _weaponCombatPresenter.SetNewWeapon(null);
                 _playerItemHolder.DropView();
             }
             
             return false;
         }
+
         private void OnChangeCurrentSelectedSlot(int currentSelectedSlotIndex) 
         {
             IPickableItem pickableItem = _inventory.GetItemInSlotAt(currentSelectedSlotIndex);
-   
-            Weapon weapon = pickableItem as Weapon;
-            Rigidbody rigidbodyItem = pickableItem as Rigidbody;
-            
-            _weaponCombatPresenter.SetNewWeapon(weapon);
-            _playerItemHolder.PickupView(rigidbodyItem);
+
+
+            if (pickableItem is Weapon weapon)
+            {
+                _weaponCombatPresenter.SetNewWeapon(weapon);
+            }
+
+            if (pickableItem is Component component)
+            {
+                _playerItemHolder.PickupView(component.transform);
+            }
         }
         
         

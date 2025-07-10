@@ -10,14 +10,15 @@ namespace Runtime.Services.CombatSystem
         
         private readonly WeaponCombatModel _weaponCombatModel;
         private readonly WeaponCombatView _weaponCombatView;
+        private readonly PlayerInputKeyboardService _inputService;
 
-        public WeaponCombatPresenter(WeaponCombatPresenterConfig config, Animator animator)
+        public WeaponCombatPresenter(WeaponCombatPresenterConfig config, Animator animator, PlayerInputKeyboardService inputService)
         {
             _config = config;
             
             _weaponCombatModel = new();
             _weaponCombatView = new(animator);
-
+            _inputService = inputService;
 
             _weaponCombatModel.OnBeforeChangingCurrentWeapon += OnBeforeChangingCurrentWeapon;
             _weaponCombatModel.OnAfterChangingCurrentWeapon += OnAfterChangingCurrentWeapon;
@@ -26,7 +27,7 @@ namespace Runtime.Services.CombatSystem
         public void Dispose()
         {
             if (_weaponCombatModel == null) return;
-            
+
             _weaponCombatModel.OnBeforeChangingCurrentWeapon -= OnBeforeChangingCurrentWeapon;
             _weaponCombatModel.OnAfterChangingCurrentWeapon -= OnAfterChangingCurrentWeapon;
         }
@@ -35,6 +36,22 @@ namespace Runtime.Services.CombatSystem
         {
             _weaponCombatModel.CurrentWeapon = weapon;
         }
+
+        public void HandleWeaponActions()
+        {
+            if (_weaponCombatModel.CurrentWeapon == null) return; 
+
+            if(_inputService.PrimaryAttackButtonPressed(true))
+            {
+                _weaponCombatModel.MainAttackUpdate();
+            }
+
+            if (_inputService.AlternateAttackKeyPressed(true))
+            {
+                _weaponCombatModel.AlternativeAttackUpdate();
+            }
+        }
+
         private void OnBeforeChangingCurrentWeapon(Weapon weapon) 
         {
             if (weapon != null) 

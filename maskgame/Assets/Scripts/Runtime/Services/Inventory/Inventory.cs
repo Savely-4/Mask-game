@@ -22,6 +22,8 @@ namespace Runtime.InventorySystem
             {
                 _currentSelectedSlotIndex = value;
 
+                if (value == -1) return;
+
                 OnChangeCurrentSelectedSlot?.Invoke(_currentSelectedSlotIndex);
             }
         }
@@ -40,7 +42,7 @@ namespace Runtime.InventorySystem
             
             CreateSpace();
 
-            SwitchSlot(0);
+            SwitchSlot(-1);
 
             Debug.Log("Инвентарь создался на " + CurrentSpace + " слотов");
         }
@@ -60,6 +62,9 @@ namespace Runtime.InventorySystem
         {  
             if (_slots[index].TryAddItem(newItem)) 
             {
+                if(_currentSelectedSlotIndex == -1)
+                    SwitchSlot(0);
+
                 OnAddedItemInSlot?.Invoke(newItem, index);
                 OnInventoryChanged?.Invoke();
 
@@ -84,7 +89,6 @@ namespace Runtime.InventorySystem
                     if (_slots[i].Items[j] == item) 
                     {
                         RemoveItemInSlotAt(i);
-
                         return true;
                     }
                     
@@ -96,12 +100,14 @@ namespace Runtime.InventorySystem
         }
         
         public bool RemoveItemInSlotAt(int slotIndex) 
-        {   
+        {
+            if (_slots[slotIndex].IsEmpty) return false;
+
             if (_slots[slotIndex].TryRemoveItem()) 
             { 
                 OnRemovedItemInSlot?.Invoke(slotIndex);
                 OnInventoryChanged?.Invoke();
-                
+
                 return true;
             }
             
@@ -110,15 +116,14 @@ namespace Runtime.InventorySystem
         
         public IPickableItem GetItemInSlotAt(int slotIndex) 
         {
-            for (int i = _slots[slotIndex].Items.Count; i > 0; i--) 
+            Debug.Log(_slots.Count);
+            for (int i = _slots[slotIndex].Items.Count - 1; i >= 0; i--) 
             {
                 if (_slots[slotIndex].Items[i] != null) 
                 {
                     return _slots[slotIndex].Items[i];
                 }
-                
             }
-            
             return null;
         }
         
@@ -126,7 +131,6 @@ namespace Runtime.InventorySystem
         {
             if (_slots.Count >= index) 
             {
-                //CurrentSelectedSlot = _slots[index];
                 CurrentSelectedSlotIndex = index;
             }
         }

@@ -23,17 +23,17 @@ namespace Runtime.Services.CombatSystem
         public Action<Weapon> OnBeforeChangingCurrentWeapon;
         public Action<Weapon> OnAfterChangingCurrentWeapon;
 
-        public void MainAttackUpdate(bool mainAttackInput)
+        public void MainAttackUpdate()
         {
-            if (_currentWeapon != null && mainAttackInput)
+            if (_currentWeapon != null)
             {
                 _currentWeapon.TryAttack();
             }
         }
 
-        public void AlternativeAttackUpdate(bool alternativeAttackInput)
+        public void AlternativeAttackUpdate()
         {
-            if (_currentWeapon != null && alternativeAttackInput)
+            if (_currentWeapon != null)
             {
                 if (_currentWeapon is IAlternateAttackable alternateAttackable)
                 {

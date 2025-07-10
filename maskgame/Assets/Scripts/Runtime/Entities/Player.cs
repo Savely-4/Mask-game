@@ -66,7 +66,7 @@ namespace Runtime.Entities
             _playerInteractor.ItemInteractor.OnTryDropItem += TryDropItem; 
 
             _inventory.OnChangeCurrentSelectedSlot += OnChangeCurrentSelectedSlot;
-            
+            _inventory.OnAddedItemInSlot += OnAddedItemInSlot;
             
             // Ремуваем из оружия (даже если там нету оружия, то ничего не пройзойдет) и выбрасываем из руки текущее оружие
             /*/_inventory.OnDroppedItemInSlot += () =>
@@ -86,6 +86,17 @@ namespace Runtime.Entities
             PerformInteractorControl();
         }
         
+        private void OnAddedItemInSlot(IPickableItem pickableItem, int slotIndex) 
+        {
+            /*/if (_inventory.CurrentSelectedSlotIndex == slotIndex) 
+            {
+                Weapon weapon = pickableItem as Weapon;
+                Rigidbody rigidbodyItem = pickableItem as Rigidbody;
+            
+                _weaponCombatPresenter.SetNewWeapon(weapon);
+                _playerItemHolder.PickupView(rigidbodyItem);
+            }/*/
+        }
         private bool TryDropItem() 
         {
             if (_inventory.TryRemoveItemInCurrentSlot()) 
@@ -95,9 +106,9 @@ namespace Runtime.Entities
             
             return false;
         }
-        private void OnChangeCurrentSelectedSlot(int slotIndex) 
+        private void OnChangeCurrentSelectedSlot(int currentSelectedSlotIndex) 
         {
-            IPickableItem pickableItem = _inventory.GetItemInSlotAt(slotIndex);
+            IPickableItem pickableItem = _inventory.GetItemInSlotAt(currentSelectedSlotIndex);
    
             Weapon weapon = pickableItem as Weapon;
             Rigidbody rigidbodyItem = pickableItem as Rigidbody;

@@ -10,26 +10,25 @@ namespace Runtime.InventorySystem
         private readonly InventoryConfig _config;
         private List<InventorySlot> _slots = new();
 
-        private InventorySlot _currentSelectedSlot;
         private int _currentSelectedSlotIndex;
 
         public int CurrentSpace { get; private set; }
         
-        public InventorySlot CurrentSelectedSlot  
+        public int CurrentSelectedSlotIndex  
         {
-            get => _currentSelectedSlot;
+            get => _currentSelectedSlotIndex;
             
             private set 
             {
-                _currentSelectedSlot = value;
+                _currentSelectedSlotIndex = value;
 
                 OnChangeCurrentSelectedSlot?.Invoke(_currentSelectedSlotIndex);
             }
         }
 
         public event Action OnInventoryChanged;
-        public event Action<ItemData, int> OnAddedItemInSlot;
-        public event Action<ItemData, int> OnTryRemoveItemInSlot;
+        
+        public event Action<IPickableItem, int> OnAddedItemInSlot;
         public event Action<int> OnRemovedItemInSlot;
 
         public event Action<int> OnChangeCurrentSelectedSlot;
@@ -61,7 +60,7 @@ namespace Runtime.InventorySystem
         {  
             if (_slots[index].TryAddItem(newItem)) 
             {
-                OnAddedItemInSlot?.Invoke(newItem.ItemData, index);
+                OnAddedItemInSlot?.Invoke(newItem, index);
                 OnInventoryChanged?.Invoke();
 
                 Debug.Log("Положили в инвентарь");
@@ -73,7 +72,7 @@ namespace Runtime.InventorySystem
 
         public bool TryRemoveItemInCurrentSlot() 
         {
-            return RemoveItemInSlotAt(_currentSelectedSlotIndex) && CurrentSelectedSlot != null;
+            return RemoveItemInSlotAt(CurrentSelectedSlotIndex);
         }
         
         public bool TryRemoveItemInSlot(IPickableItem item) 
@@ -97,9 +96,7 @@ namespace Runtime.InventorySystem
         }
         
         public bool RemoveItemInSlotAt(int slotIndex) 
-        {
-            OnTryRemoveItemInSlot?.Invoke(_slots[slotIndex].ItemData, slotIndex);
-            
+        {   
             if (_slots[slotIndex].TryRemoveItem()) 
             { 
                 OnRemovedItemInSlot?.Invoke(slotIndex);
@@ -129,8 +126,8 @@ namespace Runtime.InventorySystem
         {
             if (_slots.Count >= index) 
             {
-                CurrentSelectedSlot = _slots[index];
-                _currentSelectedSlotIndex = index;
+                //CurrentSelectedSlot = _slots[index];
+                CurrentSelectedSlotIndex = index;
             }
         }
         

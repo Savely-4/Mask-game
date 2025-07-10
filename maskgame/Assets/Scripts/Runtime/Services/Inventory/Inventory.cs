@@ -24,16 +24,14 @@ namespace Runtime.InventorySystem
 
                 if (value == -1) return;
 
-                OnChangeCurrentSelectedSlot?.Invoke(_currentSelectedSlotIndex);
+                OnChangeCurrentSelectedSlot?.Invoke();
             }
         }
 
-        public event Action OnInventoryChanged;
-        
         public event Action<IPickableItem, int> OnAddedItemInSlot;
         public event Action<int> OnRemovedItemInSlot;
 
-        public event Action<int> OnChangeCurrentSelectedSlot;
+        public event Action OnChangeCurrentSelectedSlot;
         
         public Inventory(InventoryConfig config)
         {
@@ -42,9 +40,9 @@ namespace Runtime.InventorySystem
             
             CreateSpace();
 
-            SwitchSlot(-1);
+            SwitchSlot(0);
 
-            Debug.Log("Инвентарь создался на " + CurrentSpace + " слотов");
+            //Debug.Log("Инвентарь создался на " + CurrentSpace + " слотов");
         }
         
         public void AddItemInSlot(IPickableItem newItem)
@@ -62,13 +60,17 @@ namespace Runtime.InventorySystem
         {  
             if (_slots[index].TryAddItem(newItem)) 
             {
-                if(_currentSelectedSlotIndex == -1)
-                    SwitchSlot(0);
+                /*/if(_currentSelectedSlotIndex == -1)
+                    SwitchSlot(0);/*/
+                    
+                if (_currentSelectedSlotIndex == index) 
+                {
+                    OnChangeCurrentSelectedSlot?.Invoke();
+                }
 
                 OnAddedItemInSlot?.Invoke(newItem, index);
-                OnInventoryChanged?.Invoke();
 
-                Debug.Log("Положили в инвентарь");
+                //Debug.Log("Положили в инвентарь");
                 return true;
             }
             
@@ -84,7 +86,7 @@ namespace Runtime.InventorySystem
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
-                for (int j = _slots[i].Items.Count; j >= 0; j--) 
+                for (int j = _slots[i].Items.Count - 1; j >= 0; j--) 
                 {
                     if (_slots[i].Items[j] == item) 
                     {
@@ -106,8 +108,6 @@ namespace Runtime.InventorySystem
             if (_slots[slotIndex].TryRemoveItem()) 
             { 
                 OnRemovedItemInSlot?.Invoke(slotIndex);
-                OnInventoryChanged?.Invoke();
-
                 return true;
             }
             
@@ -116,7 +116,6 @@ namespace Runtime.InventorySystem
         
         public IPickableItem GetItemInSlotAt(int slotIndex) 
         {
-            Debug.Log(_slots.Count);
             for (int i = _slots[slotIndex].Items.Count - 1; i >= 0; i--) 
             {
                 if (_slots[slotIndex].Items[i] != null) 
@@ -124,6 +123,7 @@ namespace Runtime.InventorySystem
                     return _slots[slotIndex].Items[i];
                 }
             }
+            
             return null;
         }
         
@@ -146,7 +146,6 @@ namespace Runtime.InventorySystem
                 
                 Debug.Log($"Размер ивентаря увеличен на {newSpace} слотов");
                 CurrentSpace = newSpace;
-                OnInventoryChanged?.Invoke();
             }
         
             else if (CurrentSpace > newSpace) 
@@ -158,7 +157,6 @@ namespace Runtime.InventorySystem
                 
                 Debug.Log($"Размер ивентаря уменьшен на {newSpace} слотов");
                 CurrentSpace = newSpace;
-                OnInventoryChanged?.Invoke();
             }
         }
         
@@ -166,8 +164,6 @@ namespace Runtime.InventorySystem
         {
             for (int i = 0; i < CurrentSpace; i++)
                     _slots.Add(new InventorySlot());
-            
-            OnInventoryChanged?.Invoke();
         }
     }
 }

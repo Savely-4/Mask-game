@@ -4,7 +4,7 @@ public class PlayerItemHolder
 {
     private readonly Transform _holderPoint;
 
-    private Transform _transformParent;
+    //private Transform _transformParent;
     private Transform _transform;
     
     public PlayerItemHolder(Transform holderPoint)
@@ -21,7 +21,7 @@ public class PlayerItemHolder
             rb.isKinematic = true;
         }
 
-        _transformParent = _transform.parent;
+        //_transformParent = _transform.parent;
         _transform.SetParent(_holderPoint);
         _transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
@@ -34,8 +34,8 @@ public class PlayerItemHolder
             rb.AddForce(_holderPoint.forward * 5f, ForceMode.Impulse);
         }
 
-        _transform.transform.SetParent(_transformParent);
+        _transform.transform.SetParent(null);
         _transform = null;
-        _transformParent = null;
+        //_transformParent = null;
     }
 }

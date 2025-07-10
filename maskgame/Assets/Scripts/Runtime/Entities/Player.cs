@@ -66,14 +66,8 @@ namespace Runtime.Entities
             _playerInteractor.ItemInteractor.OnTryDropItem += TryDropItem; 
 
             _inventory.OnChangeCurrentSelectedSlot += OnChangeCurrentSelectedSlot;
-            _inventory.OnAddedItemInSlot += OnAddedItemInSlot;
-            
-            // Ремуваем из оружия (даже если там нету оружия, то ничего не пройзойдет) и выбрасываем из руки текущее оружие
-            /*/_inventory.OnDroppedItemInSlot += () =>
-            {
-                _weaponCombatPresenter.SetNewWeapon(null);
-                _playerItemHolder.DropView();
-            };/*/
+            //_inventory.OnAddedItemInSlot += OnAddedItemInSlot;
+        
         }
         #endregion
 
@@ -86,18 +80,6 @@ namespace Runtime.Entities
             PerformInteractorControl();
             _weaponCombatPresenter.HandleWeaponActions();
         }
-        
-        private void OnAddedItemInSlot(IPickableItem pickableItem, int slotIndex) 
-        {
-            /*/if (_inventory.CurrentSelectedSlotIndex == slotIndex) 
-            {
-                Weapon weapon = pickableItem as Weapon;
-                Rigidbody rigidbodyItem = pickableItem as Rigidbody;
-            
-                _weaponCombatPresenter.SetNewWeapon(weapon);
-                _playerItemHolder.PickupView(rigidbodyItem);
-            }/*/
-        }
 
         private bool TryDropItem() 
         {
@@ -105,25 +87,26 @@ namespace Runtime.Entities
             {
                 _weaponCombatPresenter.SetNewWeapon(null);
                 _playerItemHolder.DropView();
+                
+                Debug.LogWarning("DropView");
             }
             
             return false;
         }
 
-        private void OnChangeCurrentSelectedSlot(int currentSelectedSlotIndex) 
+        private void OnChangeCurrentSelectedSlot() 
         {
-            IPickableItem pickableItem = _inventory.GetItemInSlotAt(currentSelectedSlotIndex);
+            IPickableItem pickableItem = _inventory.GetItemInSlotAt(_inventory.CurrentSelectedSlotIndex);
 
+            Weapon weapon = pickableItem as Weapon;
+            Component component = pickableItem as Component;
 
-            if (pickableItem is Weapon weapon)
-            {
-                _weaponCombatPresenter.SetNewWeapon(weapon);
-            }
-
-            if (pickableItem is Component component)
-            {
-                _playerItemHolder.PickupView(component.transform);
-            }
+            
+            _weaponCombatPresenter.SetNewWeapon(weapon);
+            _playerItemHolder.PickupView(component.transform);
+            
+            Debug.LogWarning("PickupView");
+            
         }
         
         

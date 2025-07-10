@@ -9,14 +9,4 @@ public class TestObject : MonoBehaviour
     {
         _testStateMachine = new TestStateMachine();
     }
-
-    private void Update()
-    {
-        _testStateMachine?.OnUpdate();
-    }
-
-    private void FixedUpdate()
-    {
-        _testStateMachine?.OnFixedUpdate();
-    }
 }

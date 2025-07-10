@@ -1,7 +1,7 @@
 using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Threading;
 using UnityEngine;
 
 namespace Runtime.Services.StateMachine
@@ -12,36 +12,41 @@ namespace Runtime.Services.StateMachine
 
         private State _currentState;
         private bool _isInTransition = false;
+        private CancellationTokenSource _cts;
 
-        public void OnUpdate()
+        public async UniTask SetState<TState>() where TState : State
         {
-            _currentState?.OnUpdate();
-        }
-
-        public void OnFixedUpdate()
-        {
-            _currentState?.OnFixedUpdate();
-        }
-
-        public async void SetState<TState>() where TState : State
-        {
-            //if (_isInTransition)
-            //{
-            //    Debug.Log("Transition is not possible. Already in progress.");
-            //    return;
-            //}
-
-            if (_currentState != null)
+            if (_isInTransition)
             {
-                await _currentState.OnExitAsync();
+                _cts?.Cancel();
+                Debug.Log("Transition is not possible. Already in progress. Cancel.");
+                return;
             }
 
-            _currentState = GetState<TState>();
+            _isInTransition = true;
+            _cts = new CancellationTokenSource();
 
-            if (_currentState != null)
+            try
             {
-                await _currentState.OnEnterAsync();
+                if (_currentState != null)
+                {
+                    await _currentState.OnExitAsync();
+                }
+
+                _currentState = GetState<TState>();
+
+                if (_currentState != null)
+                {
+                    await _currentState.OnEnterAsync();
+                }
             }
+            finally
+            {
+                _isInTransition = false;
+                _cts.Dispose();
+                _cts = null;
+            }
+
         }
 
         private TState GetState<TState>() where TState : State

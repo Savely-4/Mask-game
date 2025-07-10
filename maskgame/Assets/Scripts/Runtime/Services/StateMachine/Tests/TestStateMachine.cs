@@ -1,3 +1,4 @@
+using Cysharp.Threading.Tasks;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace Runtime.Services.StateMachine
                 { typeof(TestState3), new TestState3(this) }
             };
 
-            SetState<TestState1>();
+            SetState<TestState1>().Forget();
         }
     }
 }

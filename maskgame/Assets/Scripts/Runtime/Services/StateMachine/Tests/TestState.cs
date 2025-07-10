@@ -10,31 +10,31 @@ namespace Runtime.Services.StateMachine
         {
         }
 
-        public override async UniTask OnEnterAsync()
+        protected override async UniTask OnEnterAsyncInState()
         {
-            Debug.Log("TestState1.OnEnter(): Входим в состояние...");
+            Debug.Log("TestState1.OnEnter().Begin");
             await UniTask.Delay(TimeSpan.FromSeconds(1));
-            Debug.Log("TestState1.OnEnter(): Готово");
+            Debug.Log("TestState1.OnEnter().End");
         }
 
-        public override async UniTask OnExitAsync()
+        protected override async UniTask OnExitAsyncInState()
         {
-            Debug.Log("TestState1.OnExit(): Входим в состояние...");
+            Debug.Log("TestState1.OnExit().Begin");
             await UniTask.Delay(TimeSpan.FromSeconds(1));
-            Debug.Log("TestState1.OnExit(): Готово");
+            Debug.Log("TestState1.OnExit().End");
         }
 
-        public override void OnUpdate()
+        protected override void OnUpdate()
         {
             Debug.Log("TestState1.OnUpdate().Begin");
 
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                _stateMachine.SetState<TestState2>();
+                _stateMachine.SetState<TestState2>().Forget();
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                _stateMachine.SetState<TestState3>();
+                _stateMachine.SetState<TestState3>().Forget();
             }
 
             Debug.Log("TestState1.OnUpdate().End");
@@ -47,31 +47,31 @@ namespace Runtime.Services.StateMachine
         {
         }
 
-        public override async UniTask OnEnterAsync()
+        protected override async UniTask OnEnterAsyncInState()
         {
             Debug.Log("TestState2.OnEnter(): Входим в состояние...");
             await UniTask.Delay(TimeSpan.FromSeconds(2));
             Debug.Log("TestState2.OnEnter(): Готово");
         }
 
-        public override async UniTask OnExitAsync()
+        protected override async UniTask OnExitAsyncInState()
         {
             Debug.Log("TestState2.OnExit(): Входим в состояние...");
             await UniTask.Delay(TimeSpan.FromSeconds(2));
             Debug.Log("TestState2.OnExit(): Готово");
         }
 
-        public override void OnUpdate()
+        protected override void OnUpdate()
         {
             Debug.Log("TestState2.OnUpdate().Begin");
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                _stateMachine.SetState<TestState1>();
+                _stateMachine.SetState<TestState1>().Forget();
             }
             else if (Input.GetKeyDown(KeyCode.Alpha3))
             {
-                _stateMachine.SetState<TestState3>();
+                _stateMachine.SetState<TestState3>().Forget();
             }
 
             Debug.Log("TestState2.OnUpdate().End");
@@ -84,31 +84,31 @@ namespace Runtime.Services.StateMachine
         {
         }
 
-        public override async UniTask OnEnterAsync()
+        protected override async UniTask OnEnterAsyncInState()
         {
             Debug.Log("TestState3.OnEnter(): Входим в состояние...");
             await UniTask.Delay(TimeSpan.FromSeconds(3));
             Debug.Log("TestState3.OnEnter(): Готово");
         }
 
-        public override async UniTask OnExitAsync()
+        protected override async UniTask OnExitAsyncInState()
         {
             Debug.Log("TestState3.OnExit(): Входим в состояние...");
             await UniTask.Delay(TimeSpan.FromSeconds(3));
             Debug.Log("TestState3.OnExit(): Готово");
         }
 
-        public override void OnUpdate()
+        protected override void OnUpdate()
         {
             Debug.Log("TestState3.OnUpdate().Begin");
 
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                _stateMachine.SetState<TestState1>();
+                _stateMachine.SetState<TestState1>().Forget();
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                _stateMachine.SetState<TestState2>();
+                _stateMachine.SetState<TestState2>().Forget();
             }
 
             Debug.Log("TestState3.OnUpdate().End");

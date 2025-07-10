@@ -6,17 +6,18 @@ using UnityEngine;
 using Runtime.Entities.WeaponSystem;
 using Runtime.Services.InteractSystem;
 using CameraService = Runtime.Components.CameraService;
+using Runtime.Services.CombatSystem;
 
 namespace Runtime.Entities
 {
     public class Player : MonoBehaviour
     {
-        private PlayerItemHolder _playerItemHolder;
         [SerializeField] private PlayerMovement _movementComponent;
         [SerializeField] private Camera _camera;
         [SerializeField] private PlayerInputKeyboardConfig _inputKeyboardConfig;
         [SerializeField] private PlayerItemInteractorConfig _playerItemInteractorConfig;
         [SerializeField] private InventoryConfig _playerInventoryConfig;
+        [SerializeField] private WeaponCombatPresenterConfig _weaponCombatPresenterConfig;
         
         [Header("Camera")]
         [SerializeField] private CameraConfig _cameraConfig;
@@ -28,9 +29,10 @@ namespace Runtime.Entities
         private CameraService _cameraService;
         private StaminaService _staminaService;
         private PlayerInputKeyboardService _input;
-        private WeaponCombatSystem _weaponCombatSystem;
+        private WeaponCombatPresenter _weaponCombatPresenter;
         private PlayerInteractor _playerInteractor;
         private Inventory _inventory;
+        private PlayerItemHolder _playerItemHolder;
         
         private Vector2 _moveInput;
         private bool cdDash = false;
@@ -47,36 +49,31 @@ namespace Runtime.Entities
         #region Init
         private void InitComponents()
         {
+            var animator = GetComponent<Animator>();    
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        
             _input = new PlayerInputKeyboardService(_inputKeyboardConfig);
             _cameraService = new CameraService(_cameraConfig);
             _staminaService = new StaminaService(_staminaConfig);
             
             _playerInteractor = new PlayerInteractor(_playerItemInteractorConfig);
             _inventory = new Inventory(_playerInventoryConfig);
-            _weaponCombatSystem = new WeaponCombatSystem();
+            _weaponCombatPresenter = new WeaponCombatPresenter(_weaponCombatPresenterConfig, animator);
             _playerItemHolder = new PlayerItemHolder(transform);
 
             _playerInteractor.ItemInteractor.OnPickupItem += _inventory.AddItemInSlot;
-            _playerInteractor.ItemInteractor.OnTryDropItem += () =>
-            {
-                _inventory.RemoveItemInSlot(true);
-            };
+            _playerInteractor.ItemInteractor.OnTryDropItem += TryDropItem; 
+
+            _inventory.OnChangeCurrentSelectedSlot += OnChangeCurrentSelectedSlot;
             
-            //Убери комментарии когда прочитаешь
-            // Тут я передаю оружие из текущего слота если оно таковым является, если это просто предмет который может поместится в руке, но не оружие, то эквипаю в айтем холдер
-            _inventory.OnChangeCurrentSelectedSlot += inventorySlot =>
-            {
-                var weapon = inventorySlot.Items[0] as Weapon;
-                _weaponCombatSystem.CurrentWeapon = weapon;
-                _playerItemHolder.Equip(inventorySlot.Items[0]);
-            };
             
             // Ремуваем из оружия (даже если там нету оружия, то ничего не пройзойдет) и выбрасываем из руки текущее оружие
-            _inventory.OnDroppedItemInSlot += () =>
+            /*/_inventory.OnDroppedItemInSlot += () =>
             {
-                _weaponCombatSystem.CurrentWeapon = null;
-                _playerItemHolder.UnEquip();
-            };
+                _weaponCombatPresenter.SetNewWeapon(null);
+                _playerItemHolder.DropView();
+            };/*/
         }
         #endregion
 
@@ -89,10 +86,34 @@ namespace Runtime.Entities
             PerformInteractorControl();
         }
         
+        private bool TryDropItem() 
+        {
+            if (_inventory.TryRemoveItemInCurrentSlot()) 
+            {
+                _playerItemHolder.DropView();
+            }
+            
+            return false;
+        }
+        private void OnChangeCurrentSelectedSlot(int slotIndex) 
+        {
+            IPickableItem pickableItem = _inventory.GetItemInSlotAt(slotIndex);
+   
+            Weapon weapon = pickableItem as Weapon;
+            Rigidbody rigidbodyItem = pickableItem as Rigidbody;
+            
+            _weaponCombatPresenter.SetNewWeapon(weapon);
+            _playerItemHolder.PickupView(rigidbodyItem);
+        }
+        
+        
         private void PerformInteractorControl() 
         {
-            _playerInteractor.ItemInteractor.PickupUpdate(transform.position, _input.PickupButtonPressed());
-            _playerInteractor.ItemInteractor.DropUpdate(transform.position, _input.DropButtonPressed());
+            Vector3 pos = _camera.ScreenPointToRay(Input.mousePosition).origin;
+            Vector3 dir = _camera.ScreenPointToRay(Input.mousePosition).direction;
+        
+            _playerInteractor.ItemInteractor.PickupUpdate(pos, dir, _input.PickupButtonPressed());
+            _playerInteractor.ItemInteractor.DropUpdate(_input.DropButtonPressed());
         }
         
         private void UpdateCamera()

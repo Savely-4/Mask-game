@@ -11,16 +11,17 @@ namespace Runtime.InventorySystem
 
         public bool IsEmpty => ItemData == null;
 
-        public bool TryAddItem(IPickableItem item, ItemData newItemData)
+        public bool TryAddItem(IPickableItem item)
         {
-            if (ItemData != null)
+            if (IsEmpty || item.ItemData.StackCount > CountItems)
             {
-                ItemData = newItemData;
+                ItemData = item.ItemData;
+                CountItems++;
+                Items.Add(item);
+                return true;
             }
             
-            Items.Add(item);
-            CountItems++;
-            return true;
+            return false;
         }
         
         public bool TryRemoveItem() 

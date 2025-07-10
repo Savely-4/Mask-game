@@ -1,31 +1,36 @@
-using Runtime.InventorySystem;
 using UnityEngine;
 
 public class PlayerItemHolder
 {
     private readonly Transform _holderPoint;
 
-    private IPickableItem _currentObjInHand;
+    private Rigidbody _body;
     
     public PlayerItemHolder(Transform holderPoint)
     {
         _holderPoint = holderPoint;
     }
 
-    public void Equip(IPickableItem pickableItem)
+    public void PickupView(Rigidbody body)
     {
-        var mono = pickableItem as MonoBehaviour;
-        
-        if (mono != null) 
+        _body = body;
+
+        if (_body != null) 
         {
-            _currentObjInHand = pickableItem;
-            mono.transform.SetParent(_holderPoint);
-            mono.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
+            _body.isKinematic = true;
         }
+        
+        _body.transform.SetParent(_holderPoint);
+        _body.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
     }
     
-    public void UnEquip() 
+    public void DropView() 
     {
-       // Логика бросания оружия
+        if (_body != null) 
+        {
+            _body.isKinematic = false;
+            
+            _body.AddForce(_holderPoint.forward * 5f, ForceMode.Impulse);
+        }
     }
 }

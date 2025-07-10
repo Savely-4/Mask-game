@@ -1,8 +1,10 @@
+using System;
+using Runtime.Entities.WeaponSystem;
 using Runtime.Interfaces.WeaponSystem.Melee;
 
-namespace Runtime.Entities.WeaponSystem
+namespace Runtime.Services.CombatSystem
 {
-    public class WeaponCombatSystem
+    public class WeaponCombatModel
     {
         private Weapon _currentWeapon;
 
@@ -12,10 +14,15 @@ namespace Runtime.Entities.WeaponSystem
 
             set
             {
+                OnBeforeChangingCurrentWeapon?.Invoke(_currentWeapon);
                 _currentWeapon = value;
+                OnAfterChangingCurrentWeapon?.Invoke(_currentWeapon);
             }
         }
-        
+
+        public Action<Weapon> OnBeforeChangingCurrentWeapon;
+        public Action<Weapon> OnAfterChangingCurrentWeapon;
+
         public void MainAttackUpdate(bool mainAttackInput)
         {
             if (_currentWeapon != null && mainAttackInput)
@@ -35,4 +42,5 @@ namespace Runtime.Entities.WeaponSystem
             }
         }
     }
+
 }

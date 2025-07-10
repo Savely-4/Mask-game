@@ -12,28 +12,29 @@ namespace Runtime.Services.InteractSystem
         protected float _lastDropTime = Mathf.NegativeInfinity;
 
         public event Action<IPickableItem> OnPickupItem;
-        public event Action OnTryDropItem;
+        public event Func<bool> OnTryDropItem;
         
         public ItemInteractor(ItemInteractorConfig config)
         {
             _config = config;
         }
 
-        public virtual void PickupUpdate(Vector3 pickupPoint, bool isPickup) 
+        public virtual void PickupUpdate(Vector3 pickupPoint, Vector3 direction, bool isPickup) 
         {
             if (isPickup && IsTimePassed(_config.PickupRate, ref _lastPickupTime))
             {  
-                if (Physics.Raycast(pickupPoint,  pickupPoint.normalized, out RaycastHit hit, _config.PickupDistance)) 
+                if (Physics.Raycast(pickupPoint, direction.normalized, out RaycastHit hit, _config.PickupDistance)) 
                 {                
                     if (hit.collider.TryGetComponent<IPickableItem>(out var pickableItem)) 
                     {
                         OnPickupItem?.Invoke(pickableItem);
+                        Debug.Log("Мы попали в предмет лучем");
                     }
                 }
             }
         }
         
-        public virtual void DropUpdate(Vector3 dropPoint, bool isDrop) 
+        public virtual void DropUpdate(bool isDrop) 
         {
             if (isDrop)
             {

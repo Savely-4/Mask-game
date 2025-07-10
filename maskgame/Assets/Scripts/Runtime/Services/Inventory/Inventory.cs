@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Runtime.Configs;
 using System;
-using Runtime.Services.InteractSystem;
 
 namespace Runtime.InventorySystem 
 {
@@ -24,17 +23,16 @@ namespace Runtime.InventorySystem
             {
                 _currentSelectedSlot = value;
 
-                OnChangeCurrentSelectedSlot?.Invoke(_currentSelectedSlot);
+                OnChangeCurrentSelectedSlot?.Invoke(_currentSelectedSlotIndex);
             }
         }
 
         public event Action OnInventoryChanged;
-        public event Action<ItemData> OnAddedItemInSlot;
-        public event Action<ItemData> OnTryRemoveItemInSlot;
-        public event Action OnDroppedItemInSlot;
-        public event Action OnRemovedItemInSlot;
+        public event Action<ItemData, int> OnAddedItemInSlot;
+        public event Action<ItemData, int> OnTryRemoveItemInSlot;
+        public event Action<int> OnRemovedItemInSlot;
 
-        public event Action<InventorySlot> OnChangeCurrentSelectedSlot;
+        public event Action<int> OnChangeCurrentSelectedSlot;
         
         public Inventory(InventoryConfig config)
         {
@@ -44,51 +42,87 @@ namespace Runtime.InventorySystem
             CreateSpace();
 
             SwitchSlot(0);
+
+            Debug.Log("Инвентарь создался на " + CurrentSpace + " слотов");
         }
         
         public void AddItemInSlot(IPickableItem newItem)
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
-                AddItemInSlotAt(newItem, i);
-            }
-        }
-        
-        public void AddItemInSlotAt(IPickableItem newItem, int index) 
-        {
-            if (_slots[index].IsEmpty || newItem.ItemData.StackCount > _slots[index].CountItems) 
-            {
-                if (_slots[index].TryAddItem(newItem, newItem.ItemData)) 
+                if (TryAddItemInSlotAt(newItem, i)) 
                 {
-                    OnAddedItemInSlot?.Invoke(newItem.ItemData);
-                    OnInventoryChanged?.Invoke();
+                    break;
                 }
             }
         }
+        
+        public bool TryAddItemInSlotAt(IPickableItem newItem, int index) 
+        {  
+            if (_slots[index].TryAddItem(newItem)) 
+            {
+                OnAddedItemInSlot?.Invoke(newItem.ItemData, index);
+                OnInventoryChanged?.Invoke();
 
-        public void RemoveItemInSlot(bool isDropping = false, int index = 0) 
+                Debug.Log("Положили в инвентарь");
+                return true;
+            }
+            
+            return false;
+        }
+
+        public bool TryRemoveItemInCurrentSlot() 
+        {
+            return RemoveItemInSlotAt(_currentSelectedSlotIndex) && CurrentSelectedSlot != null;
+        }
+        
+        public bool TryRemoveItemInSlot(IPickableItem item) 
         {
             for (int i = 0; i < _slots.Count; i++) 
             {
-                if (isDropping)
-                    RemoveItemInSlotAt(_currentSelectedSlotIndex, true);
-                else
-                    RemoveItemInSlotAt(index, false);
+                for (int j = _slots[i].Items.Count; j >= 0; j--) 
+                {
+                    if (_slots[i].Items[j] == item) 
+                    {
+                        RemoveItemInSlotAt(i);
+
+                        return true;
+                    }
+                    
+                }
+                
             }
+
+            return false;
         }
         
-        public void RemoveItemInSlotAt(int index, bool isDropping) 
+        public bool RemoveItemInSlotAt(int slotIndex) 
         {
-            OnTryRemoveItemInSlot?.Invoke(_slots[index].ItemData);
+            OnTryRemoveItemInSlot?.Invoke(_slots[slotIndex].ItemData, slotIndex);
             
-            if (_slots[index].TryRemoveItem()) 
-            {
-                if(isDropping)
-                    OnDroppedItemInSlot?.Invoke();
-                
-                OnRemovedItemInSlot?.Invoke();
+            if (_slots[slotIndex].TryRemoveItem()) 
+            { 
+                OnRemovedItemInSlot?.Invoke(slotIndex);
                 OnInventoryChanged?.Invoke();
+                
+                return true;
             }
+            
+            return false;
+        }
+        
+        public IPickableItem GetItemInSlotAt(int slotIndex) 
+        {
+            for (int i = _slots[slotIndex].Items.Count; i > 0; i--) 
+            {
+                if (_slots[slotIndex].Items[i] != null) 
+                {
+                    return _slots[slotIndex].Items[i];
+                }
+                
+            }
+            
+            return null;
         }
         
         public void SwitchSlot(int index) 

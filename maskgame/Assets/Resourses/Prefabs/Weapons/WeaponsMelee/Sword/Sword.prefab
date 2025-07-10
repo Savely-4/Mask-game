@@ -53,9 +53,11 @@ MonoBehaviour:
   HittableLayers:
     serializedVersion: 2
     m_Bits: 4294967295
+  <AttackPoint>k__BackingField: {fileID: 6362480290080659082}
   <NumberCollisions>k__BackingField: 3
   <DelayAttack>k__BackingField: 0.35
   <ActiveTimeAttack>k__BackingField: 0.5
+  <ItemData>k__BackingField: {fileID: 11400000, guid: 6ed99ff42cd10a6468b9053442adeed0, type: 2}
 --- !u!136 &3868979672957411887
 CapsuleCollider:
   m_ObjectHideFlags: 0

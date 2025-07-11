@@ -38,11 +38,9 @@ namespace Runtime.InventorySystem
             _config = config;
             CurrentSpace = _config.Space;
             
-            CreateSpace();
+            AddSlots(CurrentSpace);
 
             SwitchSlot(0);
-
-            //Debug.Log("Инвентарь создался на " + CurrentSpace + " слотов");
         }
         
         public void AddItemInSlot(IPickableItem newItem)
@@ -129,41 +127,40 @@ namespace Runtime.InventorySystem
         
         public void SwitchSlot(int index) 
         {
-            if (_slots.Count >= index) 
+            if (_slots.Count > index && index > 0 && index != CurrentSelectedSlotIndex) 
             {
                 CurrentSelectedSlotIndex = index;
             }
         }
         
-        public void SetNewSpace(int newSpace) 
+        public void SetNewSpace(int newSpace)
         {
-            if (CurrentSpace < newSpace) 
+            if (newSpace > CurrentSpace)
             {
-                for (int i = CurrentSpace + 1; i <= newSpace; i++) 
-                {
-                    _slots.Add(new InventorySlot()); 
-                }
-                
-                Debug.Log($"Размер ивентаря увеличен на {newSpace} слотов");
-                CurrentSpace = newSpace;
+                AddSlots(newSpace - CurrentSpace);
             }
-        
-            else if (CurrentSpace > newSpace) 
+            else if (newSpace < CurrentSpace)
             {
-                for (int i = CurrentSpace; i > newSpace; i--) 
-                {
-                    _slots.RemoveAt(i);
-                }
-                
-                Debug.Log($"Размер ивентаря уменьшен на {newSpace} слотов");
-                CurrentSpace = newSpace;
+                RemoveSlots(CurrentSpace - newSpace);
             }
+            
+            CurrentSpace = newSpace;
         }
-        
-        private void CreateSpace() 
+
+        private void AddSlots(int count)
         {
-            for (int i = 0; i < CurrentSpace; i++)
-                    _slots.Add(new InventorySlot());
+            for (int i = 0; i < count; i++)
+                _slots.Add(new InventorySlot());
+                
+            Debug.Log($"Инвентарь увеличен на {count} слотов");
+        }
+
+        private void RemoveSlots(int count)
+        {
+            for (int i = 0; i < count; i++)
+                _slots.RemoveAt(_slots.Count - 1);
+                
+            Debug.Log($"Инвентарь уменьшен на {count} слотов");
         }
     }
 }

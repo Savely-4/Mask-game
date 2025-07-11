@@ -18,6 +18,7 @@ namespace Runtime.Entities
         [SerializeField] private PlayerItemInteractorConfig _playerItemInteractorConfig;
         [SerializeField] private InventoryConfig _playerInventoryConfig;
         [SerializeField] private WeaponCombatPresenterConfig _weaponCombatPresenterConfig;
+        [SerializeField] private PlayerItemHolderConfig _playerItemHolderConfig;
         
         [Header("Camera")]
         [SerializeField] private CameraConfig _cameraConfig;
@@ -60,7 +61,7 @@ namespace Runtime.Entities
             _playerInteractor = new PlayerInteractor(_playerItemInteractorConfig);
             _inventory = new Inventory(_playerInventoryConfig);
             _weaponCombatPresenter = new WeaponCombatPresenter(_weaponCombatPresenterConfig, animator, _input);
-            _playerItemHolder = new PlayerItemHolder(transform);
+            _playerItemHolder = new PlayerItemHolder(_playerItemHolderConfig, transform);
 
             _playerInteractor.ItemInteractor.OnPickupItem += _inventory.AddItemInSlot;
             _playerInteractor.ItemInteractor.OnTryDropItem += TryDropItem; 

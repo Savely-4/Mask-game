@@ -5438,6 +5438,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8317790484971122337}
     - target: {fileID: 1180621802409617417, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
+      propertyPath: _playerItemHolderConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c6229e075e241249bf023ac827235f6, type: 2}
+    - target: {fileID: 1180621802409617417, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
       propertyPath: _weaponCombatPresenterConfig
       value: 
       objectReference: {fileID: 11400000, guid: b19750bdbceafaa46beffa215d9bc896, type: 2}

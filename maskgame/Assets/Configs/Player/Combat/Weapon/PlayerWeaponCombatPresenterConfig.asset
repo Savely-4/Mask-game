@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3416832e5e45f814996668d21540662d, type: 3}
-  m_Name: PlayerWeaponAnimatorConfig
+  m_Script: {fileID: 11500000, guid: 1ff4b5cb78d5b1242bd22ea0471370ed, type: 3}
+  m_Name: PlayerWeaponCombatPresenterConfig
   m_EditorClassIdentifier: 
+  <WeaponCombatViewConfig>k__BackingField: {fileID: 11400000, guid: 73c760938f8d5e641b602fb24d7fa9c1, type: 2}
   _weaponAnimationsPair:
   - Weapon: {fileID: 7524288722170071949, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
     AnimationsConfig: {fileID: 11400000, guid: 80937157eef1b354c80015bf96def046, type: 2}

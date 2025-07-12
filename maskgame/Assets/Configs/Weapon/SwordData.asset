@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: SwordData
   m_EditorClassIdentifier: 
   ItemName: Sword
-  Icon: {fileID: 0}
   ItemType: 0
-  IsStackable: 0
-  Prefab: {fileID: 0}
+  StackCount: 1
+  Object: {fileID: 582861897108245775, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}

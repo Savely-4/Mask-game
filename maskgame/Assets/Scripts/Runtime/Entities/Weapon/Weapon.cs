@@ -1,5 +1,4 @@
 using System;
-using Runtime.InventorySystem;
 using UnityEngine;
 
 namespace Runtime.Entities.WeaponSystem
@@ -44,7 +43,7 @@ namespace Runtime.Entities.WeaponSystem
     
         private bool HasTimePassed() 
         {
-            return _lastAttackTime <= Time.time + 1f / AttackRate;
+            return Time.time >= _lastAttackTime + 1f / AttackRate;
         }
     }
 }

@@ -1,6 +1,6 @@
 using System;
+using Runtime.Entities.WeaponSystem;
 using UnityEngine;
-using WeaponSystem;
 
 namespace Utils.CustomCollections
 {

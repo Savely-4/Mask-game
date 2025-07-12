@@ -6,6 +6,7 @@ using UnityEngine;
 public class PlayerItemHolderConfig : ScriptableObject
 {
     [SerializeField] private List<LocalOrientationObjects> _localOrientationObjects;
+    [field: SerializeField] public Vector3 HolderPointOffset { get; private set; }
     
     public Dictionary<Type, Orientation> LocalOrientationObjects 
     {

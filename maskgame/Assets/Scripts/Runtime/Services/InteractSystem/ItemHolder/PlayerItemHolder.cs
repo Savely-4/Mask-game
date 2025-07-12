@@ -19,7 +19,6 @@ public class PlayerItemHolder
     private readonly PlayerItemHolderConfig _config;
     private readonly Transform _holderPoint;
 
-    //private Transform _transformParent;
     private Transform _transform;
     
     public PlayerItemHolder(PlayerItemHolderConfig config, Transform holderPoint)

@@ -61,7 +61,7 @@ namespace Runtime.Entities
             _playerInteractor = new PlayerInteractor(_playerItemInteractorConfig);
             _inventory = new Inventory(_playerInventoryConfig);
             _weaponCombatPresenter = new WeaponCombatPresenter(_weaponCombatPresenterConfig, animator, _input);
-            _playerItemHolder = new PlayerItemHolder(_playerItemHolderConfig, transform);
+            _playerItemHolder = new PlayerItemHolder(_playerItemHolderConfig, animator.GetBoneTransform(HumanBodyBones.RightHand));
 
             _playerInteractor.ItemInteractor.OnPickupItem += _inventory.AddItemInSlot;
             _playerInteractor.ItemInteractor.OnTryDropItem += TryDropItem; 

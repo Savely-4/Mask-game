@@ -38,28 +38,29 @@ public class PlayerItemHolder
 
         //_transformParent = _transform.parent;
 
-        Vector3 pos = Vector3.zero;
-        Quaternion rot = Quaternion.identity;
+        Vector3 localPosition = _config.HolderPointOffset;
+        Quaternion localRotation = Quaternion.Euler(_config.HolderPointOrientation);
         
-        if (_config.LocalOrientationObjects.TryGetValue(transform.GetType(), out var orientation)) 
+        /*/if (_config.LocalOrientationObjects.TryGetValue(transform.GetType(), out var orientation)) 
         {
-            pos = orientation.Position;
-            rot = orientation.Rotation;
-        }
+            localPosition = orientation.Position;
+            localRotation = orientation.Rotation;
+        }/*/
 
         _transform.SetParent(_holderPoint);
-        _transform.SetLocalPositionAndRotation(pos, rot);
+        _transform.SetLocalPositionAndRotation(localPosition, localRotation);
     }
     
     public void DropView() 
     {
+        _transform.transform.SetParent(null);
+        
         if(_transform.TryGetComponent(out Rigidbody rb))
         {
             rb.isKinematic = false;
             rb.AddForce(_holderPoint.forward * 5f, ForceMode.Impulse);
         }
 
-        _transform.transform.SetParent(null);
         _transform = null;
         //_transformParent = null;
     }

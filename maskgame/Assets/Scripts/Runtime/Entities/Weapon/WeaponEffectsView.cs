@@ -31,13 +31,15 @@ namespace Runtime.Services.WeaponSystem
             Instantiate(_flashEffect, WeaponModel.AttackPoint.position, Quaternion.identity);
         }
     
-        private void HitEffectPlay(Collision[] targets) 
+        private void HitEffectPlay(HitTarget3D target) 
         {
-            for (int i = 0; i < targets.Length; i++) 
+            int countContacts = target.Collision.contactCount;
+        
+            for (int i = 0; i < countContacts; i++) 
             {
-                Vector3 normal = targets[i].contacts[0].normal;
-                Vector3 position = targets[i].contacts[0].point;
-            
+                Vector3 normal = target.Collision.contacts[i].normal;
+                Vector3 position = target.Collision.contacts[i].point;
+   
                 Instantiate(_hitEffect, position, Quaternion.LookRotation(normal));
             }
         

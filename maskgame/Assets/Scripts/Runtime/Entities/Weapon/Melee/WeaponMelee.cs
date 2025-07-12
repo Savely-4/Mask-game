@@ -43,12 +43,13 @@ namespace Runtime.Entities.WeaponSystem.Melee
             _activeAttack = false;
         }
 
+
         private void OnCollisionEnter(Collision collision)
         {
-            if (!_activeAttack) return;
+            if (!_activeAttack) return; 
     
-            if ((HittableLayers.value & (1 << collision.gameObject.layer)) == 0)
-                return;
+            /*/if ((HittableLayers.value & (1 << collision.gameObject.layer)) == 0)
+                return;/*/
             
             if (_alreadyHit.Contains(collision.collider))
                 return;
@@ -59,7 +60,8 @@ namespace Runtime.Entities.WeaponSystem.Melee
                 return;
 
             _currentNumberCollisions++;
-            OnHitTargets(collision);
+            OnHitTarget(new HitTarget3D { Collider = collision.collider, Collision = collision });
         }
+
     }
 }

@@ -236,7 +236,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 256600551}
   serializedVersion: 5
-  m_Mass: 500
+  m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -639,16 +639,28 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 600927629107983081, guid: 0271f35b2c5001142b21d1c4f3e2db35, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 600927629107983081, guid: 0271f35b2c5001142b21d1c4f3e2db35, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 600927629107983081, guid: 0271f35b2c5001142b21d1c4f3e2db35, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 600927629107983081, guid: 0271f35b2c5001142b21d1c4f3e2db35, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.76
+      value: -1.56
       objectReference: {fileID: 0}
     - target: {fileID: 600927629107983081, guid: 0271f35b2c5001142b21d1c4f3e2db35, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.144
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 600927629107983081, guid: 0271f35b2c5001142b21d1c4f3e2db35, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.09
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 600927629107983081, guid: 0271f35b2c5001142b21d1c4f3e2db35, type: 3}
       propertyPath: m_LocalRotation.w
@@ -883,5 +895,5 @@ SceneRoots:
   - {fileID: 3430642439191634505}
   - {fileID: 2076549079054282086}
   - {fileID: 1784041376}
-  - {fileID: 1120173445573660610}
   - {fileID: 256600555}
+  - {fileID: 1120173445573660610}

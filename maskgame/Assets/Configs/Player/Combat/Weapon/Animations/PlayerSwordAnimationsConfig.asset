@@ -13,6 +13,4 @@ MonoBehaviour:
   m_Name: PlayerSwordAnimationsConfig
   m_EditorClassIdentifier: 
   <MainAttackAnimations>k__BackingField:
-  - Attack1
-  - Attack2
-  - Attack3
+  - SwordAttack1

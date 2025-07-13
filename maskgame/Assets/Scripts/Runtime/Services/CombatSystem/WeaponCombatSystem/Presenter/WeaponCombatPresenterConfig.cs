@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Runtime.Entities.WeaponSystem;
 using UnityEngine;
@@ -12,18 +13,20 @@ namespace Runtime.Services.CombatSystem
         
         [SerializeField] private List<WeaponStringsPair> _weaponAnimationsPair;
         
-        public Dictionary<Weapon, WeaponAnimationsConfig> WeaponAnimations 
+        public Dictionary<Type, WeaponAnimationsConfig> WeaponAnimations 
         {
             get 
             {
-                Dictionary<Weapon, WeaponAnimationsConfig> dictionary = new();
+                Dictionary<Type, WeaponAnimationsConfig> dictionary = new();
                 
                 foreach (var pair in _weaponAnimationsPair)
                 {
-                    if (!dictionary.ContainsKey(pair.Weapon))
+                    if (!dictionary.ContainsKey(pair.Weapon.GetType()))
                     {
-                        dictionary.Add(pair.Weapon, pair.AnimationsConfig);
+                        dictionary.Add(pair.Weapon.GetType(), pair.AnimationsConfig);
+                        Debug.Log(pair.Weapon.GetType());
                     }
+
                 }
                 
                 return dictionary;

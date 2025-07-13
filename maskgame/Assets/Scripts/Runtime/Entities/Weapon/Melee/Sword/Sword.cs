@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Runtime.Interfaces.WeaponSystem.Melee;
 using Runtime.InventorySystem;
 using UnityEngine;
@@ -19,7 +17,13 @@ namespace Runtime.Entities.WeaponSystem.Melee
         {
             base.OnHitTarget(hitTarget);
             
+            byte r = (byte)Random.Range(0, 255);
+            byte g = (byte)Random.Range(0, 255);
+            byte b = (byte)Random.Range(0, 255);
             
+            Color32 randColor = new(r, g, b, 1);
+
+            hitTarget.Collider.gameObject.GetComponent<MeshRenderer>().material.color = randColor;
         }
         
     }

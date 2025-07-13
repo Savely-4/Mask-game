@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using Runtime.Entities.WeaponSystem;
 using UnityEngine;
 
 namespace Runtime.Entities.WeaponSystem.Melee

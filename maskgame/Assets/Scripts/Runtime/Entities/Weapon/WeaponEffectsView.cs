@@ -28,7 +28,7 @@ namespace Runtime.Services.WeaponSystem
 
         private void AttackEffectPlay() 
         {
-            Instantiate(_flashEffect, WeaponModel.AttackPoint.position, Quaternion.identity);
+            //Instantiate(_flashEffect, WeaponModel.AttackPoint.position, Quaternion.identity);
         }
     
         private void HitEffectPlay(HitTarget3D target) 
@@ -40,7 +40,8 @@ namespace Runtime.Services.WeaponSystem
                 Vector3 normal = target.Collision.contacts[i].normal;
                 Vector3 position = target.Collision.contacts[i].point;
    
-                Instantiate(_hitEffect, position, Quaternion.LookRotation(normal));
+                var hitObj = Instantiate(_hitEffect, position, Quaternion.LookRotation(normal));
+                Destroy(hitObj, 3);
             }
         
         }

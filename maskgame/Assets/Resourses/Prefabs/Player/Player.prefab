@@ -448,20 +448,8 @@ MonoBehaviour:
   _playerItemInteractorConfig: {fileID: 11400000, guid: 449212ec022f2a6438d9d37c226edfa3, type: 2}
   _playerInventoryConfig: {fileID: 11400000, guid: 8e6e74544a729e94fb216f111c8a48a9, type: 2}
   _weaponCombatPresenterConfig: {fileID: 11400000, guid: b19750bdbceafaa46beffa215d9bc896, type: 2}
-  _playerItemHolderConfig: {fileID: 0}
-  _cameraConfig:
-    CameraOffsetY: 1.38
-    CameraSmoothnees: 1.25
-    CameraSensitivity: 2
-    MaxSensitivity: 1
-    RecoverySmooth: 10
-    BobbingSmooth: 1
-    SlantZAmplitude: 3
-    MaxZAmplitude: 3
-    WalkAmplitude: 0.1
-    WalkBobbingSpeed: 5
-    StayAmplitude: 0.1
-    StayBobbingSpeed: 2
+  _playerItemHolderConfig: {fileID: 11400000, guid: 0c6229e075e241249bf023ac827235f6, type: 2}
+  _cameraConfig: {fileID: 11400000, guid: f2b7ac3fc12e0054dba71adadc583307, type: 2}
   _staminaConfig: {fileID: 11400000, guid: ba0077d7203630c47b93326aa12ae202, type: 2}
 --- !u!95 &5920067215986590504
 Animator:

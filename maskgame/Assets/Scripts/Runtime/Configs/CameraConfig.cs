@@ -3,13 +3,13 @@ using UnityEngine;
 
 namespace Runtime.Configs
 {
-    [Serializable]
-    public class CameraConfig
+    [CreateAssetMenu(fileName = "CameraConfig", menuName = "Scriptable Objects/Player/Camera Config")]
+    public class CameraConfig : ScriptableObject
     {
         [field: SerializeField] public float CameraOffsetY = 0.5f;
         [field: SerializeField] public float CameraSmoothnees = 1.25f;
         [field: SerializeField] public float CameraSensitivity = 2f;
-        [field: SerializeField] public float MaxSensitivity =1f;
+        [field: SerializeField] public float MaxSensitivity = 1f;
         [field: SerializeField] public float RecoverySmooth = 2f;
         [field: SerializeField] public float BobbingSmooth = 1f;
         [field: SerializeField] public float SlantZAmplitude = 0.1f;

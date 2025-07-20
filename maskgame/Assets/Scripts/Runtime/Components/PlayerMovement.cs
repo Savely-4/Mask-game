@@ -5,6 +5,8 @@ namespace Runtime.Components
 {
     public class PlayerMovement : MonoBehaviour
     {
+        private const float VERTICAL_SPEED_WHEN_GROUNDED = -1;
+
         private CharacterController _characterController;
 
         private Vector2 movementInput;
@@ -47,7 +49,7 @@ namespace Runtime.Components
             if (IsGrounded)
             {
                 jumpsLeft = maxJumps;
-                verticalVelocityValue = _characterController.velocity.y;
+                verticalVelocityValue = VERTICAL_SPEED_WHEN_GROUNDED;
             }
         }
 

@@ -8928,6 +8928,18 @@ PrefabInstance:
       propertyPath: _camera
       value: 
       objectReference: {fileID: 2024099057}
+    - target: {fileID: 1180621802409617417, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
+      propertyPath: _playerItemHolderConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: 0c6229e075e241249bf023ac827235f6, type: 2}
+    - target: {fileID: 1180621802409617417, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
+      propertyPath: _weaponCombatPresenterConfig
+      value: 
+      objectReference: {fileID: 11400000, guid: b19750bdbceafaa46beffa215d9bc896, type: 2}
+    - target: {fileID: 1180621802409617417, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
+      propertyPath: _cameraConfig.CameraSmoothnees
+      value: 5.25
+      objectReference: {fileID: 0}
     - target: {fileID: 2896729392740909748, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -16066,7 +16078,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!20 &2024099057
 Camera:
   m_ObjectHideFlags: 0

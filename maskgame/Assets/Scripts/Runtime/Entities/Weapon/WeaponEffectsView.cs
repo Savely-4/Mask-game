@@ -28,17 +28,20 @@ namespace Runtime.Services.WeaponSystem
 
         private void AttackEffectPlay() 
         {
-            Instantiate(_flashEffect, WeaponModel.AttackPoint.position, Quaternion.identity);
+            //Instantiate(_flashEffect, WeaponModel.AttackPoint.position, Quaternion.identity);
         }
     
-        private void HitEffectPlay(Collision[] targets) 
+        private void HitEffectPlay(HitTarget3D target) 
         {
-            for (int i = 0; i < targets.Length; i++) 
+            int countContacts = target.Collision.contactCount;
+        
+            for (int i = 0; i < countContacts; i++) 
             {
-                Vector3 normal = targets[i].contacts[0].normal;
-                Vector3 position = targets[i].contacts[0].point;
-            
-                Instantiate(_hitEffect, position, Quaternion.LookRotation(normal));
+                Vector3 normal = target.Collision.contacts[i].normal;
+                Vector3 position = target.Collision.contacts[i].point;
+   
+                var hitObj = Instantiate(_hitEffect, position, Quaternion.LookRotation(normal));
+                Destroy(hitObj, 3);
             }
         
         }

@@ -20,6 +20,7 @@ namespace Runtime.Services.CombatSystem
         {
             int randIndex = UnityEngine.Random.Range(0, attackAnimationsName.Length);
 
+            Debug.Log(attackAnimationsName[randIndex]);
             _animator.SetTrigger(attackAnimationsName[randIndex]);
 
         }

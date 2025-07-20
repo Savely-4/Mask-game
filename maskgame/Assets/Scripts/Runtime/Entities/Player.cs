@@ -61,7 +61,7 @@ namespace Runtime.Entities
             _playerInteractor = new PlayerInteractor(_playerItemInteractorConfig);
             _inventory = new Inventory(_playerInventoryConfig);
             _weaponCombatPresenter = new WeaponCombatPresenter(_weaponCombatPresenterConfig, animator, _input);
-            _playerItemHolder = new PlayerItemHolder(_playerItemHolderConfig, transform);
+            _playerItemHolder = new PlayerItemHolder(_playerItemHolderConfig, GetHolderPoint());
 
             _playerInteractor.ItemInteractor.OnPickupItem += _inventory.AddItemInSlot;
             _playerInteractor.ItemInteractor.OnTryDropItem += TryDropItem; 
@@ -81,7 +81,18 @@ namespace Runtime.Entities
             PerformInteractorControl();
             _weaponCombatPresenter.HandleWeaponActions();
         }
-
+        private Transform GetHolderPoint() 
+        {
+            foreach (var child in GetComponentsInChildren<Transform>()) 
+            {
+                if (child.name == _playerItemHolderConfig.HolderPointName) 
+                {
+                    return child;
+                }
+            }
+            
+            return null;
+        }
         private bool TryDropItem() 
         {
             if (_inventory.TryRemoveItemInCurrentSlot()) 

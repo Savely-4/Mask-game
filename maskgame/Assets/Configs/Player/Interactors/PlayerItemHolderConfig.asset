@@ -12,8 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9291d6a3ad296ac4fab9e77968745f63, type: 3}
   m_Name: PlayerItemHolderConfig
   m_EditorClassIdentifier: 
-  _localOrientationObjects:
-  - Object: {fileID: 7831640733440183068, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
-    Orientation:
-      Position: {x: 0, y: 12, z: -1}
-      Rotation: {x: 0, y: 0, z: 0, w: 0}
+  <HolderPointOffset>k__BackingField: {x: -0.00198, y: -0.00159, z: -0.00024}
+  <HolderPointOrientation>k__BackingField: {x: 307.93167, y: 277.06284, z: 4.6969166}
+  <HolderPointName>k__BackingField: hand_Ctrl_R_end

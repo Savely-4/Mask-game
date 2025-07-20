@@ -71,11 +71,13 @@ namespace Runtime.Services.CombatSystem
         private void OnAttack() 
         {
             var weaponAnimations = _config.WeaponAnimations;
-        
-            if (weaponAnimations.TryGetValue(_weaponCombatModel.CurrentWeapon, out var animationsConfig)) 
+            Debug.Log(_weaponCombatModel.CurrentWeapon.GetType());
+            
+            if (weaponAnimations.TryGetValue(_weaponCombatModel.CurrentWeapon.GetType(), out var animationsConfig)) 
             {
                 _weaponCombatView.MainAttackAnimationPlay(animationsConfig.MainAttackAnimations.ToArray());
             }
+
         }
         
     }

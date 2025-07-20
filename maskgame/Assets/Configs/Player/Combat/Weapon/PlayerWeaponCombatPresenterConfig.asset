@@ -12,7 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1ff4b5cb78d5b1242bd22ea0471370ed, type: 3}
   m_Name: PlayerWeaponCombatPresenterConfig
   m_EditorClassIdentifier: 
-  <WeaponCombatViewConfig>k__BackingField: {fileID: 11400000, guid: 73c760938f8d5e641b602fb24d7fa9c1, type: 2}
   _weaponAnimationsPair:
-  - Weapon: {fileID: 7524288722170071949, guid: b86ed6e0b301f6d4faaf89367789820a, type: 3}
+  - Weapon: {fileID: 5940338346143769675, guid: 0271f35b2c5001142b21d1c4f3e2db35, type: 3}
     AnimationsConfig: {fileID: 11400000, guid: 80937157eef1b354c80015bf96def046, type: 2}

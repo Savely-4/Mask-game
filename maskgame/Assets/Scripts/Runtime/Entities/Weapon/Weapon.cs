@@ -11,7 +11,7 @@ namespace Runtime.Entities.WeaponSystem
         [field: SerializeField] public Transform AttackPoint { get; private set; }
         private float _lastAttackTime = Mathf.NegativeInfinity;
         public event Action OnAttack;
-        public event Action<Collision[]> OnHits;
+        public event Action<HitTarget3D> OnHits;
     
         public void TryAttack() 
         {
@@ -25,10 +25,10 @@ namespace Runtime.Entities.WeaponSystem
             }
         }
     
-        protected virtual void OnHitTargets(params Collision[] targets) 
+        protected virtual void OnHitTarget(HitTarget3D target) 
         {
-            Debug.Log("Вы попали в целей");
-            OnHits?.Invoke(targets);
+            Debug.Log("Вы попали в цель!");
+            OnHits?.Invoke(target);
         }
         
         /// <summary>

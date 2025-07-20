@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Runtime.Interfaces.WeaponSystem.Melee;
 using Runtime.InventorySystem;
 using UnityEngine;
@@ -8,8 +6,6 @@ namespace Runtime.Entities.WeaponSystem.Melee
 {
     public class Sword : WeaponMelee, IAlternateAttackable, IPickableItem
     {
-        private Coroutine _resetColorRoutine;
-
         [field: SerializeField] public ItemData ItemData { get; private set; }
 
         public void AlternateAttack()
@@ -17,35 +13,18 @@ namespace Runtime.Entities.WeaponSystem.Melee
             Debug.Log("Альтернативная атака");
         }
 
-        protected override void OnHitTargets(Collision[] targets)
+        protected override void OnHitTarget(HitTarget3D hitTarget)
         {
-            base.OnHitTargets(targets);
+            base.OnHitTarget(hitTarget);
+            
+            byte r = (byte)Random.Range(0, 255);
+            byte g = (byte)Random.Range(0, 255);
+            byte b = (byte)Random.Range(0, 255);
+            
+            Color32 randColor = new(r, g, b, 1);
 
-            List<(Material material, Color originalColor)> affectedMaterials = new();
-
-            foreach (var target in targets)
-            {
-                if (target.collider.TryGetComponent<MeshRenderer>(out var renderer))
-                {
-                    var material = renderer.material;
-                    affectedMaterials.Add((material, material.color));
-                    material.color = Color.red;
-                }
-            }
-
-            if (_resetColorRoutine == null)
-                _resetColorRoutine = StartCoroutine(ResetColorRoutine(affectedMaterials));
+            hitTarget.Collider.gameObject.GetComponent<MeshRenderer>().material.color = randColor;
         }
-        private IEnumerator ResetColorRoutine(List<(Material material, Color originalColor)> affectedMaterials)
-        {
-            yield return new WaitForSeconds(0.3f);
-
-            foreach (var (material, originalColor) in affectedMaterials)
-            {
-                material.color = originalColor;
-            }
-
-            _resetColorRoutine = null;
-        }
+        
     }
 }

@@ -5,9 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "PlayerItemHolderConfig", menuName = "Scriptable Objects/Player/PlayerItemHolderConfig")]
 public class PlayerItemHolderConfig : ScriptableObject
 {
-    [SerializeField] private List<LocalOrientationObjects> _localOrientationObjects;
+    //[SerializeField] private List<LocalOrientationObjects> _localOrientationObjects; // not working yet
     
-    public Dictionary<Type, Orientation> LocalOrientationObjects 
+    [field: SerializeField] public Vector3 HolderPointOffset { get; private set; }
+    [field: SerializeField] public Vector3 HolderPointOrientation { get; private set; }
+    [field: SerializeField] public string HolderPointName { get; private set; }
+    
+    /*/public Dictionary<Type, Orientation> LocalOrientationObjects 
     {
         get 
         {
@@ -23,5 +27,5 @@ public class PlayerItemHolderConfig : ScriptableObject
                 
             return dictionary;
         }
-    }
+    }/*/
 }

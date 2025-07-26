@@ -121,13 +121,13 @@ ModelImporter:
     serializedVersion: 3
     human: []
     skeleton:
-    - name: "\u043D\u043E\u0440\u043C\u0420\u0443\u043A\u0438\u041A\u0430\u043C\u0435\u0440\u043E\u0439(Clone)"
+    - name: PlayerHandsModel(Clone)
       parentName: 
       position: {x: 0, y: 0, z: 0}
       rotation: {x: 0, y: 0, z: 0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: Dolly_Rig
-      parentName: "\u043D\u043E\u0440\u043C\u0420\u0443\u043A\u0438\u041A\u0430\u043C\u0435\u0440\u043E\u0439(Clone)"
+      parentName: PlayerHandsModel(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: 0.00000009415696, y: 0.7071068, z: 0.7071067, w: -0.00000009415697}
       scale: {x: 100, y: 100, z: 100}
@@ -172,32 +172,32 @@ ModelImporter:
       rotation: {x: 0, y: -0, z: -0, w: 1}
       scale: {x: 1, y: 1, z: 1}
     - name: RetopRuka.030
-      parentName: "\u043D\u043E\u0440\u043C\u0420\u0443\u043A\u0438\u041A\u0430\u043C\u0435\u0440\u043E\u0439(Clone)"
+      parentName: PlayerHandsModel(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
     - name: WGT-Aim
-      parentName: "\u043D\u043E\u0440\u043C\u0420\u0443\u043A\u0438\u041A\u0430\u043C\u0435\u0440\u043E\u0439(Clone)"
+      parentName: PlayerHandsModel(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
     - name: WGT-Camera
-      parentName: "\u043D\u043E\u0440\u043C\u0420\u0443\u043A\u0438\u041A\u0430\u043C\u0435\u0440\u043E\u0439(Clone)"
+      parentName: PlayerHandsModel(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
     - name: WGT-Camera_Root
-      parentName: "\u043D\u043E\u0440\u043C\u0420\u0443\u043A\u0438\u041A\u0430\u043C\u0435\u0440\u043E\u0439(Clone)"
+      parentName: PlayerHandsModel(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
     - name: WGT-Camera_offset
-      parentName: "\u043D\u043E\u0440\u043C\u0420\u0443\u043A\u0438\u041A\u0430\u043C\u0435\u0440\u043E\u0439(Clone)"
+      parentName: PlayerHandsModel(Clone)
       position: {x: -0, y: 0, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}
     - name: arms_rig
-      parentName: "\u043D\u043E\u0440\u043C\u0420\u0443\u043A\u0438\u041A\u0430\u043C\u0435\u0440\u043E\u0439(Clone)"
+      parentName: PlayerHandsModel(Clone)
       position: {x: 0, y: -1.1835719, z: 0}
       rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
       scale: {x: 100, y: 100, z: 100}

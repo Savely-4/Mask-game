@@ -709,7 +709,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 712254517468915701, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
       propertyPath: m_Name
-      value: Player (1)
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 1180621802409617417, guid: 043ce5a71d38ac9449e5262ee0c2bf8e, type: 3}
       propertyPath: _camera

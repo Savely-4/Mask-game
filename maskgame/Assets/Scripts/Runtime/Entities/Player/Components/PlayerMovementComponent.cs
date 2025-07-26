@@ -1,13 +1,14 @@
 using System;
 using UnityEngine;
 
-namespace Runtime.Components
+namespace Runtime.Entities.Player
 {
-    public class PlayerMovement : MonoBehaviour
+    public class PlayerMovementComponent : MonoBehaviour, IPlayerMovementInput
     {
         private const float VERTICAL_SPEED_WHEN_GROUNDED = -1;
 
         private CharacterController _characterController;
+        private IPlayerAnimationsMovementControl _movementAnimations;
 
         private Vector2 movementInput;
         private float verticalVelocityValue = 0;
@@ -31,20 +32,25 @@ namespace Runtime.Components
         [field: SerializeField] public float GravityMultiplier { get; private set; } = 1;
 
         public Vector3 Speed => _characterController.velocity;
+        private Vector2 InputSpeed => new Vector2(movementInput.y, movementInput.x);
         public bool IsGrounded => _characterController.isGrounded;
 
 
-        void Start()
+        void Awake()
         {
             _characterController = GetComponent<CharacterController>();
+            _movementAnimations = GetComponent<IPlayerAnimationsMovementControl>();
         }
 
-        void FixedUpdate()
+        void Update()
         {
-            verticalVelocityValue = ApplyGravity(verticalVelocityValue, Time.fixedDeltaTime);
+            verticalVelocityValue = ApplyGravity(verticalVelocityValue, Time.deltaTime);
 
             var velocity = GetVelocity();
-            _characterController.Move(velocity * Time.fixedDeltaTime);
+            _characterController.Move(velocity * Time.deltaTime);
+
+            _movementAnimations.SetRelativeSpeed(InputSpeed.x, InputSpeed.y);
+            _movementAnimations.ToggleAirborne(!IsGrounded);
 
             if (IsGrounded)
             {
@@ -54,16 +60,24 @@ namespace Runtime.Components
         }
 
 
-        public void PerformJump()
+        public void SetMovementInput(Vector2 value)
+        {
+            movementInput = value;
+        }
+
+
+        public void SetJumpPressed()
         {
             if (jumpsLeft > 0)
             {
                 verticalVelocityValue = Mathf.Sqrt(jumpHeight * -2 * gravityValue * GravityMultiplier);
                 jumpsLeft--;
+
+                _movementAnimations.TriggerJump();
             }
         }
 
-        public void StopPerformJump()
+        public void SetJumpReleased()
         {
             if (IsGrounded || verticalVelocityValue < jumpStopThreshold)
                 return;
@@ -71,11 +85,6 @@ namespace Runtime.Components
             verticalVelocityValue = jumpStopThreshold;
         }
 
-
-        public void SetMovementInput(Vector2 value)
-        {
-            movementInput = value;
-        }
 
         public void ToggleSprint(bool value)
         {
@@ -118,7 +127,7 @@ namespace Runtime.Components
         /// </summary>
         private Vector3 GetInputVelocity(float speed)
         {
-            var inputWorld = (movementInput.x * transform.forward + movementInput.y * transform.right).normalized;
+            var inputWorld = (InputSpeed.x * transform.forward + InputSpeed.y * transform.right).normalized;
 
             return inputWorld * speed;
         }

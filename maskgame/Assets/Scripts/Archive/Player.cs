@@ -12,14 +12,14 @@ namespace Runtime.Entities
 {
     public class Player : MonoBehaviour
     {
-        [SerializeField] private PlayerMovement _movementComponent;
+        // [SerializeField] private PlayerMovement _movementComponent;
         [SerializeField] private Camera _camera;
         [SerializeField] private PlayerInputKeyboardConfig _inputKeyboardConfig;
         [SerializeField] private PlayerItemInteractorConfig _playerItemInteractorConfig;
         [SerializeField] private InventoryConfig _playerInventoryConfig;
         [SerializeField] private WeaponCombatPresenterConfig _weaponCombatPresenterConfig;
         [SerializeField] private PlayerItemHolderConfig _playerItemHolderConfig;
-        
+
         [Header("Camera")]
         [SerializeField] private CameraConfig _cameraConfig;
         [Header("Stamina")]
@@ -34,7 +34,7 @@ namespace Runtime.Entities
         private PlayerInteractor _playerInteractor;
         private Inventory _inventory;
         private PlayerItemHolder _playerItemHolder;
-        
+
         private Vector2 _moveInput;
         private bool cdDash = false;
         private float xRotation = 0f;
@@ -50,25 +50,25 @@ namespace Runtime.Entities
         #region Init
         private void InitComponents()
         {
-            var animator = GetComponent<Animator>();    
+            var animator = GetComponent<Animator>();
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-        
+
             _input = new PlayerInputKeyboardService(_inputKeyboardConfig);
             _cameraService = new CameraService(_cameraConfig);
             _staminaService = new StaminaService(_staminaConfig);
-            
+
             _playerInteractor = new PlayerInteractor(_playerItemInteractorConfig);
             _inventory = new Inventory(_playerInventoryConfig);
             _weaponCombatPresenter = new WeaponCombatPresenter(_weaponCombatPresenterConfig, animator, _input);
             _playerItemHolder = new PlayerItemHolder(_playerItemHolderConfig, GetHolderPoint());
 
             _playerInteractor.ItemInteractor.OnPickupItem += _inventory.AddItemInSlot;
-            _playerInteractor.ItemInteractor.OnTryDropItem += TryDropItem; 
+            _playerInteractor.ItemInteractor.OnTryDropItem += TryDropItem;
 
             _inventory.OnChangeCurrentSelectedSlot += OnChangeCurrentSelectedSlot;
             //_inventory.OnAddedItemInSlot += OnAddedItemInSlot;
-        
+
         }
         #endregion
 
@@ -81,56 +81,56 @@ namespace Runtime.Entities
             PerformInteractorControl();
             _weaponCombatPresenter.HandleWeaponActions();
         }
-        private Transform GetHolderPoint() 
+        private Transform GetHolderPoint()
         {
-            foreach (var child in GetComponentsInChildren<Transform>()) 
+            foreach (var child in GetComponentsInChildren<Transform>())
             {
-                if (child.name == _playerItemHolderConfig.HolderPointName) 
+                if (child.name == _playerItemHolderConfig.HolderPointName)
                 {
                     return child;
                 }
             }
-            
+
             return null;
         }
-        private bool TryDropItem() 
+        private bool TryDropItem()
         {
-            if (_inventory.TryRemoveItemInCurrentSlot()) 
+            if (_inventory.TryRemoveItemInCurrentSlot())
             {
                 _weaponCombatPresenter.SetNewWeapon(null);
                 _playerItemHolder.DropView();
-                
+
                 Debug.LogWarning("DropView");
             }
-            
+
             return false;
         }
 
-        private void OnChangeCurrentSelectedSlot() 
+        private void OnChangeCurrentSelectedSlot()
         {
             IPickableItem pickableItem = _inventory.GetItemInSlotAt(_inventory.CurrentSelectedSlotIndex);
 
             Weapon weapon = pickableItem as Weapon;
             Component component = pickableItem as Component;
 
-            
+
             _weaponCombatPresenter.SetNewWeapon(weapon);
             _playerItemHolder.PickupView(component.transform);
-            
+
             Debug.LogWarning("PickupView");
-            
+
         }
-        
-        
-        private void PerformInteractorControl() 
+
+
+        private void PerformInteractorControl()
         {
             Vector3 pos = _camera.ScreenPointToRay(Input.mousePosition).origin;
             Vector3 dir = _camera.ScreenPointToRay(Input.mousePosition).direction;
-        
+
             _playerInteractor.ItemInteractor.PickupUpdate(pos, dir, _input.PickupButtonPressed());
             _playerInteractor.ItemInteractor.DropUpdate(_input.DropButtonPressed());
         }
-        
+
         private void UpdateCamera()
         {
             _cameraService.Bobbing(_moveInput);
@@ -148,26 +148,26 @@ namespace Runtime.Entities
         {
             var moveInput = _input.GetMovementInput();
             _moveInput = new Vector2(moveInput.y, moveInput.x);
-            _movementComponent.SetMovementInput(_moveInput);
+            // _movementComponent.SetMovementInput(_moveInput);
         }
 
         void PerformSprintControl()
         {
             if (_input.SprintButtonPressed(false) && _moveInput.sqrMagnitude != 0)
             {
-                _movementComponent.ToggleSprint(true);
+                // _movementComponent.ToggleSprint(true);
                 return;
             }
-            _movementComponent.ToggleSprint(false);
+            // _movementComponent.ToggleSprint(false);
         }
 
         void PerformJumpsControl()
         {
-            if (_input.JumpButtonPressedThisFrame())
-                _movementComponent.PerformJump();
+            // if (_input.JumpButtonPressedThisFrame())
+            //     _movementComponent.PerformJump();
 
-            if (_input.JumpButtonReleasedThisFrame())
-                _movementComponent.StopPerformJump();
+            // if (_input.JumpButtonReleasedThisFrame())
+            //     _movementComponent.StopPerformJump();
         }
     }
 }

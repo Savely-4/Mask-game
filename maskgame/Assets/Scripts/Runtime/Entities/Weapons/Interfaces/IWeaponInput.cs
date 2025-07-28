@@ -1,5 +1,3 @@
-using UnityEngine;
-
 namespace Runtime.Entities.Weapons
 {
     public interface IWeaponInput

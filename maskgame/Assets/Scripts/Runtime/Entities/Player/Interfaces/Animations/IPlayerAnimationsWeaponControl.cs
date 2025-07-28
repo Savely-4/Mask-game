@@ -1,3 +1,5 @@
+using System;
+
 namespace Runtime.Entities.Player
 {
     /// <summary>
@@ -5,9 +7,13 @@ namespace Runtime.Entities.Player
     /// </summary>
     public interface IPlayerAnimationsWeaponControl
     {
-        //Got to idle
-        //Is occupied
+        /// <summary>
+        /// Is Animator ready for next action
+        /// </summary>
         bool IsIdle { get; }
+
+        event Action MeleeStartedHitting;
+        event Action MeleeStoppedHitting;
 
         void SetPrimaryPressed(bool value);
         void SetSecondaryPressed(bool value);

@@ -5,17 +5,23 @@ namespace Runtime.Entities.Weapons
 {
     public class Weapon_Sword : BaseWeapon
     {
-        private bool canAttack = true;
+        [SerializeField] private float attackCooldown;
+
+        private bool canAct = true;
 
 
         public override void OnPrimaryPressed()
         {
             //If able to attack - 
+            if (!AnimationControl.IsIdle || !canAct)
+                return;
+
+            StartCoroutine(PerformAttack(0));
         }
 
         public override void OnPrimaryReleased()
         {
-
+            AnimationControl.SetPrimaryPressed(false);
         }
 
         public override void OnSecondaryPressed()
@@ -32,17 +38,28 @@ namespace Runtime.Entities.Weapons
 
         private IEnumerator PerformAttack(int combo)
         {
-            canAttack = false;
+            canAct = false;
 
-            AnimationControl.SetInt("Combo", 0);
+            AnimationControl.SetInt("Combo", combo);
             AnimationControl.SetPrimaryPressed(true);
 
+            Debug.Log($"Attack started, isIdle {AnimationControl.IsIdle}");
+
             yield return null;
-            yield return new WaitUntil(() => AnimationControl.IsIdle);
 
             AnimationControl.SetPrimaryPressed(false);
+            Debug.Log($"Frame later, isIdle {AnimationControl.IsIdle}");
 
-            canAttack = true;
+            yield return null;
+            yield return new WaitWhile(() => !AnimationControl.IsIdle);
+
+            Debug.Log($"IsIdle is true, waiting for cooldown, IsIdle {AnimationControl.IsIdle}");
+
+            yield return new WaitForSeconds(attackCooldown);
+
+            Debug.Log($"Attack finished, isIdle {AnimationControl.IsIdle}");
+
+            canAct = true;
         }
     }
 }

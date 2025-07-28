@@ -5,15 +5,44 @@ namespace Runtime.Entities.Player
 {
     public class PlayerAnimationsComponent : MonoBehaviour, IPlayerAnimationsWeaponControl, IPlayerAnimationsMovementControl
     {
-        [SerializeField] private Animator movement;
-        [SerializeField] private Animator weapons;
+        [SerializeField] private Animator _movement;
+        [SerializeField] private Animator _weapons;
 
-        public bool IsIdle => throw new NotImplementedException();
+        [SerializeField] private AnimationsEventsComponent _animationsEvents;
+
+        public event Action MeleeStartedHitting;
+        public event Action MeleeStoppedHitting;
+
+        public bool IsIdle { get; private set; } = false;
+
+
+        void Awake()
+        {
+            _animationsEvents.ActionStarted += OnActionStarted;
+            _animationsEvents.ActionEnded += OnActionEnded;
+
+            _animationsEvents.MeleeStartedHitting += OnMeleeStartedHitting;
+            _animationsEvents.MeleeStoppedHitting += OnMeleeStoppedHitting;
+        }
+
+        void Start()
+        {
+            IsIdle = true;
+        }
+
+        void OnDestroy()
+        {
+            _animationsEvents.ActionStarted -= OnActionStarted;
+            _animationsEvents.ActionEnded -= OnActionEnded;
+
+            _animationsEvents.MeleeStartedHitting -= OnMeleeStartedHitting;
+            _animationsEvents.MeleeStoppedHitting -= OnMeleeStoppedHitting;
+        }
 
 
         public void SetPrimaryPressed(bool value)
         {
-
+            _weapons.SetBool("Primary", value);
         }
 
         public void SetSecondaryPressed(bool value)
@@ -30,18 +59,42 @@ namespace Runtime.Entities.Player
 
         public void SetRelativeSpeed(float forward, float Strafe)
         {
-            movement.SetFloat("Forward", forward);
-            movement.SetFloat("Strafe", Strafe);
+            _movement.SetFloat("Forward", forward);
+            _movement.SetFloat("Strafe", Strafe);
         }
 
         public void ToggleAirborne(bool value)
         {
-            movement.SetBool("Airborne", value);
+            _movement.SetBool("Airborne", value);
         }
 
         public void TriggerJump()
         {
-            movement.SetTrigger("Jump");
+            _movement.SetTrigger("Jump");
+        }
+
+
+
+        private void OnActionStarted()
+        {
+            IsIdle = false;
+            Debug.Log("Action Started");
+        }
+
+        private void OnActionEnded()
+        {
+            IsIdle = true;
+            Debug.Log("Action Ended");
+        }
+
+        private void OnMeleeStartedHitting()
+        {
+            MeleeStartedHitting?.Invoke();
+        }
+
+        private void OnMeleeStoppedHitting()
+        {
+            MeleeStoppedHitting?.Invoke();
         }
     }
 }

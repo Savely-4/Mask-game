@@ -1,4 +1,5 @@
 using System;
+using Runtime.Entities.Weapons;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,7 @@ namespace Runtime.Entities.Player
 
         private IPlayerMovementInput _movementInput;
         private IPlayerCameraInput _cameraInput;
+        private IPlayerWeaponsInput _weaponInput;
 
         private InputActions.PlayerActions PlayerActions => _inputActions.Player;
 
@@ -22,6 +24,7 @@ namespace Runtime.Entities.Player
         {
             _movementInput = GetComponent<IPlayerMovementInput>();
             _cameraInput = GetComponent<IPlayerCameraInput>();
+            _weaponInput = GetComponent<IPlayerWeaponsInput>();
 
             _inputActions = new InputActions();
         }
@@ -30,10 +33,13 @@ namespace Runtime.Entities.Player
         void OnEnable()
         {
             PlayerActions.Move.performed += OnMovementPerformed;
+            PlayerActions.Look.performed += OnLookPerformed;
+
             PlayerActions.Jump.performed += OnJumpPerformed;
             PlayerActions.Jump.canceled += OnJumpReleased;
 
-            PlayerActions.Look.performed += OnLookPerformed;
+            PlayerActions.Primary.performed += OnPrimaryPerformed;
+            PlayerActions.Primary.canceled += OnPrimaryReleased;
 
             PlayerActions.Enable();
         }
@@ -41,12 +47,27 @@ namespace Runtime.Entities.Player
         void OnDisable()
         {
             PlayerActions.Move.performed -= OnMovementPerformed;
+            PlayerActions.Look.performed -= OnLookPerformed;
+
             PlayerActions.Jump.performed -= OnJumpPerformed;
             PlayerActions.Jump.canceled -= OnJumpReleased;
 
-            PlayerActions.Look.performed -= OnLookPerformed;
+            PlayerActions.Primary.performed += OnPrimaryPerformed;
+            PlayerActions.Primary.canceled += OnPrimaryReleased;
 
             PlayerActions.Disable();
+        }
+
+
+
+        private void OnPrimaryPerformed(InputAction.CallbackContext context)
+        {
+            _weaponInput.SetPrimaryPressed();
+        }
+
+        private void OnPrimaryReleased(InputAction.CallbackContext context)
+        {
+            _weaponInput.SetPrimaryReleased();
         }
 
 
@@ -56,12 +77,12 @@ namespace Runtime.Entities.Player
             _cameraInput.SetCameraInput(value);
         }
 
-
         private void OnMovementPerformed(InputAction.CallbackContext context)
         {
             var value = context.ReadValue<Vector2>();
             _movementInput.SetMovementInput(value);
         }
+
 
         private void OnJumpPerformed(InputAction.CallbackContext context)
         {

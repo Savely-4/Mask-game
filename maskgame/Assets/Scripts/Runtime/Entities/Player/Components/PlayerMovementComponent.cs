@@ -16,22 +16,24 @@ namespace Runtime.Entities.Player
         private int jumpsLeft;
         private bool isSprinting = false;
 
-        [Header("Movement parameters")]
-        [SerializeField] private float speed = 4f;
-        [SerializeField] private float sprintSpeed = 8f;
-        [SerializeField] private float acceleration = 5f;
+        [SerializeField] private PlayerMovementParameters movementParameters;
 
-        [Header("Jump Parameters")]
-        [SerializeField] private float jumpHeight = 10;
-        [SerializeField] private float gravityValue = -9.81f;
-        [SerializeField] private float jumpStopThreshold = 0.2f;
-        [SerializeField] private int maxJumps = 2;
+        private float Speed => movementParameters.Speed;
+        private float SprintSpeed => movementParameters.SprintSpeed;
+        private float Acceleration => movementParameters.Acceleration;
+
+        private float JumpHeight => movementParameters.JumpHeight;
+        private int MaxJumps => movementParameters.MaxJumps;
+
+        private float GravityValue => movementParameters.GravityValue;
+        public float GravityRiseMultiplier => movementParameters.GravityRiseMultiplier;
+        public float GravityDescendMultiplier => movementParameters.GravityDescendMultiplier;
 
         [field: Header("Multipliers")]
-        [field: SerializeField] public float SpeedMultiplier { get; private set; } = 1;
+        [field: SerializeField] public float MaxSpeedMultiplier { get; private set; } = 1;
         [field: SerializeField] public float GravityMultiplier { get; private set; } = 1;
 
-        public Vector3 Speed => _characterController.velocity;
+        // Vector3 Speed => _characterController.velocity;
         private Vector2 InputSpeed => new Vector2(movementInput.y, movementInput.x);
         public bool IsGrounded => _characterController.isGrounded;
 
@@ -46,17 +48,23 @@ namespace Runtime.Entities.Player
         {
             verticalVelocityValue = ApplyGravity(verticalVelocityValue, Time.deltaTime);
 
-            var velocity = GetVelocity();
-            _characterController.Move(velocity * Time.deltaTime);
+            var horizontal = GetHorizontalVelocity(_characterController.velocity);
+            _characterController.Move(horizontal * Time.deltaTime);
+
+            var vertical = GetVerticalVelocity(verticalVelocityValue);
+            _characterController.Move(vertical * Time.deltaTime);
 
             _movementAnimations.SetRelativeSpeed(InputSpeed.x, InputSpeed.y);
             _movementAnimations.ToggleAirborne(!IsGrounded);
 
             if (IsGrounded)
             {
-                jumpsLeft = maxJumps;
+                jumpsLeft = MaxJumps;
                 verticalVelocityValue = VERTICAL_SPEED_WHEN_GROUNDED;
             }
+
+            if (_characterController.collisionFlags == CollisionFlags.CollidedAbove)
+                verticalVelocityValue = 0;
         }
 
 
@@ -70,7 +78,7 @@ namespace Runtime.Entities.Player
         {
             if (jumpsLeft > 0)
             {
-                verticalVelocityValue = Mathf.Sqrt(jumpHeight * -2 * gravityValue * GravityMultiplier);
+                verticalVelocityValue = Mathf.Sqrt(JumpHeight * -2 * GravityValue * GravityMultiplier * GravityRiseMultiplier);
                 jumpsLeft--;
 
                 _movementAnimations.TriggerJump();
@@ -79,10 +87,7 @@ namespace Runtime.Entities.Player
 
         public void SetJumpReleased()
         {
-            if (IsGrounded || verticalVelocityValue < jumpStopThreshold)
-                return;
-
-            verticalVelocityValue = jumpStopThreshold;
+            //TODO: Add jump release if needed
         }
 
 
@@ -97,7 +102,7 @@ namespace Runtime.Entities.Player
 
         public void SetSpeedMultiplier(float value)
         {
-            SpeedMultiplier = value;
+            MaxSpeedMultiplier = value;
         }
 
         public void SetGravityMultiplier(float value)
@@ -107,20 +112,19 @@ namespace Runtime.Entities.Player
 
 
         /// <summary>
-        /// Get full velocity for character controller
+        /// Get horizontal velocity for character controller
         /// </summary>
-        private Vector3 GetVelocity()
+        private Vector3 GetHorizontalVelocity(Vector3 currentVelocity)
         {
             var targetSpeed = GetHorizontalSpeed();
             var inputVelocity = GetInputVelocity(targetSpeed);
 
-            var velocityHorizontal = Vector3.MoveTowards(Speed, inputVelocity, acceleration);
+            var velocityHorizontal = Vector3.MoveTowards(currentVelocity, inputVelocity, Acceleration);
             velocityHorizontal.y = 0;
 
-            var velocityVertical = verticalVelocityValue * Vector3.up;
-
-            return velocityHorizontal + velocityVertical;
+            return velocityHorizontal;
         }
+
 
         /// <summary>
         /// Get desired horizontal velocity based on input
@@ -138,17 +142,34 @@ namespace Runtime.Entities.Player
         private float GetHorizontalSpeed()
         {
             if (isSprinting)
-                return sprintSpeed * SpeedMultiplier;
+                return SprintSpeed * MaxSpeedMultiplier;
             else
-                return speed * SpeedMultiplier;
+                return Speed * MaxSpeedMultiplier;
         }
+
+
+        /// <summary>
+        /// Get vertical velocity for character controller
+        /// </summary>
+        private Vector3 GetVerticalVelocity(float currentVerticalVelocity)
+        {
+            return currentVerticalVelocity * Vector3.up;
+        }
+
 
         /// <summary>
         /// Apply gravity to provided vertical speed
         /// </summary>
         private float ApplyGravity(float verticalSpeed, float deltaTime)
         {
-            return verticalSpeed + gravityValue * GravityMultiplier * deltaTime;
+            var gravity = GravityValue * GravityMultiplier;
+
+            if (verticalSpeed > 0)
+                gravity *= GravityRiseMultiplier;
+            else if (verticalSpeed < 0)
+                gravity *= GravityDescendMultiplier;
+
+            return verticalSpeed + gravity * deltaTime;
         }
     }
 }

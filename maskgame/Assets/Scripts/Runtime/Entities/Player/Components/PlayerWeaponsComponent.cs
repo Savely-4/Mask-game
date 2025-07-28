@@ -1,3 +1,4 @@
+using Runtime.Entities.Weapons;
 using UnityEngine;
 
 namespace Runtime.Entities.Player

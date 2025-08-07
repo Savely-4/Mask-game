@@ -1,13 +1,67 @@
 using System.Collections;
+using Runtime.Entities.Effects;
+using Runtime.Entities.Player;
 using UnityEngine;
 
 namespace Runtime.Entities.Weapons
 {
     public class Weapon_Sword : BaseWeapon
     {
-        [SerializeField] private float attackCooldown;
+        [SerializeField] private WeaponTriggerComponent _weaponTrigger;
 
+        [SerializeField] private int _baseDamage;
+        [SerializeField] private int _maxCombo;
+
+        [Header("Cooldowns")]
+        [SerializeField] private float _betweenAttacksCooldown;
+        [SerializeField] private float _comboResetCooldown;
+
+        private int comboValue;
         private bool canAct = true;
+
+        Coroutine cooldownRoutine;
+
+
+        void Awake()
+        {
+            _weaponTrigger.ToggleOn(false);
+
+            _weaponTrigger.Collided += OnObjectHit;
+        }
+
+        //Update: if not attacking and x time passed - reset combo
+        void Update()
+        {
+            if (cooldownRoutine != null)
+                return;
+
+            if (canAct && comboValue > 0)
+                cooldownRoutine = StartCoroutine(ResetCombo(0.5f));
+        }
+
+
+        public override void Initialize(IPlayerAnimationsWeaponControl animationControl)
+        {
+            base.Initialize(animationControl);
+
+            AnimationControl.MeleeStartedHitting += OnMeleeStartedHitting;
+            AnimationControl.MeleeStoppedHitting += OnMeleeStoppedHitting;
+        }
+
+        void OnEnable()
+        {
+            if (AnimationControl == null)
+                return;
+
+            AnimationControl.MeleeStartedHitting += OnMeleeStartedHitting;
+            AnimationControl.MeleeStoppedHitting += OnMeleeStoppedHitting;
+        }
+
+        void OnDisable()
+        {
+            AnimationControl.MeleeStartedHitting -= OnMeleeStartedHitting;
+            AnimationControl.MeleeStoppedHitting -= OnMeleeStoppedHitting;
+        }
 
 
         public override void OnPrimaryPressed()
@@ -16,13 +70,25 @@ namespace Runtime.Entities.Weapons
             if (!AnimationControl.IsIdle || !canAct)
                 return;
 
-            StartCoroutine(PerformAttack(0));
+            StartCoroutine(PerformAttack(comboValue));
+
+            if (cooldownRoutine != null)
+            {
+                StopCoroutine(cooldownRoutine);
+                cooldownRoutine = null;
+            }
+
+            comboValue++;
+
+            if (comboValue >= _maxCombo)
+                comboValue = 0;
         }
 
         public override void OnPrimaryReleased()
         {
             AnimationControl.SetPrimaryPressed(false);
         }
+
 
         public override void OnSecondaryPressed()
         {
@@ -55,11 +121,31 @@ namespace Runtime.Entities.Weapons
 
             Debug.Log($"IsIdle is true, waiting for cooldown, IsIdle {AnimationControl.IsIdle}");
 
-            yield return new WaitForSeconds(attackCooldown);
+            yield return new WaitForSeconds(_betweenAttacksCooldown);
 
             Debug.Log($"Attack finished, isIdle {AnimationControl.IsIdle}");
 
             canAct = true;
+        }
+
+        private IEnumerator ResetCombo(float timeToWait)
+        {
+            yield return new WaitForSeconds(timeToWait);
+
+            comboValue = 0;
+        }
+
+
+        private void OnMeleeStartedHitting() => _weaponTrigger.ToggleOn(true);
+        private void OnMeleeStoppedHitting() => _weaponTrigger.ToggleOn(false);
+
+        private void OnObjectHit(GameObject gameObject)
+        {
+            if (!gameObject.TryGetComponent<INormalDamageAble>(out var normalDamageAble))
+                return;
+
+            //TODO: Add crits and other on hit effects here
+            normalDamageAble.Receive(_baseDamage);
         }
     }
 }

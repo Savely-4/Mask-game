@@ -56,11 +56,11 @@ namespace Runtime.Entities.Player
 
         }
 
-
-        public void SetRelativeSpeed(float forward, float Strafe)
+        //TODO: Add lerp for movement values to make blending smooth
+        public void SetRelativeSpeed(float forward, float strafe)
         {
             _movement.SetFloat("Forward", forward);
-            _movement.SetFloat("Strafe", Strafe);
+            _movement.SetFloat("Strafe", strafe);
         }
 
         public void ToggleAirborne(bool value)

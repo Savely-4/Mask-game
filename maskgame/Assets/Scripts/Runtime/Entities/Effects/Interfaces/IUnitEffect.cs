@@ -4,6 +4,6 @@ namespace Runtime.Entities.Weapons
 {
     public interface IUnitEffect
     {
-        void Apply(GameObject gameObject);
+        void Apply(GameObject unit);
     }
 }

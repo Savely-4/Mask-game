@@ -9,7 +9,7 @@ namespace Runtime.Entities.Weapons
         protected IPlayerAnimationsWeaponControl AnimationControl { get; private set; }
 
 
-        public void Initialize(IPlayerAnimationsWeaponControl animationControl)
+        public virtual void Initialize(IPlayerAnimationsWeaponControl animationControl)
         {
             AnimationControl = animationControl;
         }

@@ -22,6 +22,8 @@ namespace Runtime.Entities.Weapons
 
         void OnTriggerEnter(Collider other)
         {
+            Debug.Log($"Collision: {other.gameObject}");
+
             Collided?.Invoke(other.gameObject);
         }
     }

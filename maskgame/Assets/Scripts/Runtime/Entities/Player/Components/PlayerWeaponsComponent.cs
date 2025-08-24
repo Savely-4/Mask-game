@@ -12,7 +12,7 @@ namespace Runtime.Entities.Player
 
         void Awake()
         {
-            weapon.Initialize(animationsComponent);
+            weapon.Initialize(gameObject);
         }
 
 

@@ -9,19 +9,36 @@ namespace Runtime.Entities.Weapons
     public class WeaponTriggerComponent : MonoBehaviour
     {
         public event Action<GameObject> Collided;
-        //TODO: Add collision queue and other parameters if needed
 
-        [SerializeField] private Collider _collider;
+        private Collider[] _colliders;
+
+        private bool initialized = false;
+
+
+        void Awake()
+        {
+            _colliders = GetComponents<Collider>();
+            initialized = true;
+        }
 
 
         public void ToggleOn(bool value)
         {
-            _collider.enabled = value;
+            enabled = value;
+
+            if (!initialized)
+                return;
+
+            foreach (var collider in _colliders)
+                collider.enabled = value;
         }
 
 
         void OnTriggerEnter(Collider other)
         {
+            if (!enabled)
+                return;
+
             Debug.Log($"Collision: {other.gameObject}");
 
             Collided?.Invoke(other.gameObject);

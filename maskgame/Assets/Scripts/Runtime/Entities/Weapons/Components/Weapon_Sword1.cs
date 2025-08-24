@@ -5,9 +5,9 @@ using UnityEngine;
 
 namespace Runtime.Entities.Weapons
 {
-    public class Weapon_Sword : BaseWeapon
+    public class Weapon_Sword1 : BaseWeapon
     {
-        [SerializeField] private WeaponTriggerComponent _weaponTrigger;
+        private MeleeStrikeComponent _meleeStrike;
 
         [SerializeField] private int _baseDamage;
         [SerializeField] private int _maxCombo;
@@ -16,18 +16,13 @@ namespace Runtime.Entities.Weapons
         [SerializeField] private float _betweenAttacksCooldown;
         [SerializeField] private float _comboResetCooldown;
 
+        [SerializeField] private MeleeSwipeData[] meleeSwipeDatas;
+
         private int comboValue;
         private bool canAct = true;
 
         Coroutine cooldownRoutine;
 
-
-        void Awake()
-        {
-            _weaponTrigger.ToggleOn(false);
-
-            _weaponTrigger.Collided += OnObjectHit;
-        }
 
         //Update: if not attacking and x time passed - reset combo
         void Update()
@@ -45,9 +40,10 @@ namespace Runtime.Entities.Weapons
             base.Initialize(playerObject);
 
             //Melee Strike
+            _meleeStrike = playerObject.GetComponentInChildren<MeleeStrikeComponent>();
 
             AnimationControl.MeleeStartedHitting += OnMeleeStartedHitting;
-            AnimationControl.MeleeStoppedHitting += OnMeleeStoppedHitting;
+            _meleeStrike.ObjectHit += OnObjectHit;
         }
 
         void OnEnable()
@@ -56,13 +52,13 @@ namespace Runtime.Entities.Weapons
                 return;
 
             AnimationControl.MeleeStartedHitting += OnMeleeStartedHitting;
-            AnimationControl.MeleeStoppedHitting += OnMeleeStoppedHitting;
+            _meleeStrike.ObjectHit += OnObjectHit;
         }
 
         void OnDisable()
         {
+            _meleeStrike.ObjectHit -= OnObjectHit;
             AnimationControl.MeleeStartedHitting -= OnMeleeStartedHitting;
-            AnimationControl.MeleeStoppedHitting -= OnMeleeStoppedHitting;
         }
 
 
@@ -74,16 +70,12 @@ namespace Runtime.Entities.Weapons
 
             StartCoroutine(PerformAttack(comboValue));
 
+            //Reset combo cooldown timer
             if (cooldownRoutine != null)
             {
                 StopCoroutine(cooldownRoutine);
                 cooldownRoutine = null;
             }
-
-            comboValue++;
-
-            if (comboValue >= _maxCombo)
-                comboValue = 0;
         }
 
         public override void OnPrimaryReleased()
@@ -102,6 +94,13 @@ namespace Runtime.Entities.Weapons
 
         }
 
+
+
+        private void OnMeleeStartedHitting()
+        {
+            var swipeData = meleeSwipeDatas[comboValue];
+            _meleeStrike.PerformSwipe(swipeData.AngleHorizontalOffset, swipeData.AngleWidth, swipeData.Duration);
+        }
 
 
         private IEnumerator PerformAttack(int combo)
@@ -127,6 +126,11 @@ namespace Runtime.Entities.Weapons
 
             Debug.Log($"Attack finished, isIdle {AnimationControl.IsIdle}");
 
+            comboValue++;
+
+            if (comboValue >= _maxCombo)
+                comboValue = 0;
+
             canAct = true;
         }
 
@@ -137,9 +141,6 @@ namespace Runtime.Entities.Weapons
             comboValue = 0;
         }
 
-
-        private void OnMeleeStartedHitting() => _weaponTrigger.ToggleOn(true);
-        private void OnMeleeStoppedHitting() => _weaponTrigger.ToggleOn(false);
 
         private void OnObjectHit(GameObject gameObject)
         {

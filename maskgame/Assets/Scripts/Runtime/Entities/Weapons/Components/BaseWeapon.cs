@@ -9,9 +9,9 @@ namespace Runtime.Entities.Weapons
         protected IPlayerAnimationsWeaponControl AnimationControl { get; private set; }
 
 
-        public virtual void Initialize(IPlayerAnimationsWeaponControl animationControl)
+        public virtual void Initialize(GameObject playerObject)
         {
-            AnimationControl = animationControl;
+            AnimationControl = playerObject.GetComponent<IPlayerAnimationsWeaponControl>();
         }
 
 

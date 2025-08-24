@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff4b5cb78d5b1242bd22ea0471370ed, type: 3}
+  m_Name: PlayerWeaponCombatPresenterConfig
+  m_EditorClassIdentifier: 
+  _weaponAnimationsPair:
+  - Weapon: {fileID: 5940338346143769675, guid: 0271f35b2c5001142b21d1c4f3e2db35, type: 3}
+    AnimationsConfig: {fileID: 11400000, guid: 80937157eef1b354c80015bf96def046, type: 2}
